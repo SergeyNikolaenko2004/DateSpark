@@ -1,0 +1,6 @@
+@DateSpark.API_HostAddress = http://localhost:5138
+
+GET {{DateSpark.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
