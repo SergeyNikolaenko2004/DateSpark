@@ -1,11 +1,12 @@
 using DateSpark.API.Data;
 using Microsoft.EntityFrameworkCore;
+using DateSpark.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// Add services to the container.
+builder.Services.AddScoped<IIdeaGeneratorService, IdeaGeneratorService>();
 builder.Services.AddControllers();
 
 // Add DbContext with PostgreSQL - ИСПРАВЛЕННАЯ ВЕРСИЯ
