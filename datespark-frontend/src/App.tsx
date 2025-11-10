@@ -5,8 +5,8 @@ function App() {
   const [apiMessage, setApiMessage] = useState<string>('');
 
   useEffect(() => {
-    // Временно укажи локальный URL бэкенда. Позже заменим на переменную окружения.
-    fetch('https://localhost:5138/api/test')
+    // ЗАМЕНИ НА РАБОЧИЙ URL:
+    fetch('https://datespark-api.onrender.com/api/test')
       .then(response => response.json())
       .then(data => setApiMessage(data.message))
       .catch(error => setApiMessage('Failed to connect to API: ' + error.message));

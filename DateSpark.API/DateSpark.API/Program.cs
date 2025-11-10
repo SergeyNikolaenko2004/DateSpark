@@ -8,9 +8,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("https://SergeyNikolaenko2004.github.io") // URL твоего фронтенда
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+            "https://SergeyNibolaenko2004.github.io",  // 👈 ТВОЙ ФРОНТЕНД
+            "http://localhost:3000"                    // Для разработки
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
