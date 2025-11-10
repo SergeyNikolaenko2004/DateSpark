@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DateSpark.API.Data;
 using DateSpark.API.Models;
 
 namespace DateSpark.API.Controllers
@@ -9,93 +7,35 @@ namespace DateSpark.API.Controllers
     [Route("api/[controller]")]
     public class IdeasController : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public IdeasController(AppDbContext context)
+        private static List<Idea> _ideas = new()
         {
-            _context = context;
-        }
+            new Idea { Id = 1, Title = "Романтический ужин", Description = "Приготовить ужин при свечах", Category = "Домашнее", Price = 30 },
+            new Idea { Id = 2, Title = "Прогулка в парке", Description = "Прогулка и пикник", Category = "Активное", Price = 15 }
+        };
 
         // GET: api/ideas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Idea>>> GetIdeas()
+        public ActionResult<IEnumerable<Idea>> GetIdeas()
         {
-            return await _context.Ideas.ToListAsync();
+            return Ok(_ideas);
         }
 
         // GET: api/ideas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Idea>> GetIdea(int id)
+        public ActionResult<Idea> GetIdea(int id)
         {
-            var idea = await _context.Ideas.FindAsync(id);
-
-            if (idea == null)
-            {
-                return NotFound();
-            }
-
+            var idea = _ideas.FirstOrDefault(i => i.Id == id);
+            if (idea == null) return NotFound();
             return idea;
         }
 
         // POST: api/ideas
         [HttpPost]
-        public async Task<ActionResult<Idea>> PostIdea(Idea idea)
+        public ActionResult<Idea> PostIdea(Idea idea)
         {
-            _context.Ideas.Add(idea);
-            await _context.SaveChangesAsync();
-
+            idea.Id = _ideas.Count + 1;
+            _ideas.Add(idea);
             return CreatedAtAction(nameof(GetIdea), new { id = idea.Id }, idea);
-        }
-
-        // PUT: api/ideas/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutIdea(int id, Idea idea)
-        {
-            if (id != idea.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(idea).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!IdeaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // DELETE: api/ideas/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteIdea(int id)
-        {
-            var idea = await _context.Ideas.FindAsync(id);
-            if (idea == null)
-            {
-                return NotFound();
-            }
-
-            _context.Ideas.Remove(idea);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool IdeaExists(int id)
-        {
-            return _context.Ideas.Any(e => e.Id == id);
         }
     }
 }
