@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/DateSpark/static/css/main.f855e6bc.css",
+    "main.js": "/DateSpark/static/js/main.d95f6132.js",
+    "index.html": "/DateSpark/index.html",
+    "main.f855e6bc.css.map": "/DateSpark/static/css/main.f855e6bc.css.map",
+    "main.d95f6132.js.map": "/DateSpark/static/js/main.d95f6132.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.d95f6132.js"
+  ]
+}
