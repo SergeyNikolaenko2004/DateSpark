@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// 🔥 ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
+// 🔥 УЛУЧШЕННАЯ КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ ДЛЯ SUPABASE
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
 // Для миграций используем appsettings.Development.json
@@ -49,27 +49,45 @@ if (string.IsNullOrEmpty(connectionString))
 }
 else
 {
-    // ПАРСИНГ ДЛЯ RENDER.COM И ЛОКАЛЬНОЙ РАЗРАБОТКИ
+    // 🔥 ИСПРАВЛЕННЫЙ ПАРСИНГ ДЛЯ SUPABASE
     if (connectionString.Contains("postgresql://"))
     {
-        // Формат Render.com: postgresql://user:pass@host/dbname
         try
         {
-            var databaseUri = new Uri(connectionString);
-            var userInfo = databaseUri.UserInfo.Split(':');
+            // Убираем "postgresql://" и парсим вручную для совместимости
+            var uriString = connectionString.Replace("postgresql://", "");
+            var atIndex = uriString.IndexOf('@');
+            var colonIndex = uriString.IndexOf(':');
+            
+            if (atIndex > 0 && colonIndex > 0)
+            {
+                var userInfo = uriString.Substring(0, atIndex);
+                var hostAndDb = uriString.Substring(atIndex + 1);
+                
+                var userParts = userInfo.Split(':');
+                var username = userParts[0];
+                var password = userParts[1];
+                
+                var hostParts = hostAndDb.Split('/');
+                var hostWithPort = hostParts[0];
+                var database = hostParts[1];
+                
+                var host = hostWithPort.Split(':')[0];
+                
+                connectionString = $"Host={host};" +
+                    $"Port=5432;" +
+                    $"Database={database};" +
+                    $"Username={username};" +
+                    $"Password={password};" +
+                    "SSL Mode=Require;Trust Server Certificate=true";
 
-            connectionString = $"Host={databaseUri.Host};" +
-                $"Port=5432;" +
-                $"Database={databaseUri.LocalPath.TrimStart('/')};" +
-                $"Username={userInfo[0]};" +
-                $"Password={userInfo[1]};" +
-                "SSL Mode=Require;Trust Server Certificate=true";
-
-            Console.WriteLine($"✅ Using PostgreSQL on Render: {databaseUri.Host}");
+                Console.WriteLine($"✅ Using PostgreSQL on Supabase: {host}");
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Error parsing DATABASE_URL: {ex.Message}");
+            Console.WriteLine($"🔍 Original string: {connectionString}");
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase("DateSparkDB"));
             Console.WriteLine("🔄 Fallback to InMemory database");
@@ -150,7 +168,6 @@ using (var scope = app.Services.CreateScope())
             }
             else
             {
-                // ЕСЛИ ДАННЫЕ УЖЕ ЕСТЬ - НИЧЕГО НЕ ДЕЛАЕМ!
                 var ideaCount = dbContext.Ideas.Count();
                 Console.WriteLine($"📊 Database already contains {ideaCount} ideas - skipping seed data");
             }
@@ -162,6 +179,7 @@ using (var scope = app.Services.CreateScope())
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Migration failed: {ex.Message}");
+            Console.WriteLine($"🔍 Full error: {ex}");
         }
     }
     else

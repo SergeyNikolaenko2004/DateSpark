@@ -46,7 +46,7 @@ namespace DateSpark.API.Data.Migrations
                     b.HasIndex("JoinCode")
                         .IsUnique();
 
-                    b.ToTable("Couples");
+                    b.ToTable("Couples", (string)null);
                 });
 
             modelBuilder.Entity("DateSpark.API.Models.Idea", b =>
@@ -103,7 +103,7 @@ namespace DateSpark.API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ideas");
+                    b.ToTable("Ideas", (string)null);
                 });
 
             modelBuilder.Entity("DateSpark.API.Models.User", b =>
@@ -140,7 +140,7 @@ namespace DateSpark.API.Data.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DateSpark.API.Models.UserCouple", b =>
@@ -176,7 +176,7 @@ namespace DateSpark.API.Data.Migrations
                     b.HasIndex("UserId", "CoupleId")
                         .IsUnique();
 
-                    b.ToTable("UserCouples");
+                    b.ToTable("UserCouples", (string)null);
                 });
 
             modelBuilder.Entity("DateSpark.API.Models.UserCouple", b =>
