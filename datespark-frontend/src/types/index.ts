@@ -28,3 +28,29 @@ export interface IdeaFilters {
   maxPrice?: number;
   onlyActive?: boolean;
 }
+
+export interface AuthRequest {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  message: string;
+  token?: string;
+  user?: UserDto;
+  couple?: CoupleDto;
+}
+
+export interface UserDto {
+  id: number;
+  email: string;
+  name: string;
+}
+
+export interface CoupleDto {
+  id: number;
+  name: string;
+  joinCode: string;
+}

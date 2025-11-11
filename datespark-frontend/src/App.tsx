@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SparkPage from './pages/SparkPage';
+import { LoginForm } from './components/LoginForm';
+import { RegisterForm } from './components/RegisterForm';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <SparkPage />
-    </div>
+  const token = localStorage.getItem('token');
+  const [isLogin, setIsLogin] = useState(true);
+
+  if (token) {
+    return <SparkPage />;
+  }
+
+  return isLogin ? (
+    <LoginForm onSwitchToRegister={() => setIsLogin(false)} />
+  ) : (
+    <RegisterForm onSwitchToLogin={() => setIsLogin(true)} />
   );
 }
 

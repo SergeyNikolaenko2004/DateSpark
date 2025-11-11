@@ -1,4 +1,4 @@
-import { Idea, IdeaVote, IdeaFilters } from '../types';
+import { Idea, IdeaVote, IdeaFilters, AuthRequest, AuthResponse } from '../types';
 
 const API_BASE = 'https://datespark-api.onrender.com/api';
 
@@ -35,5 +35,33 @@ export const api = {
       console.error('API Error:', error);
       return false;
     }
+  },
+
+    // 🔥 НОВЫЕ МЕТОДЫ АУТЕНТИФИКАЦИИ
+  async register(userData: AuthRequest): Promise<AuthResponse> {
+    try {
+      const response = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      return await response.json();
+    } catch (error) {
+      return { success: false, message: 'Network error' };
+    }
+  },
+
+  async login(userData: AuthRequest): Promise<AuthResponse> {
+    try {
+      const response = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      return await response.json();
+    } catch (error) {
+      return { success: false, message: 'Network error' };
+    }
   }
+
 };
