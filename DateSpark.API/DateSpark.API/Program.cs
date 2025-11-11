@@ -2,12 +2,32 @@ using DateSpark.API.Data;
 using Microsoft.EntityFrameworkCore;
 using DateSpark.API.Services;
 using DateSpark.API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IIdeaGeneratorService, IdeaGeneratorService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "DateSpark",
+            ValidAudience = "DateSparkUsers",
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("your-super-secret-key-at-least-32-chars-long!"))
+        };
+    });
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 // 🔥 ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
@@ -150,6 +170,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseSwagger();

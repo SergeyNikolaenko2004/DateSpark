@@ -8,19 +8,29 @@ namespace DateSpark.API.Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.Development.json")
-                .Build();
-
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            // Если нет connection string, используем InMemory для дизайна
-            if (string.IsNullOrEmpty(connectionString))
+            // Для миграций используем PostgreSQL connection string
+            var connectionString = "Host=localhost;Port=5432;Database=datespark_migrations;Username=postgres;Password=postgres;";
+            
+            // Если есть переменная окружения DATABASE_URL - используем её
+            var envConnectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+            if (!string.IsNullOrEmpty(envConnectionString))
             {
-                var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-                optionsBuilder.UseInMemoryDatabase("DesignTimeDB");
-                return new AppDbContext(optionsBuilder.Options);
+                try
+                {
+                    var databaseUri = new Uri(envConnectionString);
+                    var userInfo = databaseUri.UserInfo.Split(':');
+
+                    connectionString = $"Host={databaseUri.Host};" +
+                        $"Port=5432;" +
+                        $"Database={databaseUri.LocalPath.TrimStart('/')};" +
+                        $"Username={userInfo[0]};" +
+                        $"Password={userInfo[1]};" +
+                        "SSL Mode=Require;Trust Server Certificate=true";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
+                }
             }
 
             var options = new DbContextOptionsBuilder<AppDbContext>()
