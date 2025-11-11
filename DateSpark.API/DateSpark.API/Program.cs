@@ -108,6 +108,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins(
+            "https://datespark-frontend.onrender.com", // НОВЫЙ фронтенд
             "https://sergeynikolaenko2004.github.io",
             "http://localhost:3000"
         )
