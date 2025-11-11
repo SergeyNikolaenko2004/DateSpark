@@ -21,14 +21,16 @@ if (string.IsNullOrEmpty(connectionString))
 }
 else
 {
-    // Для Render.com - правильное преобразование PostgreSQL URL
+    // Для Render.com - НОВЫЙ ПАРСИНГ БЕЗ ПОРТА
     try
     {
+        // Новый формат: postgresql://user:pass@host/dbname (без порта)
         var databaseUri = new Uri(connectionString);
         var userInfo = databaseUri.UserInfo.Split(':');
         
+        // Используем стандартный порт PostgreSQL 5432
         var properConnectionString = $"Host={databaseUri.Host};" +
-            $"Port={databaseUri.Port};" +
+            $"Port=5432;" +  // 👈 ЯВНО УКАЗЫВАЕМ ПОРТ 5432
             $"Database={databaseUri.LocalPath.TrimStart('/')};" +
             $"Username={userInfo[0]};" +
             $"Password={userInfo[1]};" +
@@ -37,14 +39,15 @@ else
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(properConnectionString));
         
-        Console.WriteLine("Using PostgreSQL database on Render");
+        Console.WriteLine("✅ Using PostgreSQL database on Render");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
+        Console.WriteLine($"❌ Error parsing DATABASE_URL: {ex.Message}");
         // Fallback to in-memory database
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseInMemoryDatabase("TestDB"));
+        Console.WriteLine("🔄 Fallback to InMemory database");
     }
 }
 
