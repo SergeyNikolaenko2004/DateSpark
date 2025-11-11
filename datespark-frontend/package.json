@@ -1,6 +1,6 @@
 {
+  "homepage": ".",
   "name": "datespark-frontend",
-  "homepage": "https://SergeyNikolaenko2004.github.io/DateSpark",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
