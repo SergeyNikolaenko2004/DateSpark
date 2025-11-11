@@ -57,20 +57,20 @@ namespace DateSpark.API.Services
 
         private IQueryable<Idea> ApplyFilters(IQueryable<Idea> query, IdeaFilters filters)
         {
-            if (!string.IsNullOrEmpty(filters.Category))
-                query = query.Where(i => i.Category == filters.Category);
+            if (!string.IsNullOrEmpty(filters.Category) && filters.Category != "Любое")
+                query = query.Where(i => i.Category == filters.Category || i.Category == "Любое");
 
-            if (!string.IsNullOrEmpty(filters.Location))
-                query = query.Where(i => i.Location == filters.Location);
+            if (!string.IsNullOrEmpty(filters.Location) && filters.Location != "Любая")
+                query = query.Where(i => i.Location == filters.Location || i.Location == "Любая");
 
-            if (!string.IsNullOrEmpty(filters.Mood))
-                query = query.Where(i => i.Mood == filters.Mood);
+            if (!string.IsNullOrEmpty(filters.Mood) && filters.Mood != "Любое")
+                query = query.Where(i => i.Mood == filters.Mood || i.Mood == "Любое");
 
-            if (!string.IsNullOrEmpty(filters.Duration))
-                query = query.Where(i => i.Duration == filters.Duration);
+            if (!string.IsNullOrEmpty(filters.Duration) && filters.Duration != "Любое")
+                query = query.Where(i => i.Duration == filters.Duration || i.Duration == "Любое");
 
-            if (!string.IsNullOrEmpty(filters.Weather))
-                query = query.Where(i => i.Weather == filters.Weather);
+            if (!string.IsNullOrEmpty(filters.Weather) && filters.Weather != "Любая")
+                query = query.Where(i => i.Weather == filters.Weather || i.Weather == "Любая");
 
             if (filters.MaxPrice.HasValue)
                 query = query.Where(i => i.Price <= filters.MaxPrice.Value);
