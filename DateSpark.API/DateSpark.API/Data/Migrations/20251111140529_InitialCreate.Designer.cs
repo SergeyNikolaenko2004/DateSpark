@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DateSpark.API.Migrations
+namespace DateSpark.API.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251110170909_InitialCreate")]
+    [Migration("20251111140529_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,11 +44,36 @@ namespace DateSpark.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Dislikes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Duration")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Mood")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal?>("Price")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Weather")
                         .IsRequired()
                         .HasColumnType("text");
 

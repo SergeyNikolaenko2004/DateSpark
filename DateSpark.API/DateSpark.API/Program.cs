@@ -9,51 +9,61 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IIdeaGeneratorService, IdeaGeneratorService>();
 builder.Services.AddControllers();
 
-// Add DbContext with PostgreSQL - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// 🔥 ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+// Для миграций используем appsettings.Development.json
+if (builder.Environment.IsDevelopment() && string.IsNullOrEmpty(connectionString))
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine("🛠️ Using Development connection string for migrations");
+}
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    // Для локальной разработки - используем in-memory базу
+    // Fallback для случаев когда нет подключения
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseInMemoryDatabase("DateSparkDB"));
-
-    Console.WriteLine("🔄 Using InMemory database for all operations");
+    Console.WriteLine("🔄 Using InMemory database (fallback)");
 }
 else
-
-/* {
-    // Для Render.com - НОВЫЙ ПАРСИНГ БЕЗ ПОРТА
-    try
+{
+    // ПАРСИНГ ДЛЯ RENDER.COM И ЛОКАЛЬНОЙ РАЗРАБОТКИ
+    if (connectionString.Contains("postgresql://"))
     {
-        // Новый формат: postgresql://user:pass@host/dbname (без порта)
-        var databaseUri = new Uri(connectionString);
-        var userInfo = databaseUri.UserInfo.Split(':');
+        // Формат Render.com: postgresql://user:pass@host/dbname
+        try
+        {
+            var databaseUri = new Uri(connectionString);
+            var userInfo = databaseUri.UserInfo.Split(':');
 
-        // Используем стандартный порт PostgreSQL 5432
-        var properConnectionString = $"Host={databaseUri.Host};" +
-            $"Port=5432;" +  // 👈 ЯВНО УКАЗЫВАЕМ ПОРТ 5432
-            $"Database={databaseUri.LocalPath.TrimStart('/')};" +
-            $"Username={userInfo[0]};" +
-            $"Password={userInfo[1]};" +
-            "SSL Mode=Require;Trust Server Certificate=true";
+            connectionString = $"Host={databaseUri.Host};" +
+                $"Port=5432;" +
+                $"Database={databaseUri.LocalPath.TrimStart('/')};" +
+                $"Username={userInfo[0]};" +
+                $"Password={userInfo[1]};" +
+                "SSL Mode=Require;Trust Server Certificate=true";
 
-        builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(properConnectionString));
-
-        Console.WriteLine("✅ Using PostgreSQL database on Render");
+            Console.WriteLine($"✅ Using PostgreSQL on Render: {databaseUri.Host}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error parsing DATABASE_URL: {ex.Message}");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseInMemoryDatabase("DateSparkDB"));
+            Console.WriteLine("🔄 Fallback to InMemory database");
+        }
     }
-    catch (Exception ex)
+
+    // Используем PostgreSQL
+    if (!connectionString.Contains("InMemory"))
     {
-        Console.WriteLine($"❌ Error parsing DATABASE_URL: {ex.Message}");
-        // Fallback to in-memory database
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseInMemoryDatabase("TestDB"));
-        Console.WriteLine("🔄 Fallback to InMemory database");
+            options.UseNpgsql(connectionString));
+        Console.WriteLine("🗄️ Using PostgreSQL database");
     }
-} */
+}
 
-// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -69,14 +79,38 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 🔥 АВТО-МИГРАЦИЯ ТОЛЬКО ДЛЯ POSTGRESQL
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    
+    if (dbContext.Database.IsRelational())
+    {
+        try
+        {
+            Console.WriteLine("🚀 Applying database migrations...");
+            dbContext.Database.Migrate();
+            Console.WriteLine("✅ Database migrations applied successfully!");
+            
+            // Проверяем подключение
+            var canConnect = dbContext.Database.CanConnect();
+            Console.WriteLine($"📊 Database connection: {canConnect}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Migration failed: {ex.Message}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("🔄 InMemory database - skipping migrations");
+    }
+}
+
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
-
-// Используем Swagger ВСЕГДА (не только для разработки)
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.MapControllers();
 
 app.Run();

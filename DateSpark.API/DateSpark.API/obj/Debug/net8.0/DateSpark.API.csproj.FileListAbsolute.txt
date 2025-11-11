@@ -1,4 +1,3 @@
-F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\appsettings.Development.json
 F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\appsettings.json
 F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\DateSpark.API.staticwebassets.endpoints.json
 F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\DateSpark.API.exe
@@ -136,3 +135,4 @@ F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\tr\Microsoft
 F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+F:\MyProject\DateSpark\DateSpark.API\DateSpark.API\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
