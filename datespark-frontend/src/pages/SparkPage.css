@@ -1,0 +1,39 @@
+.spark-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.spark-header {
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.spark-header h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+.spark-header p {
+  margin: 10px 0 0 0;
+  opacity: 0.9;
+}
+
+.spark-main {
+  padding: 20px;
+}
+
+.spark-footer {
+  padding: 20px;
+  text-align: center;
+}
+
+.swipe-hint {
+  display: flex;
+  justify-content: space-around;
+  max-width: 400px;
+  margin: 0 auto;
+  color: white;
+  font-size: 0.9em;
+}

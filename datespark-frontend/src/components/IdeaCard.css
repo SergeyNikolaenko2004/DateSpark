@@ -1,0 +1,82 @@
+.idea-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.card-title {
+  margin: 0;
+  color: #333;
+  font-size: 1.5em;
+}
+
+.card-category {
+  background: #ff6b6b;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.8em;
+}
+
+.card-description {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+}
+
+.detail-label {
+  font-size: 1.2em;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.btn-dislike, .btn-like {
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-dislike {
+  background: #ffeaea;
+}
+
+.btn-like {
+  background: #eaffea;
+}
+
+.btn-dislike:hover, .btn-like:hover {
+  transform: scale(1.1);
+}

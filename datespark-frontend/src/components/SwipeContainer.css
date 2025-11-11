@@ -1,0 +1,16 @@
+.swipe-container {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.loading, .no-ideas {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.no-ideas h2 {
+  color: #ff6b6b;
+}
