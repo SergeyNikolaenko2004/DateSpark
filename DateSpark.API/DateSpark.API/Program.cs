@@ -1,6 +1,7 @@
 using DateSpark.API.Data;
 using Microsoft.EntityFrameworkCore;
 using DateSpark.API.Services;
+using DateSpark.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,7 +80,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// 🔥 АВТО-МИГРАЦИЯ ТОЛЬКО ДЛЯ POSTGRESQL
+// 🔥 АВТО-МИГРАЦИЯ И SEED ДАННЫЕ ТОЛЬКО ДЛЯ POSTGRESQL
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -92,6 +93,48 @@ using (var scope = app.Services.CreateScope())
             dbContext.Database.Migrate();
             Console.WriteLine("✅ Database migrations applied successfully!");
             
+            // 🔥 ДОБАВЛЯЕМ ТЕСТОВЫЕ ДАННЫЕ ТОЛЬКО ЕСЛИ БАЗА ПУСТАЯ
+            if (!dbContext.Ideas.Any())
+            {
+                Console.WriteLine("🌱 Adding test data to empty database...");
+                
+                var testIdeas = new List<Idea>
+                {
+                    new Idea { 
+                        Title = "Романтический ужин при свечах", 
+                        Description = "Приготовить ужин вместе при свечах с любимой музыкой", 
+                        Category = "Романтическое", 
+                        Price = 25, 
+                        Location = "Дома", 
+                        Mood = "Романтическое", 
+                        Duration = "Вечер", 
+                        Weather = "Любая",
+                        IsActive = true
+                    },
+                    new Idea { 
+                        Title = "Пикник в парке", 
+                        Description = "Устроить пикник с пледом и вкусной едой", 
+                        Category = "Активное", 
+                        Price = 20, 
+                        Location = "Природа", 
+                        Mood = "Расслабленное", 
+                        Duration = "Короткое", 
+                        Weather = "Только ясно",
+                        IsActive = true
+                    }
+                };
+
+                dbContext.Ideas.AddRange(testIdeas);
+                dbContext.SaveChanges();
+                Console.WriteLine($"✅ Added {testIdeas.Count} test ideas to database");
+            }
+            else
+            {
+                // ЕСЛИ ДАННЫЕ УЖЕ ЕСТЬ - НИЧЕГО НЕ ДЕЛАЕМ!
+                var ideaCount = dbContext.Ideas.Count();
+                Console.WriteLine($"📊 Database already contains {ideaCount} ideas - skipping seed data");
+            }
+            
             // Проверяем подключение
             var canConnect = dbContext.Database.CanConnect();
             Console.WriteLine($"📊 Database connection: {canConnect}");
@@ -103,7 +146,7 @@ using (var scope = app.Services.CreateScope())
     }
     else
     {
-        Console.WriteLine("🔄 InMemory database - skipping migrations");
+        Console.WriteLine("🔄 InMemory database - skipping migrations and seed data");
     }
 }
 
