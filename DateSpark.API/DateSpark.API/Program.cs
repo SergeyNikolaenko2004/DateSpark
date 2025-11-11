@@ -16,18 +16,20 @@ if (string.IsNullOrEmpty(connectionString))
 {
     // Для локальной разработки - используем in-memory базу
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseInMemoryDatabase("TestDB"));
-    Console.WriteLine("Using InMemory database for development");
+        options.UseInMemoryDatabase("DateSparkDB"));
+
+    Console.WriteLine("🔄 Using InMemory database for all operations");
 }
 else
-{
+
+/* {
     // Для Render.com - НОВЫЙ ПАРСИНГ БЕЗ ПОРТА
     try
     {
         // Новый формат: postgresql://user:pass@host/dbname (без порта)
         var databaseUri = new Uri(connectionString);
         var userInfo = databaseUri.UserInfo.Split(':');
-        
+
         // Используем стандартный порт PostgreSQL 5432
         var properConnectionString = $"Host={databaseUri.Host};" +
             $"Port=5432;" +  // 👈 ЯВНО УКАЗЫВАЕМ ПОРТ 5432
@@ -38,7 +40,7 @@ else
 
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(properConnectionString));
-        
+
         Console.WriteLine("✅ Using PostgreSQL database on Render");
     }
     catch (Exception ex)
@@ -49,7 +51,7 @@ else
             options.UseInMemoryDatabase("TestDB"));
         Console.WriteLine("🔄 Fallback to InMemory database");
     }
-}
+} */
 
 // Add CORS
 builder.Services.AddCors(options =>
