@@ -18,7 +18,7 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpGet("random")]
-        [AllowAnonymous] // 🔥 ДОБАВЬ - разрешаем доступ без аутентификации
+        [AllowAnonymous]
         public async Task<ActionResult<Idea>> GetRandomIdea([FromQuery] IdeaFilters filters)
         {
             var idea = await _ideaService.GetRandomIdeaAsync(filters);
@@ -27,7 +27,7 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpPost("vote")]
-        [Authorize] // 🔥 ТОЛЬКО голосование требует аутентификации
+        [Authorize]
         public async Task<ActionResult> VoteForIdea([FromBody] IdeaVote vote)
         {
             try
@@ -39,8 +39,9 @@ namespace DateSpark.API.Controllers
                     return Unauthorized(new { message = "User not authenticated" });
                 }
 
-                // Устанавливаем userId для голоса
+                // 🔥 УСТАНАВЛИВАЕМ userId ДЛЯ ГОЛОСА
                 vote.UserId = userId;
+                vote.VotedAt = DateTime.UtcNow; // 🔥 УСТАНАВЛИВАЕМ ВРЕМЯ
                 
                 var result = await _ideaService.VoteForIdeaAsync(vote);
                 if (!result) return BadRequest(new { message = "Failed to record vote" });
@@ -54,7 +55,7 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpGet("filtered")]
-        [AllowAnonymous] // 🔥 ДОБАВЬ - разрешаем доступ без аутентификации
+        [AllowAnonymous]
         public async Task<ActionResult<List<Idea>>> GetFilteredIdeas([FromQuery] IdeaFilters filters)
         {
             var ideas = await _ideaService.GetFilteredIdeasAsync(filters);
