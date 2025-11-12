@@ -22,7 +22,7 @@ namespace DateSpark.API.Data
             // Идеи
             modelBuilder.Entity<Idea>()
                 .Property(i => i.PriceCategory)
-                .HasConversion<int>(); // Для хранения enum как int в базе
+                .HasConversion<int>();
 
             // Уникальный email пользователя
             modelBuilder.Entity<User>()
@@ -52,6 +52,28 @@ namespace DateSpark.API.Data
             modelBuilder.Entity<UserCouple>()
                 .HasIndex(uc => new { uc.UserId, uc.CoupleId })
                 .IsUnique();
+
+            // 🔥 ДОБАВЬ КОНФИГУРАЦИЮ ДЛЯ IDEA VOTES (этого не хватает!)
+            modelBuilder.Entity<IdeaVote>(entity =>
+            {
+                entity.HasKey(iv => iv.Id);
+                
+                // Связь с User
+                entity.HasOne(iv => iv.User)
+                    .WithMany()
+                    .HasForeignKey(iv => iv.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                // Связь с Idea  
+                entity.HasOne(iv => iv.Idea)
+                    .WithMany()
+                    .HasForeignKey(iv => iv.IdeaId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                // Уникальность пары UserId + IdeaId (один пользователь - один голос за идею)
+                entity.HasIndex(iv => new { iv.UserId, iv.IdeaId })
+                    .IsUnique();
+            });
         }
     }
 }
