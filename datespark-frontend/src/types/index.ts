@@ -3,7 +3,7 @@ export interface Idea {
   title: string;
   description: string;
   category: string;
-  price: number;
+  priceCategory: string; // "$", "$$", "$$$"
   location: string;
   mood: string;
   duration: string;

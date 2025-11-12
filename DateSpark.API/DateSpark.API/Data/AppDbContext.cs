@@ -20,8 +20,8 @@ namespace DateSpark.API.Data
             
             // Идеи
             modelBuilder.Entity<Idea>()
-                .Property(i => i.Price)
-                .HasPrecision(10, 2);
+                .Property(i => i.PriceCategory)
+                .HasConversion<int>(); // Для хранения enum как int в базе
 
             // Уникальный email пользователя
             modelBuilder.Entity<User>()

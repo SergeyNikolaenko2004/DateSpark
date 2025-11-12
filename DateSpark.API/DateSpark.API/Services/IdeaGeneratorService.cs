@@ -72,8 +72,12 @@ namespace DateSpark.API.Services
             if (!string.IsNullOrEmpty(filters.Weather) && filters.Weather != "Любая")
                 query = query.Where(i => i.Weather == filters.Weather || i.Weather == "Любая");
 
-            if (filters.MaxPrice.HasValue)
-                query = query.Where(i => i.Price <= filters.MaxPrice.Value);
+            // ОБНОВЛЕННЫЙ ФИЛЬТР ПО ЦЕНЕ
+            if (!string.IsNullOrEmpty(filters.PriceCategory) && filters.PriceCategory != "Любая")
+            {
+                var priceCategory = PriceCategoryExtensions.FromSymbol(filters.PriceCategory);
+                query = query.Where(i => i.PriceCategory == priceCategory); // ← Сравниваем enum с enum
+            }
 
             if (filters.OnlyActive)
                 query = query.Where(i => i.IsActive);

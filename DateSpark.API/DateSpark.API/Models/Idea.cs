@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DateSpark.API.Models
 {
@@ -11,15 +12,20 @@ namespace DateSpark.API.Models
         
         public string Description { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
-        public decimal? Price { get; set; }
         
-        // НОВЫЕ ПОЛЯ ДЛЯ ГЕНЕРАТОРА:
-        public string Location { get; set; } = "Любая"; // Дома, Город, Природа
-        public string Mood { get; set; } = "Любое"; // Романтическое, Активное, Уютное
-        public string Duration { get; set; } = "Любое"; // Короткое (1-2ч), Вечер (3-4ч), Целый день
-        public string Weather { get; set; } = "Любая"; // Любая, Только ясно, Только дома
+        // Enum для базы данных
+        public PriceCategory PriceCategory { get; set; } = PriceCategory.Medium;
         
-        // СИСТЕМА ЛАЙКОВ:
+        // Свойство для API (возвращает символ)
+        [JsonIgnore]
+        public string PriceSymbol => PriceCategory.ToSymbol();
+        
+        // Остальные поля
+        public string Location { get; set; } = "Любая";
+        public string Mood { get; set; } = "Любое"; 
+        public string Duration { get; set; } = "Любое";
+        public string Weather { get; set; } = "Любая";
+        
         public int Likes { get; set; }
         public int Dislikes { get; set; }
         public bool IsActive { get; set; } = true;

@@ -108,7 +108,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins(
-            "https://datespark-frontend.onrender.com", // НОВЫЙ фронтенд
+            "https://datespark-frontend.onrender.com",
             "https://sergeynikolaenko2004.github.io",
             "http://localhost:3000"
         )
@@ -137,31 +137,32 @@ using (var scope = app.Services.CreateScope())
             {
                 Console.WriteLine("🌱 Adding test data to empty database...");
                 
-                var testIdeas = new List<Idea>
-                {
-                    new Idea { 
-                        Title = "Романтический ужин при свечах", 
-                        Description = "Приготовить ужин вместе при свечах с любимой музыкой", 
-                        Category = "Романтическое", 
-                        Price = 25, 
-                        Location = "Дома", 
-                        Mood = "Романтическое", 
-                        Duration = "Вечер", 
-                        Weather = "Любая",
-                        IsActive = true
-                    },
-                    new Idea { 
-                        Title = "Пикник в парке", 
-                        Description = "Устроить пикник с пледом и вкусной едой", 
-                        Category = "Активное", 
-                        Price = 20, 
-                        Location = "Природа", 
-                        Mood = "Расслабленное", 
-                        Duration = "Короткое", 
-                        Weather = "Только ясно",
-                        IsActive = true
-                    }
-                };
+            // В методе seed данных замени:
+            var testIdeas = new List<Idea>
+            {
+                new Idea { 
+                    Title = "Романтический ужин при свечах", 
+                    Description = "Приготовить ужин вместе при свечах с любимой музыкой", 
+                    Category = "Романтическое", 
+                    PriceCategory = PriceCategory.Medium, 
+                    Location = "Дома", 
+                    Mood = "Романтическое", 
+                    Duration = "Вечер", 
+                    Weather = "Любая",
+                    IsActive = true
+                },
+                new Idea { 
+                    Title = "Пикник в парке", 
+                    Description = "Устроить пикник с пледом и вкусной едой", 
+                    Category = "Активное", 
+                    PriceCategory = PriceCategory.Low,
+                    Location = "Природа", 
+                    Mood = "Расслабленное", 
+                    Duration = "Короткое", 
+                    Weather = "Только ясно",
+                    IsActive = true
+                }
+            };
 
                 dbContext.Ideas.AddRange(testIdeas);
                 dbContext.SaveChanges();
