@@ -3,7 +3,7 @@ export interface Idea {
   title: string;
   description: string;
   category: string;
-  priceCategory: string; 
+  priceCategory: number; 
   location: string;
   mood: string;
   duration: string;
@@ -20,10 +20,9 @@ export interface IdeaFilters {
   mood?: string;
   duration?: string;
   weather?: string;
-  priceCategory?: string; 
+  priceCategory?: number; 
   onlyActive?: boolean;
 }
-
 export interface IdeaVote {
   ideaId: number;
   isLike: boolean;
