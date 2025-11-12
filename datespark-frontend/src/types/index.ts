@@ -23,6 +23,7 @@ export interface IdeaFilters {
   priceCategory?: number; 
   onlyActive?: boolean;
 }
+
 export interface IdeaVote {
   ideaId: number;
   isLike: boolean;

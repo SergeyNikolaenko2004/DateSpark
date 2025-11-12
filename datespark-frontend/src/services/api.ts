@@ -31,12 +31,9 @@ export const api = {
     try {
       const token = getToken();
       
-      // 🔥 ДОБАВЬ ДЕТАЛЬНУЮ ОТЛАДКУ
       console.log('=== VOTE DEBUG ===');
       console.log('Token exists:', !!token);
-      console.log('Token value:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
       console.log('Vote data:', { ideaId: vote.ideaId, isLike: vote.isLike });
-      console.log('==================');
 
       if (!token) {
         console.error('❌ No token found for voting!');
@@ -55,7 +52,6 @@ export const api = {
         }),
       });
       
-      // 🔥 ПРОВЕРЯЕМ ОТВЕТ СЕРВЕРА
       if (!response.ok) {
         const errorText = await response.text();
         console.error('❌ Vote failed:', {

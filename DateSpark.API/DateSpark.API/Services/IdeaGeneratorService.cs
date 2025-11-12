@@ -59,27 +59,40 @@ namespace DateSpark.API.Services
             return ideas[random.Next(ideas.Count)];
         }
 
-        public async Task<bool> VoteForIdeaAsync(IdeaVote vote)
+        // 🔥 УПРОЩАЕМ ГОЛОСОВАНИЕ - РАБОТАЕМ С POЛЯМИ В IDEAS
+        public async Task<bool> VoteForIdeaAsync(int ideaId, bool isLike)
         {
             try
             {
-                // 🔥 ДОБАВЬ ЛОГИРОВАНИЕ
-                Console.WriteLine($"Saving vote: UserId={vote.UserId}, IdeaId={vote.IdeaId}, IsLike={vote.IsLike}");
+                Console.WriteLine($"=== SIMPLE VOTE === Idea: {ideaId}, Like: {isLike}");
                 
-                _context.IdeaVotes.Add(vote);
+                // Находим идею
+                var idea = await _context.Ideas.FindAsync(ideaId);
+                if (idea == null)
+                {
+                    Console.WriteLine($"❌ Idea {ideaId} not found");
+                    return false;
+                }
+
+                // 🔥 ПРОСТО ОБНОВЛЯЕМ СЧЕТЧИКИ В ТАБЛИЦЕ IDEAS
+                if (isLike)
+                {
+                    idea.Likes++;
+                    Console.WriteLine($"✅ Incremented likes for idea {ideaId}: {idea.Likes}");
+                }
+                else
+                {
+                    idea.Dislikes++;
+                    Console.WriteLine($"✅ Incremented dislikes for idea {ideaId}: {idea.Dislikes}");
+                }
+
                 await _context.SaveChangesAsync();
-                
-                Console.WriteLine("✅ Vote saved to database");
+                Console.WriteLine("✅ Vote saved successfully!");
                 return true;
             }
             catch (Exception ex)
             {
-                // 🔥 ЛОГИРУЙ ОШИБКИ БАЗЫ ДАННЫХ
-                Console.WriteLine($"❌ Database error: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                }
+                Console.WriteLine($"❌ Error saving vote: {ex.Message}");
                 return false;
             }
         }

@@ -10,7 +10,7 @@ namespace DateSpark.API.Data
         }
 
         public DbSet<Idea> Ideas { get; set; }
-        public DbSet<IdeaVote> IdeaVotes { get; set; }
+        // 🔥 УДАЛИ СТРОКУ: public DbSet<IdeaVote> IdeaVotes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Couple> Couples { get; set; }
         public DbSet<UserCouple> UserCouples { get; set; }
@@ -53,27 +53,6 @@ namespace DateSpark.API.Data
                 .HasIndex(uc => new { uc.UserId, uc.CoupleId })
                 .IsUnique();
 
-            // 🔥 ДОБАВЬ КОНФИГУРАЦИЮ ДЛЯ IDEA VOTES (этого не хватает!)
-            modelBuilder.Entity<IdeaVote>(entity =>
-            {
-                entity.HasKey(iv => iv.Id);
-                
-                // Связь с User
-                entity.HasOne(iv => iv.User)
-                    .WithMany()
-                    .HasForeignKey(iv => iv.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                    
-                // Связь с Idea  
-                entity.HasOne(iv => iv.Idea)
-                    .WithMany()
-                    .HasForeignKey(iv => iv.IdeaId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                    
-                // Уникальность пары UserId + IdeaId (один пользователь - один голос за идею)
-                entity.HasIndex(iv => new { iv.UserId, iv.IdeaId })
-                    .IsUnique();
-            });
         }
     }
 }

@@ -27,54 +27,29 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpPost("vote")]
-        [Authorize]
+        [Authorize] // 🔥 АУТЕНТИФИКАЦИЯ ВСЕ ЕЩЕ НУЖНА ДЛЯ ТРЕКИНГА
         public async Task<ActionResult> VoteForIdea([FromBody] VoteRequest voteRequest)
         {
             try
             {
-                // 🔥 ДОБАВЬ ЛОГИРОВАНИЕ
-                Console.WriteLine($"Received vote: IdeaId={voteRequest.IdeaId}, IsLike={voteRequest.IsLike}");
-                
-                // Извлекаем userId из JWT токена
+                // Извлекаем userId из JWT токена для логов (но не используем в логике)
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                Console.WriteLine($"User claims: {User.Claims.Count()}");
-                foreach (var claim in User.Claims)
-                {
-                    Console.WriteLine($"Claim: {claim.Type} = {claim.Value}");
-                }
+                var userId = userIdClaim?.Value ?? "unknown";
                 
-                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
-                {
-                    Console.WriteLine("❌ User ID not found in token");
-                    return Unauthorized(new { message = "User not authenticated" });
-                }
+                Console.WriteLine($"✅ VOTE: User {userId}, Idea {voteRequest.IdeaId}, Like {voteRequest.IsLike}");
 
-                Console.WriteLine($"✅ User ID from token: {userId}");
+                // 🔥 ПРОСТО ВЫЗЫВАЕМ ОБНОВЛЕНИЕ СЧЕТЧИКОВ - UserId не нужен
+                var result = await _ideaService.VoteForIdeaAsync(voteRequest.IdeaId, voteRequest.IsLike);
                 
-                // Создаем IdeaVote с userId из токена
-                var vote = new IdeaVote
-                {
-                    IdeaId = voteRequest.IdeaId,
-                    UserId = userId,
-                    IsLike = voteRequest.IsLike,
-                    VotedAt = DateTime.UtcNow
-                };
-                
-                var result = await _ideaService.VoteForIdeaAsync(vote);
                 if (!result) 
-                {
-                    Console.WriteLine("❌ Failed to record vote in service");
                     return BadRequest(new { message = "Failed to record vote" });
-                }
                 
-                Console.WriteLine("✅ Vote recorded successfully");
                 return Ok(new { message = "Vote recorded successfully" });
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"❌ Exception in Vote: {ex.Message}");
-                Console.WriteLine($"Stack: {ex.StackTrace}");
-                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+                return StatusCode(500, new { message = "Internal server error" });
             }
         }
 
