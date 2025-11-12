@@ -10,6 +10,7 @@ namespace DateSpark.API.Data
         }
 
         public DbSet<Idea> Ideas { get; set; }
+        public DbSet<IdeaVote> IdeaVotes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Couple> Couples { get; set; }
         public DbSet<UserCouple> UserCouples { get; set; }

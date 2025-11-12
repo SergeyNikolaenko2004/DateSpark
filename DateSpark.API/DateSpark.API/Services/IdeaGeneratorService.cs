@@ -1,88 +1,115 @@
+using Microsoft.EntityFrameworkCore;
 using DateSpark.API.Data;
 using DateSpark.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DateSpark.API.Services
 {
     public class IdeaGeneratorService : IIdeaGeneratorService
     {
         private readonly AppDbContext _context;
-        private readonly Random _random = new Random();
 
         public IdeaGeneratorService(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Idea?> GetRandomIdeaAsync(IdeaFilters? filters = null)
+        public async Task<List<Idea>> GetIdeasAsync(IdeaFilters filters)
         {
-            var query = _context.Ideas.AsQueryable();
-
-            if (filters != null)
-            {
-                query = ApplyFilters(query, filters);
-            }
-
-            query = query.Where(i => i.IsActive);
-
-            var count = await query.CountAsync();
-            if (count == 0) return null;
-
-            var skip = _random.Next(0, count);
-            var idea = await query.Skip(skip).FirstOrDefaultAsync();
-
-            return idea;
+            return await GetFilteredIdeasAsync(filters);
         }
 
         public async Task<List<Idea>> GetFilteredIdeasAsync(IdeaFilters filters)
         {
             var query = _context.Ideas.AsQueryable();
-            query = ApplyFilters(query, filters);
-            return await query.Where(i => i.IsActive).ToListAsync();
+
+            // Применяем фильтры
+            if (!string.IsNullOrEmpty(filters.Category))
+                query = query.Where(i => i.Category == filters.Category);
+            
+            if (!string.IsNullOrEmpty(filters.Location))
+                query = query.Where(i => i.Location == filters.Location);
+            
+            if (!string.IsNullOrEmpty(filters.Mood))
+                query = query.Where(i => i.Mood == filters.Mood);
+            
+            if (!string.IsNullOrEmpty(filters.Duration))
+                query = query.Where(i => i.Duration == filters.Duration);
+            
+            if (!string.IsNullOrEmpty(filters.Weather))
+                query = query.Where(i => i.Weather == filters.Weather);
+            
+            if (filters.PriceCategory.HasValue)
+                query = query.Where(i => i.PriceCategory == filters.PriceCategory.Value);
+            
+            if (filters.OnlyActive)
+                query = query.Where(i => i.IsActive);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<Idea?> GetRandomIdeaAsync(IdeaFilters? filters = null)
+        {
+            filters ??= new IdeaFilters();
+            var ideas = await GetFilteredIdeasAsync(filters);
+            
+            if (!ideas.Any()) 
+                return null;
+            
+            var random = new Random();
+            return ideas[random.Next(ideas.Count)];
         }
 
         public async Task<bool> VoteForIdeaAsync(IdeaVote vote)
         {
-            var idea = await _context.Ideas.FindAsync(vote.IdeaId);
-            if (idea == null) return false;
-
-            if (vote.IsLike)
-                idea.Likes++;
-            else
-                idea.Dislikes++;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        private IQueryable<Idea> ApplyFilters(IQueryable<Idea> query, IdeaFilters filters)
-        {
-            if (!string.IsNullOrEmpty(filters.Category) && filters.Category != "Любое")
-                query = query.Where(i => i.Category == filters.Category || i.Category == "Любое");
-
-            if (!string.IsNullOrEmpty(filters.Location) && filters.Location != "Любая")
-                query = query.Where(i => i.Location == filters.Location || i.Location == "Любая");
-
-            if (!string.IsNullOrEmpty(filters.Mood) && filters.Mood != "Любое")
-                query = query.Where(i => i.Mood == filters.Mood || i.Mood == "Любое");
-
-            if (!string.IsNullOrEmpty(filters.Duration) && filters.Duration != "Любое")
-                query = query.Where(i => i.Duration == filters.Duration || i.Duration == "Любое");
-
-            if (!string.IsNullOrEmpty(filters.Weather) && filters.Weather != "Любая")
-                query = query.Where(i => i.Weather == filters.Weather || i.Weather == "Любая");
-
-            // ОБНОВЛЕННЫЙ ФИЛЬТР ПО ЦЕНЕ
-            if (!string.IsNullOrEmpty(filters.PriceCategory) && filters.PriceCategory != "Любая")
+            try
             {
-                var priceCategory = PriceCategoryExtensions.FromSymbol(filters.PriceCategory);
-                query = query.Where(i => i.PriceCategory == priceCategory); // ← Сравниваем enum с enum
+                // Проверяем, существует ли уже голос
+                var existingVote = await _context.IdeaVotes
+                    .FirstOrDefaultAsync(v => v.IdeaId == vote.IdeaId && v.UserId == vote.UserId);
+
+                var idea = await _context.Ideas.FindAsync(vote.IdeaId);
+                if (idea == null) return false;
+
+                if (existingVote != null)
+                {
+                    // Обновляем существующий голос
+                    if (existingVote.IsLike && !vote.IsLike)
+                    {
+                        // Было ❤️ стало 💔
+                        idea.Likes--;
+                        idea.Dislikes++;
+                    }
+                    else if (!existingVote.IsLike && vote.IsLike)
+                    {
+                        // Было 💔 стало ❤️
+                        idea.Dislikes--;
+                        idea.Likes++;
+                    }
+                    // Если голос не изменился, ничего не делаем
+
+                    existingVote.IsLike = vote.IsLike;
+                    existingVote.VotedAt = DateTime.UtcNow;
+                }
+                else
+                {
+                    // Добавляем новый голос
+                    await _context.IdeaVotes.AddAsync(vote);
+                    
+                    if (vote.IsLike)
+                        idea.Likes++;
+                    else
+                        idea.Dislikes++;
+                }
+
+                await _context.SaveChangesAsync();
+                return true;
             }
-
-            if (filters.OnlyActive)
-                query = query.Where(i => i.IsActive);
-
-            return query;
+            catch (Exception ex)
+            {
+                // Логируем ошибку
+                Console.WriteLine($"Error in VoteForIdeaAsync: {ex.Message}");
+                return false;
+            }
         }
     }
 }
