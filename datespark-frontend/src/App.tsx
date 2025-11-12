@@ -5,7 +5,7 @@ import { RegisterForm } from './components/RegisterForm';
 import './App.css';
 
 function App() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken'); // 🔥 ИЗМЕНИ 'token' на 'authToken'
   const [isLogin, setIsLogin] = useState(true);
 
   if (token) {
