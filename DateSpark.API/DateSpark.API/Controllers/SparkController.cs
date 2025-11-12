@@ -28,20 +28,25 @@ namespace DateSpark.API.Controllers
 
         [HttpPost("vote")]
         [Authorize]
-        public async Task<ActionResult> VoteForIdea([FromBody] IdeaVote vote)
+        public async Task<ActionResult> VoteForIdea([FromBody] VoteRequest voteRequest)
         {
             try
             {
-                // 🔥 ИЗВЛЕКАЕМ userId ИЗ JWT ТОКЕНА
+                // Извлекаем userId из JWT токена
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
                 {
                     return Unauthorized(new { message = "User not authenticated" });
                 }
 
-                // 🔥 УСТАНАВЛИВАЕМ userId ДЛЯ ГОЛОСА
-                vote.UserId = userId;
-                vote.VotedAt = DateTime.UtcNow; // 🔥 УСТАНАВЛИВАЕМ ВРЕМЯ
+                // Создаем IdeaVote с userId из токена
+                var vote = new IdeaVote
+                {
+                    IdeaId = voteRequest.IdeaId,
+                    UserId = userId,
+                    IsLike = voteRequest.IsLike,
+                    VotedAt = DateTime.UtcNow
+                };
                 
                 var result = await _ideaService.VoteForIdeaAsync(vote);
                 if (!result) return BadRequest(new { message = "Failed to record vote" });

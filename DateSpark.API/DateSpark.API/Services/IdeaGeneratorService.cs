@@ -75,17 +75,14 @@ namespace DateSpark.API.Services
                     // Обновляем существующий голос
                     if (existingVote.IsLike && !vote.IsLike)
                     {
-                        // Было ❤️ стало 💔
                         idea.Likes--;
                         idea.Dislikes++;
                     }
                     else if (!existingVote.IsLike && vote.IsLike)
                     {
-                        // Было 💔 стало ❤️
                         idea.Dislikes--;
                         idea.Likes++;
                     }
-                    // Если голос не изменился, ничего не делаем
 
                     existingVote.IsLike = vote.IsLike;
                     existingVote.VotedAt = DateTime.UtcNow;
@@ -106,7 +103,6 @@ namespace DateSpark.API.Services
             }
             catch (Exception ex)
             {
-                // Логируем ошибку
                 Console.WriteLine($"Error in VoteForIdeaAsync: {ex.Message}");
                 return false;
             }
