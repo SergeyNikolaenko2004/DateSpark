@@ -35,7 +35,6 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
         <h2 className="card-title">{idea.title}</h2>
       </div>
       
-      {/* 🔥 ПЕРЕМЕСТИЛИ КАТЕГОРИЮ СЮДА */}
       <div className="card-category-wrapper">
         <span className="card-category">{idea.category}</span>
       </div>
