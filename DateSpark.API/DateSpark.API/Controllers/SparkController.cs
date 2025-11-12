@@ -32,13 +32,25 @@ namespace DateSpark.API.Controllers
         {
             try
             {
+                // 🔥 ДОБАВЬ ЛОГИРОВАНИЕ
+                Console.WriteLine($"Received vote: IdeaId={voteRequest.IdeaId}, IsLike={voteRequest.IsLike}");
+                
                 // Извлекаем userId из JWT токена
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                Console.WriteLine($"User claims: {User.Claims.Count()}");
+                foreach (var claim in User.Claims)
+                {
+                    Console.WriteLine($"Claim: {claim.Type} = {claim.Value}");
+                }
+                
                 if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
                 {
+                    Console.WriteLine("❌ User ID not found in token");
                     return Unauthorized(new { message = "User not authenticated" });
                 }
 
+                Console.WriteLine($"✅ User ID from token: {userId}");
+                
                 // Создаем IdeaVote с userId из токена
                 var vote = new IdeaVote
                 {
@@ -49,12 +61,19 @@ namespace DateSpark.API.Controllers
                 };
                 
                 var result = await _ideaService.VoteForIdeaAsync(vote);
-                if (!result) return BadRequest(new { message = "Failed to record vote" });
+                if (!result) 
+                {
+                    Console.WriteLine("❌ Failed to record vote in service");
+                    return BadRequest(new { message = "Failed to record vote" });
+                }
                 
+                Console.WriteLine("✅ Vote recorded successfully");
                 return Ok(new { message = "Vote recorded successfully" });
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"❌ Exception in Vote: {ex.Message}");
+                Console.WriteLine($"Stack: {ex.StackTrace}");
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
         }

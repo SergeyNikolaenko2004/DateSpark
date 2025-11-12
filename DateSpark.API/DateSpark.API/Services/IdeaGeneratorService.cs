@@ -63,47 +63,23 @@ namespace DateSpark.API.Services
         {
             try
             {
-                // Проверяем, существует ли уже голос
-                var existingVote = await _context.IdeaVotes
-                    .FirstOrDefaultAsync(v => v.IdeaId == vote.IdeaId && v.UserId == vote.UserId);
-
-                var idea = await _context.Ideas.FindAsync(vote.IdeaId);
-                if (idea == null) return false;
-
-                if (existingVote != null)
-                {
-                    // Обновляем существующий голос
-                    if (existingVote.IsLike && !vote.IsLike)
-                    {
-                        idea.Likes--;
-                        idea.Dislikes++;
-                    }
-                    else if (!existingVote.IsLike && vote.IsLike)
-                    {
-                        idea.Dislikes--;
-                        idea.Likes++;
-                    }
-
-                    existingVote.IsLike = vote.IsLike;
-                    existingVote.VotedAt = DateTime.UtcNow;
-                }
-                else
-                {
-                    // Добавляем новый голос
-                    await _context.IdeaVotes.AddAsync(vote);
-                    
-                    if (vote.IsLike)
-                        idea.Likes++;
-                    else
-                        idea.Dislikes++;
-                }
-
+                // 🔥 ДОБАВЬ ЛОГИРОВАНИЕ
+                Console.WriteLine($"Saving vote: UserId={vote.UserId}, IdeaId={vote.IdeaId}, IsLike={vote.IsLike}");
+                
+                _context.IdeaVotes.Add(vote);
                 await _context.SaveChangesAsync();
+                
+                Console.WriteLine("✅ Vote saved to database");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in VoteForIdeaAsync: {ex.Message}");
+                // 🔥 ЛОГИРУЙ ОШИБКИ БАЗЫ ДАННЫХ
+                Console.WriteLine($"❌ Database error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
                 return false;
             }
         }

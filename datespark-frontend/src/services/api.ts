@@ -31,11 +31,23 @@ export const api = {
     try {
       const token = getToken();
       
+      // 🔥 ДОБАВЬ ДЕТАЛЬНУЮ ОТЛАДКУ
+      console.log('=== VOTE DEBUG ===');
+      console.log('Token exists:', !!token);
+      console.log('Token value:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
+      console.log('Vote data:', { ideaId: vote.ideaId, isLike: vote.isLike });
+      console.log('==================');
+
+      if (!token) {
+        console.error('❌ No token found for voting!');
+        return false;
+      }
+
       const response = await fetch(`${API_BASE}/spark/vote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // 🔥 ТОКЕН ТОЛЬКО ДЛЯ ГОЛОСОВАНИЯ
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ideaId: vote.ideaId,
@@ -43,9 +55,21 @@ export const api = {
         }),
       });
       
-      return response.ok;
+      // 🔥 ПРОВЕРЯЕМ ОТВЕТ СЕРВЕРА
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Vote failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText
+        });
+        return false;
+      }
+      
+      console.log('✅ Vote successful!');
+      return true;
     } catch (error) {
-      console.error('API Error:', error);
+      console.error('❌ API Error:', error);
       return false;
     }
   },
@@ -59,9 +83,9 @@ export const api = {
       });
       const result = await response.json();
       
-      // 🔥 СОХРАНЯЕМ ТОКЕН ПРИ УСПЕШНОЙ РЕГИСТРАЦИИ
       if (result.success && result.token) {
         localStorage.setItem('authToken', result.token);
+        console.log('Token saved:', result.token.substring(0, 20) + '...'); // Логируем часть токена
       }
       
       return result;
@@ -79,9 +103,10 @@ export const api = {
       });
       const result = await response.json();
       
-      // 🔥 СОХРАНЯЕМ ТОКЕН ПРИ УСПЕШНОМ ВХОДЕ
+      // 🔥 УБЕДИСЬ ЧТО ТОКЕН СОХРАНЯЕТСЯ ПРАВИЛЬНО
       if (result.success && result.token) {
         localStorage.setItem('authToken', result.token);
+        console.log('Token saved:', result.token.substring(0, 20) + '...'); // Логируем часть токена
       }
       
       return result;
