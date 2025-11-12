@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using DateSpark.API.Models;
 using DateSpark.API.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace DateSpark.API.Controllers
 {
@@ -38,10 +40,15 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpPost("create-couple")]
+        [Authorize] 
         public async Task<ActionResult<AuthResponse>> CreateCouple()
         {
-            // Временная заглушка - позже добавим извлечение userId из JWT токена
-            var userId = 1; // Заглушка
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized(new AuthResponse { Success = false, Message = "User not authenticated" });
+            }
+
             var result = await _authService.CreateCoupleAsync(userId);
             
             if (!result.Success)
@@ -51,10 +58,15 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpPost("join-couple")]
+        [Authorize] 
         public async Task<ActionResult<AuthResponse>> JoinCouple([FromBody] JoinCoupleRequest request)
         {
-            // Временная заглушка - позже добавим извлечение userId из JWT токена
-            var userId = 1; // Заглушка
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized(new AuthResponse { Success = false, Message = "User not authenticated" });
+            }
+
             var result = await _authService.JoinCoupleAsync(userId, request.JoinCode);
             
             if (!result.Success)
