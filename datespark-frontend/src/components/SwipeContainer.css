@@ -6,12 +6,150 @@
   min-height: 500px;
 }
 
+/* 🔥 СТИЛИ ДЛЯ ФИЛЬТРОВ */
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filters-toggle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 140px;
+}
+
+.filters-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.filters-toggle.active {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.reset-filters-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.reset-filters-btn:hover {
+  background: #ff5252;
+  transform: translateY(-1px);
+}
+
+.filters-panel {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f0;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-group {
+  margin-bottom: 18px;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  padding-left: 5px;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+  font-size: 14px;
+  background: white;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.filter-group select:hover {
+  border-color: #d0d0d0;
+}
+
+/* 🔥 АКТИВНЫЕ ФИЛЬТРЫ - ИНДИКАТОР */
+.active-filters-count {
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Существующие стили остаются */
 .idea-card-wrapper {
   transition: transform 0.3s ease, opacity 0.3s ease;
   cursor: grab;
   position: relative;
   border-radius: 20px;
   overflow: hidden;
+  animation: cardAppear 0.3s ease;
 }
 
 .idea-card-wrapper:active {
@@ -46,14 +184,6 @@
   margin-bottom: 10px;
 }
 
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-  .swipe-container {
-    padding: 10px;
-    min-height: 70vh;
-  }
-}
-
 /* Анимация появления новой карточки */
 @keyframes cardAppear {
   from {
@@ -66,6 +196,76 @@
   }
 }
 
-.idea-card-wrapper {
-  animation: cardAppear 0.3s ease;
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .swipe-container {
+    padding: 15px;
+    min-height: 70vh;
+  }
+  
+  .filters-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .filters-toggle, .reset-filters-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .filters-panel {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+  }
+  
+  .filter-group {
+    margin-bottom: 15px;
+  }
+  
+  .filter-group select {
+    padding: 14px 15px;
+    font-size: 16px; /* Увеличиваем для мобильных */
+  }
+}
+
+@media (max-width: 480px) {
+  .swipe-container {
+    padding: 10px;
+  }
+  
+  .filters-toggle {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  
+  .reset-filters-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}
+
+/* 🔥 ПЛАВНЫЕ ПЕРЕХОДЫ ДЛЯ ФИЛЬТРОВ */
+.filters-panel {
+  transition: all 0.3s ease;
+}
+
+/* Стиль для пустого состояния с фильтрами */
+.no-ideas .reset-filters-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+}
+
+.no-ideas .reset-filters-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }

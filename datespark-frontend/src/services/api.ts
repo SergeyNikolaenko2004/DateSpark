@@ -10,10 +10,23 @@ const getToken = (): string | null => {
 export const api = {
   async getRandomIdea(filters?: IdeaFilters): Promise<Idea | null> {
     try {
-      const queryParams = filters ? `?${new URLSearchParams(filters as any)}` : '';
+      // 🔥 ПРАВИЛЬНОЕ ФОРМИРОВАНИЕ QUERY PARAMS
+      const params = new URLSearchParams();
       
-      // 🔥 УБИРАЕМ ТОКЕН ДЛЯ ЭТОГО МЕТОДА - он не требует аутентификации
-      const response = await fetch(`${API_BASE}/spark/random${queryParams}`);
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== '') {
+            params.append(key, value.toString());
+          }
+        });
+      }
+      
+      const queryString = params.toString();
+      const url = `${API_BASE}/spark/random${queryString ? `?${queryString}` : ''}`;
+      
+      console.log('Fetching idea from:', url); // Для дебага
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
         if (response.status === 404) return null;
