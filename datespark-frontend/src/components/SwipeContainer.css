@@ -2,6 +2,74 @@
   padding: 20px;
   max-width: 500px;
   margin: 0 auto;
+  position: relative;
+  min-height: 500px;
+}
+
+.idea-card-wrapper {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: grab;
+  position: relative;
+}
+
+.idea-card-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Анимации свайпов */
+.swipe-left {
+  transform: translateX(-200%) rotate(-30deg) !important;
+  opacity: 0;
+}
+
+.swipe-right {
+  transform: translateX(200%) rotate(30deg) !important;
+  opacity: 0;
+}
+
+/* Индикаторы свайпа */
+.swipe-indicators {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.idea-card-wrapper:hover .swipe-indicators {
+  opacity: 0.3;
+}
+
+.indicator-left, .indicator-right {
+  font-size: 3em;
+  padding: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.indicator-left {
+  color: #ff4444;
+}
+
+.indicator-right {
+  color: #44ff44;
+}
+
+/* Эффекты при свайпе */
+.swipe-like .idea-card {
+  box-shadow: 0 0 30px rgba(76, 175, 80, 0.4);
+}
+
+.swipe-dislike .idea-card {
+  box-shadow: 0 0 30px rgba(244, 67, 54, 0.4);
 }
 
 .loading, .no-ideas {
@@ -9,8 +77,42 @@
   padding: 40px;
   font-size: 1.2em;
   color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
 }
 
 .no-ideas h2 {
   color: #ff6b6b;
+  margin-bottom: 10px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .swipe-container {
+    padding: 10px;
+    min-height: 70vh;
+  }
+  
+  .swipe-indicators {
+    opacity: 0.2; /* Всегда показываем на мобильных */
+  }
+}
+
+/* Анимация появления новой карточки */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.idea-card-wrapper {
+  animation: cardAppear 0.3s ease;
 }
