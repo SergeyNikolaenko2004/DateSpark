@@ -8,7 +8,6 @@ interface IdeaCardProps {
 }
 
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
-  // Функция для преобразования числа в символы цены
   const getPriceSymbol = (priceCategory: number): string => {
     switch (priceCategory) {
       case 1: return '$';
@@ -18,7 +17,6 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
     }
   };
 
-  // Функция для отображения подсказки по цене
   const getPriceHint = (priceCategory: number): string => {
     switch (priceCategory) {
       case 1: return 'Дешево/бесплатно';
@@ -35,6 +33,10 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
     <div className="idea-card">
       <div className="card-header">
         <h2 className="card-title">{idea.title}</h2>
+      </div>
+      
+      {/* 🔥 ПЕРЕМЕСТИЛИ КАТЕГОРИЮ СЮДА */}
+      <div className="card-category-wrapper">
         <span className="card-category">{idea.category}</span>
       </div>
       
@@ -61,7 +63,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
           <div className="detail-item price-item">
             <span className="detail-label">💰</span>
             <span className="price-category">
-              {priceSymbol} {/* Теперь отображаем символы $, $$, $$$ */}
+              {priceSymbol}
               <span className="price-hint">({priceHint})</span>
             </span>
           </div>

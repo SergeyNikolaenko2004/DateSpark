@@ -6,35 +6,45 @@
   max-width: 400px;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
-  transition: box-shadow 0.2s ease; /* 🔥 ДОБАВЛЕНО для плавного изменения тени */
+  transition: box-shadow 0.2s ease;
 }
 
-/* Остальные стили остаются без изменений */
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* 🔥 УМЕНЬШИЛИ отступ */
 }
 
 .card-title {
   margin: 0;
   color: #333;
   font-size: 1.5em;
+  text-align: center; /* 🔥 ДОБАВИЛИ выравнивание по центру */
+}
+
+/* 🔥 НОВЫЙ КОНТЕЙНЕР ДЛЯ КАТЕГОРИИ */
+.card-category-wrapper {
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .card-category {
   background: #ff6b6b;
   color: white;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 0.8em;
+  padding: 6px 16px; /* 🔥 УВЕЛИЧИЛИ отступы */
+  border-radius: 20px; /* 🔥 УВЕЛИЧИЛИ скругление */
+  font-size: 0.9em;
+  font-weight: 500;
+  display: inline-block;
+  max-width: 80%; /* 🔥 ОГРАНИЧИЛИ ширину */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-description {
   color: #666;
   line-height: 1.5;
   margin-bottom: 20px;
+  text-align: center; /* 🔥 ДОБАВИЛИ выравнивание */
 }
 
 .card-details {
@@ -53,6 +63,7 @@
 
 .detail-label {
   font-size: 1.2em;
+  min-width: 30px; /* 🔥 ФИКСИРОВАННАЯ ширина для выравнивания */
 }
 
 .card-actions {
@@ -100,4 +111,52 @@
   color: #666;
   margin-left: 4px;
   font-weight: normal;
+}
+
+/* 🔥 АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 480px) {
+  .idea-card {
+    padding: 15px;
+    margin: 0 10px;
+  }
+  
+  .card-title {
+    font-size: 1.3em;
+  }
+  
+  .card-category {
+    font-size: 0.8em;
+    padding: 5px 12px;
+    max-width: 70%; /* 🔥 ЕЩЕ УЖЕ на мобильных */
+  }
+  
+  .card-description {
+    font-size: 0.9em;
+  }
+  
+  .detail-item {
+    font-size: 0.9em;
+  }
+  
+  .btn-dislike, .btn-like {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3em;
+  }
+}
+
+/* 🔥 ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ */
+@media (max-width: 360px) {
+  .idea-card {
+    padding: 12px;
+  }
+  
+  .card-title {
+    font-size: 1.2em;
+  }
+  
+  .card-category {
+    font-size: 0.75em;
+    padding: 4px 10px;
+  }
 }
