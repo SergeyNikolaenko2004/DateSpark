@@ -8,6 +8,16 @@ interface IdeaCardProps {
 }
 
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
+  // Функция для отображения подсказки по цене
+  const getPriceHint = (priceCategory: string) => {
+    switch (priceCategory) {
+      case '$': return 'Дешево/бесплатно';
+      case '$$': return 'Средняя цена';
+      case '$$$': return 'Дорого';
+      default: return 'Средняя цена';
+    }
+  };
+
   return (
     <div className="idea-card">
       <div className="card-header">
@@ -35,9 +45,12 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
             <span className="detail-label">🌤️</span>
             {idea.weather}
           </div>
-          <div className="detail-item">
+          <div className="detail-item price-item">
             <span className="detail-label">💰</span>
-            {idea.price} ₽
+            <span className="price-category">
+              {idea.priceCategory}
+              <span className="price-hint">({getPriceHint(idea.priceCategory)})</span>
+            </span>
           </div>
         </div>
       </div>
