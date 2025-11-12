@@ -165,7 +165,7 @@ const SwipeContainer: React.FC = () => {
           className={`filters-toggle ${showFilters ? 'active' : ''}`}
           onClick={() => setShowFilters(!showFilters)}
         >
-          🎛️ Фильтры 
+          Фильтры 
           {Object.keys(activeFilters).length > 0 && (
             <span className="active-filters-count">
               {Object.keys(activeFilters).length}
@@ -180,10 +180,8 @@ const SwipeContainer: React.FC = () => {
         )}
       </div>
 
-      {/* 🔥 ПАНЕЛЬ ФИЛЬТРОВ */}
       {showFilters && (
         <div className="filters-panel">
-          {/* Фильтр по категории */}
           <div className="filter-group">
             <label>Категория</label>
             <select 

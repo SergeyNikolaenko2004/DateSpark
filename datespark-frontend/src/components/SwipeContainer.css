@@ -29,6 +29,10 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   flex: 1;
   min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .filters-toggle:hover {
@@ -81,6 +85,7 @@
 
 .filter-group {
   margin-bottom: 18px;
+  position: relative;
 }
 
 .filter-group:last-child {
@@ -96,9 +101,10 @@
   padding-left: 5px;
 }
 
+/* 🔥 КАСТОМНЫЕ СТИЛИ ДЛЯ SELECT */
 .filter-group select {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px 45px 12px 15px;
   border: 2px solid #e8e8e8;
   border-radius: 12px;
   font-size: 14px;
@@ -107,18 +113,46 @@
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 12px center;
+  background-position: right 15px center;
   background-size: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #333;
+}
+
+/* 🔥 СТИЛИ ДЛЯ OPTION */
+.filter-group select option {
+  background: white;
+  color: #333;
+  padding: 12px 15px;
+  font-size: 14px;
+  border: none;
+  font-family: inherit;
+}
+
+/* 🔥 СТИЛИ ПРИ НАВЕДЕНИИ И ФОКУСЕ */
+.filter-group select:hover {
+  border-color: #667eea;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 }
 
 .filter-group select:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 }
 
-.filter-group select:hover {
-  border-color: #d0d0d0;
+/* 🔥 СТИЛЬ ДЛЯ ВЫБРАННОГО OPTION */
+.filter-group select option:checked {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* 🔥 СТИЛЬ ДЛЯ OPTION ПРИ НАВЕДЕНИИ */
+.filter-group select option:hover {
+  background: #667eea !important;
+  color: white !important;
 }
 
 /* 🔥 АКТИВНЫЕ ФИЛЬТРЫ - ИНДИКАТОР */
@@ -140,6 +174,19 @@
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
+}
+
+/* 🔥 ДОПОЛНИТЕЛЬНЫЙ ДЕКОР ДЛЯ SELECT */
+.filter-group::after {
+  content: '';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Существующие стили остаются */
@@ -225,8 +272,8 @@
   }
   
   .filter-group select {
-    padding: 14px 15px;
-    font-size: 16px; /* Увеличиваем для мобильных */
+    padding: 14px 45px 14px 15px;
+    font-size: 16px;
   }
 }
 
