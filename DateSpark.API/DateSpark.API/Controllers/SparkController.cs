@@ -8,7 +8,6 @@ namespace DateSpark.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // 🔥 ДОБАВЬ АТТРИБУТ
     public class SparkController : ControllerBase
     {
         private readonly IIdeaGeneratorService _ideaService;
@@ -19,6 +18,7 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpGet("random")]
+        [AllowAnonymous] // 🔥 ДОБАВЬ - разрешаем доступ без аутентификации
         public async Task<ActionResult<Idea>> GetRandomIdea([FromQuery] IdeaFilters filters)
         {
             var idea = await _ideaService.GetRandomIdeaAsync(filters);
@@ -27,6 +27,7 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpPost("vote")]
+        [Authorize] // 🔥 ТОЛЬКО голосование требует аутентификации
         public async Task<ActionResult> VoteForIdea([FromBody] IdeaVote vote)
         {
             try
@@ -53,6 +54,7 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpGet("filtered")]
+        [AllowAnonymous] // 🔥 ДОБАВЬ - разрешаем доступ без аутентификации
         public async Task<ActionResult<List<Idea>>> GetFilteredIdeas([FromQuery] IdeaFilters filters)
         {
             var ideas = await _ideaService.GetFilteredIdeasAsync(filters);

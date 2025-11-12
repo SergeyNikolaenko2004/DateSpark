@@ -10,14 +10,10 @@ const getToken = (): string | null => {
 export const api = {
   async getRandomIdea(filters?: IdeaFilters): Promise<Idea | null> {
     try {
-      const token = getToken();
       const queryParams = filters ? `?${new URLSearchParams(filters as any)}` : '';
       
-      const response = await fetch(`${API_BASE}/spark/random${queryParams}`, {
-        headers: {
-          'Authorization': `Bearer ${token}` // 🔥 ДОБАВЬ ТОКЕН
-        }
-      });
+      // 🔥 УБИРАЕМ ТОКЕН ДЛЯ ЭТОГО МЕТОДА - он не требует аутентификации
+      const response = await fetch(`${API_BASE}/spark/random${queryParams}`);
       
       if (!response.ok) {
         if (response.status === 404) return null;
@@ -39,12 +35,11 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // 🔥 ДОБАВЬ ТОКЕН
+          'Authorization': `Bearer ${token}` // 🔥 ТОКЕН ТОЛЬКО ДЛЯ ГОЛОСОВАНИЯ
         },
         body: JSON.stringify({
           ideaId: vote.ideaId,
           isLike: vote.isLike
-          // userId НЕ отправляем - он в токене
         }),
       });
       
