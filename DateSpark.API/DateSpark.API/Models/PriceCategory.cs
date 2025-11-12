@@ -2,9 +2,9 @@ namespace DateSpark.API.Models
 {
     public enum PriceCategory
     {
-        Low,     // $ - дешево/бесплатно
-        Medium,  // $$ - средняя цена  
-        High     // $$$ - дорого
+        Low = 1,     // $ - дешево/бесплатно
+        Medium = 2,  // $$ - средняя цена  
+        High = 3     // $$$ - дорого
     }
     
     public static class PriceCategoryExtensions
