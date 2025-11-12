@@ -10,6 +10,8 @@ const SwipeContainer: React.FC = () => {
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const [isSwiping, setIsSwiping] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const startX = useRef(0);
+  const currentX = useRef(0);
 
   const fetchRandomIdea = async () => {
     try {
@@ -45,45 +47,38 @@ const SwipeContainer: React.FC = () => {
   // Обработчики свайпов для тач-устройств
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsSwiping(true);
+    startX.current = e.touches[0].clientX;
+    currentX.current = startX.current;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isSwiping || !cardRef.current) return;
 
     const touch = e.touches[0];
-    const card = cardRef.current;
-    const cardRect = card.getBoundingClientRect();
-    const cardCenterX = cardRect.left + cardRect.width / 2;
-    const touchX = touch.clientX;
-
-    // Вычисляем смещение для анимации
-    const offsetX = touchX - cardCenterX;
+    currentX.current = touch.clientX;
+    const offsetX = currentX.current - startX.current;
     const rotate = offsetX * 0.1; // Коэффициент вращения
 
-    card.style.transform = `translateX(${offsetX}px) rotate(${rotate}deg)`;
+    cardRef.current.style.transform = `translateX(${offsetX}px) rotate(${rotate}deg)`;
     
     // Изменяем фон в зависимости от направления
     if (offsetX > 50) {
-      card.style.backgroundColor = '#e8f5e8'; // Зеленый для лайка
+      cardRef.current.style.backgroundColor = '#e8f5e8'; // Зеленый для лайка
     } else if (offsetX < -50) {
-      card.style.backgroundColor = '#ffe8e8'; // Красный для дизлайка
+      cardRef.current.style.backgroundColor = '#ffe8e8'; // Красный для дизлайка
     } else {
-      card.style.backgroundColor = 'white';
+      cardRef.current.style.backgroundColor = 'white';
     }
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isSwiping || !cardRef.current) return;
 
-    const card = cardRef.current;
-    const cardRect = card.getBoundingClientRect();
-    const cardCenterX = cardRect.left + cardRect.width / 2;
-    const touchX = e.changedTouches[0].clientX;
-    const offsetX = touchX - cardCenterX;
+    const offsetX = currentX.current - startX.current;
 
     // Сбрасываем трансформацию
-    card.style.transform = '';
-    card.style.backgroundColor = 'white';
+    cardRef.current.style.transform = '';
+    cardRef.current.style.backgroundColor = 'white';
     setIsSwiping(false);
 
     // Определяем направление свайпа
@@ -97,41 +92,35 @@ const SwipeContainer: React.FC = () => {
   // Обработчики для desktop (drag & drop)
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsSwiping(true);
+    startX.current = e.clientX;
+    currentX.current = startX.current;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isSwiping || !cardRef.current) return;
 
-    const card = cardRef.current;
-    const cardRect = card.getBoundingClientRect();
-    const cardCenterX = cardRect.left + cardRect.width / 2;
-    const mouseX = e.clientX;
-
-    const offsetX = mouseX - cardCenterX;
+    currentX.current = e.clientX;
+    const offsetX = currentX.current - startX.current;
     const rotate = offsetX * 0.1;
 
-    card.style.transform = `translateX(${offsetX}px) rotate(${rotate}deg)`;
+    cardRef.current.style.transform = `translateX(${offsetX}px) rotate(${rotate}deg)`;
     
     if (offsetX > 50) {
-      card.style.backgroundColor = '#e8f5e8';
+      cardRef.current.style.backgroundColor = '#e8f5e8';
     } else if (offsetX < -50) {
-      card.style.backgroundColor = '#ffe8e8';
+      cardRef.current.style.backgroundColor = '#ffe8e8';
     } else {
-      card.style.backgroundColor = 'white';
+      cardRef.current.style.backgroundColor = 'white';
     }
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
     if (!isSwiping || !cardRef.current) return;
 
-    const card = cardRef.current;
-    const cardRect = card.getBoundingClientRect();
-    const cardCenterX = cardRect.left + cardRect.width / 2;
-    const mouseX = e.clientX;
-    const offsetX = mouseX - cardCenterX;
+    const offsetX = currentX.current - startX.current;
 
-    card.style.transform = '';
-    card.style.backgroundColor = 'white';
+    cardRef.current.style.transform = '';
+    cardRef.current.style.backgroundColor = 'white';
     setIsSwiping(false);
 
     if (offsetX > 100) {
@@ -187,12 +176,6 @@ const SwipeContainer: React.FC = () => {
         onMouseLeave={handleMouseUp} // Сброс при выходе за пределы карточки
       >
         <IdeaCard idea={currentIdea} onSwipe={handleSwipe} />
-        
-        {/* Индикаторы свайпа */}
-        <div className="swipe-indicators">
-          <div className="indicator-left">❌</div>
-          <div className="indicator-right">❤️</div>
-        </div>
       </div>
     </div>
   );

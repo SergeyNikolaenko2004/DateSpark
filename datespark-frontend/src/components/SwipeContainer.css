@@ -10,6 +10,8 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
   cursor: grab;
   position: relative;
+  border-radius: 20px; /* 🔥 ДОБАВЛЕНО - сохраняем скругленные углы */
+  overflow: hidden; /* 🔥 ДОБАВЛЕНО - чтобы контент не вылезал за границы */
 }
 
 .idea-card-wrapper:active {
@@ -25,51 +27,6 @@
 .swipe-right {
   transform: translateX(200%) rotate(30deg) !important;
   opacity: 0;
-}
-
-/* Индикаторы свайпа */
-.swipe-indicators {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 30px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.idea-card-wrapper:hover .swipe-indicators {
-  opacity: 0.3;
-}
-
-.indicator-left, .indicator-right {
-  font-size: 3em;
-  padding: 20px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.indicator-left {
-  color: #ff4444;
-}
-
-.indicator-right {
-  color: #44ff44;
-}
-
-/* Эффекты при свайпе */
-.swipe-like .idea-card {
-  box-shadow: 0 0 30px rgba(76, 175, 80, 0.4);
-}
-
-.swipe-dislike .idea-card {
-  box-shadow: 0 0 30px rgba(244, 67, 54, 0.4);
 }
 
 .loading, .no-ideas {
@@ -94,10 +51,6 @@
   .swipe-container {
     padding: 10px;
     min-height: 70vh;
-  }
-  
-  .swipe-indicators {
-    opacity: 0.2; /* Всегда показываем на мобильных */
   }
 }
 

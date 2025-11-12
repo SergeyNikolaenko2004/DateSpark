@@ -6,8 +6,10 @@
   max-width: 400px;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
+  transition: box-shadow 0.2s ease; /* 🔥 ДОБАВЛЕНО для плавного изменения тени */
 }
 
+/* Остальные стили остаются без изменений */
 .card-header {
   display: flex;
   justify-content: space-between;
