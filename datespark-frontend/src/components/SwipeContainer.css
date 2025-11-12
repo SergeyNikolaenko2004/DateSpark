@@ -10,8 +10,8 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
   cursor: grab;
   position: relative;
-  border-radius: 20px; /* 🔥 ДОБАВЛЕНО - сохраняем скругленные углы */
-  overflow: hidden; /* 🔥 ДОБАВЛЕНО - чтобы контент не вылезал за границы */
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .idea-card-wrapper:active {

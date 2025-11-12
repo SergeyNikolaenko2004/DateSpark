@@ -61,14 +61,7 @@ const SwipeContainer: React.FC = () => {
 
     cardRef.current.style.transform = `translateX(${offsetX}px) rotate(${rotate}deg)`;
     
-    // Изменяем фон в зависимости от направления
-    if (offsetX > 50) {
-      cardRef.current.style.backgroundColor = '#e8f5e8'; // Зеленый для лайка
-    } else if (offsetX < -50) {
-      cardRef.current.style.backgroundColor = '#ffe8e8'; // Красный для дизлайка
-    } else {
-      cardRef.current.style.backgroundColor = 'white';
-    }
+    // ❌ УБРАЛИ изменение фона
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -78,7 +71,6 @@ const SwipeContainer: React.FC = () => {
 
     // Сбрасываем трансформацию
     cardRef.current.style.transform = '';
-    cardRef.current.style.backgroundColor = 'white';
     setIsSwiping(false);
 
     // Определяем направление свайпа
@@ -105,13 +97,7 @@ const SwipeContainer: React.FC = () => {
 
     cardRef.current.style.transform = `translateX(${offsetX}px) rotate(${rotate}deg)`;
     
-    if (offsetX > 50) {
-      cardRef.current.style.backgroundColor = '#e8f5e8';
-    } else if (offsetX < -50) {
-      cardRef.current.style.backgroundColor = '#ffe8e8';
-    } else {
-      cardRef.current.style.backgroundColor = 'white';
-    }
+    // ❌ УБРАЛИ изменение фона
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
@@ -120,7 +106,6 @@ const SwipeContainer: React.FC = () => {
     const offsetX = currentX.current - startX.current;
 
     cardRef.current.style.transform = '';
-    cardRef.current.style.backgroundColor = 'white';
     setIsSwiping(false);
 
     if (offsetX > 100) {
@@ -136,7 +121,6 @@ const SwipeContainer: React.FC = () => {
       setIsSwiping(false);
       if (cardRef.current) {
         cardRef.current.style.transform = '';
-        cardRef.current.style.backgroundColor = 'white';
       }
     };
 
