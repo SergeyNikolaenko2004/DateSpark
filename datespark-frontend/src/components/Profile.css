@@ -380,7 +380,12 @@
 /* Адаптивность */
 @media (max-width: 480px) {
   .profile {
-    padding: 15px;
+    padding: 0; /* ← ИЗМЕНИТЕ С 15px на 0 */
+    padding-bottom: 70px;
+  }
+  
+  .profile-content {
+    padding: 15px; /* ← ДОБАВЬТЕ padding ЗДЕСЬ */
     padding-bottom: 70px;
   }
   
