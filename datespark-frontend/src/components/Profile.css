@@ -2,8 +2,11 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', sans-serif;
-  padding: 0; /* ← ИЗМЕНИТЕ С 20px на 0 */
+  padding: 0;
   margin: 0;
+  /* 🔥 ДОБАВЬ ЭТИ СТРОКИ: */
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-header {
@@ -23,8 +26,11 @@
 .profile-content {
   max-width: 500px;
   margin: 0 auto;
-  padding: 20px; /* ← ДОБАВЬТЕ padding ЗДЕСЬ */
-  padding-bottom: 80px; /* ← ПЕРЕМЕСТИТЕ СЮДА */
+  padding: 20px;
+  padding-bottom: 80px;
+  /* 🔥 ДОБАВЬ: */
+  width: 100%;
+  flex: 1;
 }
 
 /* Остальной CSS без изменений */
@@ -377,15 +383,22 @@
   font-weight: 600;
 }
 
-/* Адаптивность */
+/* 🔥 ДОБАВЬ НОВЫЙ МЕДИА-ЗАПРОС ДЛЯ ПК: */
+@media (min-width: 768px) {
+  .profile-content {
+    padding: 40px 20px; /* Больше отступов сверху/снизу на ПК */
+  }
+}
+
+/* 🔥 ОБНОВИ МОБИЛЬНЫЙ МЕДИА-ЗАПРОС: */
 @media (max-width: 480px) {
   .profile {
-    padding: 0; /* ← ИЗМЕНИТЕ С 15px на 0 */
+    padding: 0;
     padding-bottom: 70px;
   }
   
   .profile-content {
-    padding: 15px; /* ← ДОБАВЬТЕ padding ЗДЕСЬ */
+    padding: 15px;
     padding-bottom: 70px;
   }
   
