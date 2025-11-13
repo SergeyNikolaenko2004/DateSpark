@@ -59,11 +59,12 @@
   text-align: center;
 }
 
-/* Стили для информации о пользователе */
+/* 🔥 ОБНОВИЛ СТИЛИ ДЛЯ ИНФОРМАЦИИ О ПОЛЬЗОВАТЕЛЕ - ЦЕНТРИРОВАНИЕ */
 .user-info {
   display: flex;
   align-items: center;
   gap: 20px;
+  text-align: left; /* По умолчанию выравнивание слева */
 }
 
 .avatar {
@@ -78,6 +79,7 @@
   font-size: 1.5em;
   font-weight: bold;
   color: white;
+  flex-shrink: 0; /* 🔥 Предотвращает сжатие аватара */
 }
 
 .avatar img {
@@ -102,19 +104,38 @@
   flex: 1;
 }
 
+/* 🔥 ОБНОВИЛ СТИЛИ ДЛЯ ИМЕНИ С НОВОЙ ИКОНКОЙ */
 .user-details h3 {
   margin: 0 0 8px 0;
   color: #333;
   font-size: 1.3em;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid transparent;
 }
 
 .user-details h3:hover {
   color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.2);
+  transform: translateY(-1px);
+}
+
+/* 🔥 НОВАЯ ИКОНКА РЕДАКТИРОВАНИЯ */
+.edit-icon {
+  font-size: 0.9em;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.user-details h3:hover .edit-icon {
+  opacity: 1;
 }
 
 .user-details p {
@@ -132,6 +153,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  width: 100%;
 }
 
 .edit-name input {
@@ -162,7 +184,7 @@
   background: #764ba2;
 }
 
-/* Стили для информации о паре */
+/* Остальные стили остаются без изменений */
 .couple-info h3 {
   color: #333;
   margin-bottom: 15px;
@@ -390,13 +412,7 @@
   font-weight: 600;
 }
 
-/* Адаптивность */
-@media (min-width: 768px) {
-  .profile-content {
-    padding: 40px 20px;
-  }
-}
-
+/* 🔥 ОБНОВЛЕННАЯ АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
 @media (max-width: 480px) {
   .profile-page {
     padding: 0;
@@ -416,10 +432,16 @@
     padding: 20px;
   }
   
+  /* 🔥 ЦЕНТРИРОВАНИЕ НА МОБИЛЬНЫХ */
   .user-info {
     flex-direction: column;
     text-align: center;
     gap: 15px;
+  }
+  
+  .user-details h3 {
+    justify-content: center;
+    text-align: center;
   }
   
   .partner {
@@ -430,5 +452,11 @@
   
   .join-form {
     flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) {
+  .profile-content {
+    padding: 40px 20px;
   }
 }

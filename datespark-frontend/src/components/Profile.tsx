@@ -118,12 +118,12 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="profile-page"> {/* 🔥 ИЗМЕНИЛ КЛАСС */}
+    <div className="profile-page"> 
       <header className="profile-header">
         <h1>👤 Профиль пары</h1>
       </header>
       
-      <main className="profile-main"> {/* 🔥 ДОБАВИЛ MAIN */}
+      <main className="profile-main"> 
         <div className="profile-content">
           {/* Информация о пользователе */}
           <div className="profile-section">
@@ -155,7 +155,7 @@ const Profile: React.FC = () => {
                     setUserName(profile.user.name);
                     setEditingName(true);
                   }}>
-                    {profile.user.name} ✏️
+                    {profile.user.name} ✎
                   </h3>
                 )}
                 <p>{profile.user.email}</p>
@@ -205,7 +205,7 @@ const Profile: React.FC = () => {
               <div className="no-couple">
                 <p>Вы еще не создали пару</p>
                 <button onClick={handleCreateCouple} className="create-couple-btn">
-                  🎉 Создать пару
+                  Создать пару
                 </button>
                 
                 <div className="join-section">
@@ -224,7 +224,7 @@ const Profile: React.FC = () => {
                     </div>
                   ) : (
                     <button onClick={() => setShowJoinForm(true)} className="join-btn">
-                      🔗 Присоединиться к паре
+                      Присоединиться к паре
                     </button>
                   )}
                 </div>
@@ -232,10 +232,9 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          {/* Действия */}
           <div className="profile-actions">
             <button onClick={handleLogout} className="logout-btn">
-              🚪 Выйти из аккаунта
+              Выйти из аккаунта
             </button>
           </div>
         </div>
