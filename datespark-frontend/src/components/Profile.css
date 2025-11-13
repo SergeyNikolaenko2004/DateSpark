@@ -2,15 +2,15 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', sans-serif;
-  padding: 20px;
-  padding-bottom: 80px; /* Отступ для нижней навигации */
+  padding: 0; /* ← ИЗМЕНИТЕ С 20px на 0 */
+  margin: 0;
 }
 
 .profile-header {
   text-align: center;
   padding: 20px;
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 0; /* ← УБЕРИТЕ margin-bottom */
 }
 
 .profile-header h1 {
@@ -23,8 +23,11 @@
 .profile-content {
   max-width: 500px;
   margin: 0 auto;
+  padding: 20px; /* ← ДОБАВЬТЕ padding ЗДЕСЬ */
+  padding-bottom: 80px; /* ← ПЕРЕМЕСТИТЕ СЮДА */
 }
 
+/* Остальной CSS без изменений */
 .profile-section {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
