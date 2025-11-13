@@ -10,7 +10,7 @@ const BottomNavigation: React.FC = () => {
   const navItems = [
     { path: '/', icon: '🎯', label: 'Идеи' },
     { path: '/board', icon: '📋', label: 'Планировщик' },
-    { path: '/profile', icon: '👤', label: 'Профиль' }
+    { path: '/', icon: '👤', label: 'Профиль' }
   ];
 
   return (
