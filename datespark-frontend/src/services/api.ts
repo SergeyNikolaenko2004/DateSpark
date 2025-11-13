@@ -191,28 +191,40 @@ export const api = {
     }
   },
 
-  // 🔥 НОВЫЕ МЕТОДЫ ДЛЯ ПРОФИЛЯ
   async getProfile(): Promise<ProfileResponse> {
     try {
       const token = getToken();
+      console.log('🔐 Token for profile:', token); // ← Покажет весь токен
+      console.log('🔐 Token exists:', !!token);
+      
       if (!token) {
-        throw new Error('No authentication token');
+        throw new Error('No authentication token - user not logged in');
       }
 
-      const response = await fetch(`${API_BASE}/profile`, { // ← УЖЕ ПРАВИЛЬНО!
+      const response = await fetch(`${API_BASE}/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
 
+      console.log('📡 Profile response status:', response.status);
+      
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Profile request failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText
+        });
         throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
-      return await response.json();
+      const profileData = await response.json();
+      console.log('✅ Profile data received:', profileData);
+      return profileData;
     } catch (error) {
-      console.error('API Error fetching profile:', error);
-      throw error; // Лучше пробросить ошибку дальше
+      console.error('❌ API Error fetching profile:', error);
+      throw error;
     }
   },
 
