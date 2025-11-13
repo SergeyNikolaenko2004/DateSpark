@@ -22,7 +22,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
     
     if (result.success) {
       localStorage.setItem('authToken', result.token!);
-      window.location.reload(); // Перезагрузим чтобы показать основное приложение
+      window.location.reload(); 
     } else {
       setError(result.message);
     }

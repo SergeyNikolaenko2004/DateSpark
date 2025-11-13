@@ -82,7 +82,7 @@ const Profile: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
-    window.location.reload();
+    window.location.href = '/';
   };
 
   const formatDate = (dateString: string) => {
