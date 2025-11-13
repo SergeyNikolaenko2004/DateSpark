@@ -199,7 +199,7 @@ export const api = {
         throw new Error('No authentication token');
       }
 
-      const response = await fetch(`${API_BASE}/profile`, {
+      const response = await fetch(`${API_BASE}/profile`, { // ← УЖЕ ПРАВИЛЬНО!
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -212,17 +212,7 @@ export const api = {
       return await response.json();
     } catch (error) {
       console.error('API Error fetching profile:', error);
-      // Возвращаем заглушку для демонстрации
-      return {
-        success: false,
-        user: {
-          id: 0,
-          email: 'error@example.com',
-          name: 'Ошибка загрузки',
-          createdAt: new Date().toISOString()
-        },
-        partners: []
-      };
+      throw error; // Лучше пробросить ошибку дальше
     }
   },
 
