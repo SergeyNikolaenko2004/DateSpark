@@ -4,7 +4,6 @@
   font-family: 'Segoe UI', sans-serif;
   padding: 0;
   margin: 0;
-  /* 🔥 ДОБАВЬ ЭТИ СТРОКИ: */
   display: flex;
   flex-direction: column;
 }
@@ -28,12 +27,14 @@
   margin: 0 auto;
   padding: 20px;
   padding-bottom: 80px;
-  /* 🔥 ДОБАВЬ: */
   width: 100%;
   flex: 1;
+  /* 🔥 ДОБАВЬ ДЛЯ АБСОЛЮТНОЙ ШИРИНЫ: */
+  box-sizing: border-box;
 }
 
-/* Остальной CSS без изменений */
+
+/* 🔥 УБЕРИ ВСЕ ОГРАНИЧЕНИЯ ШИРИНЫ: */
 .profile-section {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -42,7 +43,11 @@
   margin-bottom: 20px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  /* 🔥 ДОБАВЬ: */
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .profile-section h2 {
   color: #333;
