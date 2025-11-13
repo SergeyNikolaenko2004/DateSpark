@@ -4,13 +4,48 @@ const API_BASE = 'https://datespark-api.onrender.com/api';
 
 // 🔥 ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ТОКЕНА
 const getToken = (): string | null => {
-  return localStorage.getItem('authToken'); // или как ты хранишь токен
+  return localStorage.getItem('authToken');
 };
+
+// 🔥 ДОБАВИМ ТИПЫ ДЛЯ ПРОФИЛЯ
+interface UserInfo {
+  id: number;
+  email: string;
+  name: string;
+  avatar?: string;
+  createdAt: string;
+}
+
+interface CoupleInfo {
+  id: number;
+  name: string;
+  joinCode: string;
+  createdAt: string;
+}
+
+interface PartnerInfo {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  joinedAt: string;
+}
+
+interface ProfileResponse {
+  success: boolean;
+  user: UserInfo;
+  couple?: CoupleInfo;
+  partners: PartnerInfo[];
+}
+
+interface UpdateProfileRequest {
+  name?: string;
+  avatar?: string;
+}
 
 export const api = {
   async getRandomIdea(filters?: IdeaFilters): Promise<Idea | null> {
     try {
-      // 🔥 ПРАВИЛЬНОЕ ФОРМИРОВАНИЕ QUERY PARAMS
       const params = new URLSearchParams();
       
       if (filters) {
@@ -24,7 +59,7 @@ export const api = {
       const queryString = params.toString();
       const url = `${API_BASE}/spark/random${queryString ? `?${queryString}` : ''}`;
       
-      console.log('Fetching idea from:', url); // Для дебага
+      console.log('Fetching idea from:', url);
       
       const response = await fetch(url);
       
@@ -94,7 +129,7 @@ export const api = {
       
       if (result.success && result.token) {
         localStorage.setItem('authToken', result.token);
-        console.log('Token saved:', result.token.substring(0, 20) + '...'); // Логируем часть токена
+        console.log('Token saved:', result.token.substring(0, 20) + '...');
       }
       
       return result;
@@ -112,10 +147,9 @@ export const api = {
       });
       const result = await response.json();
       
-      // 🔥 УБЕДИСЬ ЧТО ТОКЕН СОХРАНЯЕТСЯ ПРАВИЛЬНО
       if (result.success && result.token) {
         localStorage.setItem('authToken', result.token);
-        console.log('Token saved:', result.token.substring(0, 20) + '...'); // Логируем часть токена
+        console.log('Token saved:', result.token.substring(0, 20) + '...');
       }
       
       return result;
@@ -123,6 +157,7 @@ export const api = {
       return { success: false, message: 'Network error' };
     }
   },
+
   async createCouple(): Promise<AuthResponse> {
     try {
       const token = getToken();
@@ -130,7 +165,7 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // 🔥 ДОБАВЬ ТОКЕН
+          'Authorization': `Bearer ${token}`
         }
       });
       return await response.json();
@@ -146,7 +181,7 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // 🔥 ДОБАВЬ ТОКЕН
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ joinCode })
       });
@@ -154,7 +189,77 @@ export const api = {
     } catch (error) {
       return { success: false, message: 'Network error' };
     }
+  },
+
+  // 🔥 НОВЫЕ МЕТОДЫ ДЛЯ ПРОФИЛЯ
+  async getProfile(): Promise<ProfileResponse> {
+    try {
+      const token = getToken();
+      if (!token) {
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/profile`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch profile: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error fetching profile:', error);
+      // Возвращаем заглушку для демонстрации
+      return {
+        success: false,
+        user: {
+          id: 0,
+          email: 'error@example.com',
+          name: 'Ошибка загрузки',
+          createdAt: new Date().toISOString()
+        },
+        partners: []
+      };
+    }
+  },
+
+  async updateProfile(profileData: UpdateProfileRequest): Promise<AuthResponse> {
+    try {
+      const token = getToken();
+      if (!token) {
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/profile/user`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(profileData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to update profile: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error updating profile:', error);
+      return { success: false, message: 'Network error' };
+    }
+  },
+
+  // 🔥 МЕТОД ДЛЯ ПРОВЕРКИ СУЩЕСТВОВАНИЯ ПРОФИЛЯ (опционально)
+  async checkProfileExists(): Promise<boolean> {
+    try {
+      const profile = await this.getProfile();
+      return profile.success && profile.user.id > 0;
+    } catch (error) {
+      return false;
+    }
   }
-
-
 };

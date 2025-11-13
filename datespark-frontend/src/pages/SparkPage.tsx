@@ -1,5 +1,5 @@
 import React from 'react';
-import SwipeContainer from '../components/SwipeContainer'; // 🔥 убрал ../ если SparkPage в pages
+import SwipeContainer from '../components/SwipeContainer'; 
 import './SparkPage.css';
 
 const SparkPage: React.FC = () => {
@@ -14,7 +14,6 @@ const SparkPage: React.FC = () => {
         <SwipeContainer />
       </main>
 
-      {/* 🔥 УБИРАЕМ ФУТЕР - теперь подсказки свайпов не нужны */}
     </div>
   );
 };
