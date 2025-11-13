@@ -17,6 +17,15 @@ const Profile: React.FC = () => {
   const loadProfile = async () => {
     try {
       const profileData = await api.getProfile();
+      console.log('📊 Full profile response:', profileData);
+      
+      // Проверьте структуру данных
+      if (profileData && profileData.success) {
+        console.log('👤 User data:', profileData.user);
+        console.log('💑 Couple data:', profileData.couple);
+        console.log('👥 Partners:', profileData.partners);
+      }
+      
       setProfile(profileData);
     } catch (error) {
       console.error('Error loading profile:', error);
