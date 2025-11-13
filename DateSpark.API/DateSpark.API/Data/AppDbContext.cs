@@ -34,25 +34,26 @@ namespace DateSpark.API.Data
                 .HasIndex(c => c.JoinCode)
                 .IsUnique();
 
-            // Связь многие-ко-многим User-Couple
+            // 🔥 ИСПРАВЛЕННАЯ СВЯЗЬ User-UserCouple
             modelBuilder.Entity<UserCouple>()
                 .HasKey(uc => uc.Id);
 
             modelBuilder.Entity<UserCouple>()
                 .HasOne(uc => uc.User)
-                .WithMany()
-                .HasForeignKey(uc => uc.UserId);
+                .WithMany(u => u.UserCouples)  // ← ИСПРАВЛЕНО: указать навигационное свойство
+                .HasForeignKey(uc => uc.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserCouple>()
                 .HasOne(uc => uc.Couple)
                 .WithMany(c => c.UserCouples)
-                .HasForeignKey(uc => uc.CoupleId);
+                .HasForeignKey(uc => uc.CoupleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Уникальная пара пользователь-пара
             modelBuilder.Entity<UserCouple>()
                 .HasIndex(uc => new { uc.UserId, uc.CoupleId })
                 .IsUnique();
-
         }
     }
 }
