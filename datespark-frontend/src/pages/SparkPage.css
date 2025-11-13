@@ -2,64 +2,56 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', sans-serif;
-  padding-bottom: 20px;
+  /* 🔥 УБИРАЕМ padding-bottom - теперь есть отступ в App.css */
 }
 
 .spark-header {
   text-align: center;
   padding: 20px;
   color: white;
+  padding-top: 10px; /* 🔥 Уменьшил отступ сверху */
 }
 
 .spark-header h1 {
   margin: 0;
-  font-size: 2.5em;
+  font-size: 2.2em; /* 🔥 Немного уменьшил размер */
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .spark-header p {
   margin: 10px 0 0 0;
   opacity: 0.9;
+  font-size: 1em; /* 🔥 Немного уменьшил размер */
 }
 
 .spark-main {
-  padding: 20px;
+  padding: 0; /* 🔥 Убрал отступы - SwipeContainer сам управляет отступами */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 🔥 УБИРАЕМ СТАРЫЙ ФУТЕР */
 .spark-footer {
-  padding: 20px;
-  text-align: center;
+  display: none;
 }
 
 .swipe-hint {
-  display: flex;
-  justify-content: space-around;
-  max-width: 400px;
-  margin: 0 auto;
-  color: white;
-  font-size: 0.9em;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 15px;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-}
-
-.hint-dislike, .hint-like {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
+  display: none; /* 🔥 Скрываем подсказки свайпов */
 }
 
 /* Адаптивность */
 @media (max-width: 480px) {
-  .swipe-hint {
-    flex-direction: column;
-    gap: 10px;
-    font-size: 0.8em;
+  .spark-header {
+    padding: 15px;
+    padding-top: 5px;
   }
   
   .spark-header h1 {
-    font-size: 2em;
+    font-size: 1.8em; /* 🔥 Еще меньше на мобильных */
+  }
+  
+  .spark-header p {
+    font-size: 0.9em;
   }
 }

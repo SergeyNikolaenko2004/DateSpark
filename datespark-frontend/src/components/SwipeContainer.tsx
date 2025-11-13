@@ -4,10 +4,9 @@ import { api } from '../services/api';
 import { Idea, IdeaFilters } from '../types';
 import './SwipeContainer.css';
 
-// 🔥 ДАННЫЕ ДЛЯ ФИЛЬТРОВ
 const FILTER_OPTIONS = {
   categories: ['Романтическое', 'Активное', 'Творческое', 'Приключение', 'Релакс', 'Еда', 'Культура'],
-  locations: ['Дома', 'На улице', 'В городе', 'За городом', 'Кафе/Ресторан', 'Природа'],
+  locations: ['Дома', 'На улице', 'В городе', 'Природа'],
   moods: ['Романтичное', 'Веселое', 'Расслабленное', 'Приключенческое', 'Уютное', 'Экзотическое'],
   weather: ['Любая', 'Солнечно', 'Дождь', 'Снег', 'Облачно', 'Тепло', 'Холодно'],
   priceCategories: [
@@ -29,7 +28,6 @@ const SwipeContainer: React.FC = () => {
   const startX = useRef(0);
   const currentX = useRef(0);
 
-  // 🔥 ОБНОВЛЕННАЯ ФУНКЦИЯ ЗАГРУЗКИ С ФИЛЬТРАМИ
   const fetchRandomIdea = async (filters?: IdeaFilters) => {
     try {
       setLoading(true);
@@ -43,7 +41,6 @@ const SwipeContainer: React.FC = () => {
     }
   };
 
-  // 🔥 ОБРАБОТЧИК ИЗМЕНЕНИЯ ФИЛЬТРОВ
   const handleFilterChange = (filterType: keyof IdeaFilters, value: any) => {
     const newFilters = { ...activeFilters };
     
@@ -57,7 +54,6 @@ const SwipeContainer: React.FC = () => {
     fetchRandomIdea(newFilters);
   };
 
-  // 🔥 СБРОС ВСЕХ ФИЛЬТРОВ
   const handleResetFilters = () => {
     setActiveFilters({});
     fetchRandomIdea({});
@@ -159,7 +155,6 @@ const SwipeContainer: React.FC = () => {
 
   return (
     <div className="swipe-container">
-      {/* 🔥 КНОПКА ФИЛЬТРОВ */}
       <div className="filters-header">
         <button 
           className={`filters-toggle ${showFilters ? 'active' : ''}`}

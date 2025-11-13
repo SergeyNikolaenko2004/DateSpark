@@ -14,4 +14,76 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+/* 🔥 СТИЛИ ДЛЯ ОСНОВНОГО ПРИЛОЖЕНИЯ С НАВИГАЦИЕЙ */
+.app {
+  min-height: 100vh;
+  background: #f5f5f5;
+  position: relative;
+}
+
+.app-content {
+  padding-bottom: 70px; /* Отступ для нижней навигации */
+  min-height: calc(100vh - 70px);
+}
+
+/* 🔥 СТИЛИ ДЛЯ СТРАНИЦЫ SPARK (ГЛАВНАЯ) */
+.spark-page {
+  padding: 0;
+  max-width: 100%;
+}
+
+/* 🔥 СТИЛИ ДЛЯ ADVENTURE BOARD */
+.adventure-board {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.adventure-board h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+/* 🔥 СТИЛИ ДЛЯ ПРОФИЛЯ */
+.profile {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.profile h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+/* 🔥 АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+  .app-content {
+    padding-bottom: 60px;
+    min-height: calc(100vh - 60px);
+  }
+  
+  .adventure-board {
+    padding: 15px;
+  }
+  
+  .profile {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-content {
+    padding-bottom: 55px;
+    min-height: calc(100vh - 55px);
+  }
+  
+  .adventure-board, .profile {
+    padding: 10px;
+  }
 }
