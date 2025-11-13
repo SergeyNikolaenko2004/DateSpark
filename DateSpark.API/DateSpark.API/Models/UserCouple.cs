@@ -16,7 +16,7 @@ namespace DateSpark.API.Models
         public Couple Couple { get; set; } = null!;
 
         [Required]
-        public string Role { get; set; } = "member"; // "creator" или "member"
+        public string Role { get; set; } = "member";
 
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
     }

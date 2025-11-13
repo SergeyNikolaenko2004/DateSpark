@@ -21,7 +21,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
     const result = await api.login({ email, password });
     
     if (result.success) {
-      localStorage.setItem('token', result.token!);
+      localStorage.setItem('authToken', result.token!);
       window.location.reload(); // Перезагрузим чтобы показать основное приложение
     } else {
       setError(result.message);
