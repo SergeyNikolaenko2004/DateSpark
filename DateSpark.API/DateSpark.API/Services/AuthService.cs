@@ -94,7 +94,7 @@ namespace DateSpark.API.Services
             Message = "Вход выполнен успешно",
             Token = token,
             User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
-            Couple = coupleDto // Может быть null если пользователь без пары
+            Couple = coupleDto 
         };
     }
 

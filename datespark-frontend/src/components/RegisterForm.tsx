@@ -22,7 +22,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
     const result = await api.register({ name, email, password });
     
     if (result.success) {
-      localStorage.setItem('token', result.token!);
+      localStorage.setItem('authToken', result.token!);
       window.location.reload();
     } else {
       setError(result.message);
