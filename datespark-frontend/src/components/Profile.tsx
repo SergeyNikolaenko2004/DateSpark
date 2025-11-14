@@ -125,7 +125,6 @@ const Profile: React.FC = () => {
       
       <main className="profile-main"> 
         <div className="profile-content">
-          {/* Информация о пользователе */}
           <div className="profile-section">
             <h2>Ваш профиль</h2>
             <div className="user-info">

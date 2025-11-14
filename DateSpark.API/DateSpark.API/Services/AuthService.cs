@@ -27,100 +27,76 @@ namespace DateSpark.API.Services
             _configuration = configuration;
         }
 
-        public async Task<AuthResponse> RegisterAsync(AuthRequest request)
+    public async Task<AuthResponse> RegisterAsync(AuthRequest request)
+    {
+        // Проверяем существует ли пользователь
+        if (await _context.Users.AnyAsync(u => u.Email == request.Email))
         {
-            // Проверяем существует ли пользователь
-            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-            {
-                return new AuthResponse { Success = false, Message = "Пользователь с таким email уже существует" };
-            }
+            return new AuthResponse { Success = false, Message = "Пользователь с таким email уже существует" };
+        }
 
-            // Создаем пользователя
-            var user = new User
-            {
-                Email = request.Email,
-                Name = request.Name,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+        // Создаем пользователя
+        var user = new User
+        {
+            Email = request.Email,
+            Name = request.Name,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
 
-            // Создаем пару для пользователя
-            var couple = new Couple
-            {
-                Name = $"{user.Name}'s Couple",
-                JoinCode = GenerateJoinCode(),
-                CreatedAt = DateTime.UtcNow
-            };
+        // Генерируем токен
+        var token = GenerateJwtToken(user);
 
-            _context.Couples.Add(couple);
-            await _context.SaveChangesAsync();
+        return new AuthResponse
+        {
+            Success = true,
+            Message = "Регистрация успешна",
+            Token = token,
+            User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name }
+        };
+    }
 
-            // Связываем пользователя с парой
-            var userCouple = new UserCouple
-            {
-                UserId = user.Id,
-                CoupleId = couple.Id,
-                Role = "creator",
-                JoinedAt = DateTime.UtcNow
-            };
+    public async Task<AuthResponse> LoginAsync(AuthRequest request)
+    {
+        var user = await _context.Users
+            .Include(u => u.UserCouples)
+            .ThenInclude(uc => uc.Couple)
+            .FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            _context.UserCouples.Add(userCouple);
-            await _context.SaveChangesAsync();
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        {
+            return new AuthResponse { Success = false, Message = "Неверный email или пароль" };
+        }
 
-            // Генерируем токен
-            var token = GenerateJwtToken(user);
+        // Получаем пару пользователя (может быть null)
+        var userCouple = user.UserCouples.FirstOrDefault();
+        CoupleDto? coupleDto = null;
 
-            return new AuthResponse
-            {
-                Success = true,
-                Message = "Регистрация успешна",
-                Token = token,
-                User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
-                Couple = new CoupleDto { Id = couple.Id, Name = couple.Name, JoinCode = couple.JoinCode }
+        if (userCouple?.Couple != null)
+        {
+            coupleDto = new CoupleDto 
+            { 
+                Id = userCouple.Couple.Id, 
+                Name = userCouple.Couple.Name, 
+                JoinCode = userCouple.Couple.JoinCode 
             };
         }
 
-        public async Task<AuthResponse> LoginAsync(AuthRequest request)
+        var token = GenerateJwtToken(user);
+
+        return new AuthResponse
         {
-            var user = await _context.Users
-                .Include(u => u.UserCouples)
-                .ThenInclude(uc => uc.Couple)
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            {
-                return new AuthResponse { Success = false, Message = "Неверный email или пароль" };
-            }
-
-            // Получаем пару пользователя
-            var userCouple = user.UserCouples.FirstOrDefault();
-            CoupleDto? coupleDto = null;
-
-            if (userCouple?.Couple != null)
-            {
-                coupleDto = new CoupleDto 
-                { 
-                    Id = userCouple.Couple.Id, 
-                    Name = userCouple.Couple.Name, 
-                    JoinCode = userCouple.Couple.JoinCode 
-                };
-            }
-
-            var token = GenerateJwtToken(user);
-
-            return new AuthResponse
-            {
-                Success = true,
-                Message = "Вход выполнен успешно",
-                Token = token,
-                User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
-                Couple = coupleDto
-            };
-        }
+            Success = true,
+            Message = "Вход выполнен успешно",
+            Token = token,
+            User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
+            Couple = coupleDto // Может быть null если пользователь без пары
+        };
+    }
 
         public async Task<AuthResponse> CreateCoupleAsync(int userId)
         {

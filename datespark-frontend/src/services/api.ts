@@ -2,12 +2,10 @@ import { Idea, IdeaVote, IdeaFilters, AuthRequest, AuthResponse } from '../types
 
 const API_BASE = 'https://datespark-api.onrender.com/api';
 
-// 🔥 ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ТОКЕНА
 const getToken = (): string | null => {
   return localStorage.getItem('authToken');
 };
 
-// 🔥 ДОБАВИМ ТИПЫ ДЛЯ ПРОФИЛЯ
 interface UserInfo {
   id: number;
   email: string;
