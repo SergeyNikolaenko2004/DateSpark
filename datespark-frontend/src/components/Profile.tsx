@@ -141,7 +141,7 @@ const Profile: React.FC = () => {
   return (
     <div className="profile-page"> 
       <header className="profile-header">
-        <h1>👤 Профиль</h1>
+        <h1>Профиль</h1>
       </header>
       
       <main className="profile-main"> 
@@ -230,9 +230,6 @@ const Profile: React.FC = () => {
                   {profile.partners.map((partner: any) => (
                     <div key={partner.id} className="partner">
                       <span className="partner-name">{partner.name}</span>
-                      <span className={`partner-role ${partner.role}`}>
-                        {partner.role === 'creator' ? '👑 Создатель' : '👥 Участник'}
-                      </span>
                       <span className="partner-joined">
                         с {formatDate(partner.joinedAt)}
                       </span>

@@ -289,24 +289,6 @@
   flex: 1;
 }
 
-.partner-role {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.partner-role.creator {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.partner-role.member {
-  background: #d1ecf1;
-  color: #0c5460;
-}
-
 .partner-joined {
   color: #999;
   font-size: 0.9rem;
