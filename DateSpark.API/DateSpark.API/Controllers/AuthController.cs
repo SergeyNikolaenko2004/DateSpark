@@ -49,7 +49,6 @@ namespace DateSpark.API.Controllers
                 return Unauthorized(new AuthResponse { Success = false, Message = "User not authenticated" });
             }
 
-            // 🔥 ПЕРЕДАЕМ НАЗВАНИЕ ПАРЫ ЕСЛИ УКАЗАНО
             var coupleName = request?.CoupleName;
             var result = await _authService.CreateCoupleAsync(userId, coupleName);
             
@@ -59,7 +58,6 @@ namespace DateSpark.API.Controllers
             return Ok(result);
         }
 
-        // 🔥 НОВЫЙ ЭНДПОИНТ: Обновление названия пары
         [HttpPut("update-couple")]
         [Authorize]
         public async Task<ActionResult<AuthResponse>> UpdateCouple([FromBody] UpdateCoupleRequest request)
