@@ -171,7 +171,6 @@ namespace DateSpark.API.Services
 
             // Обновляем название пары
             userCouple.Couple.Name = coupleName.Trim();
-            userCouple.Couple.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
