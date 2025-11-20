@@ -127,7 +127,6 @@ const Profile: React.FC = () => {
     return new Date(dateString).toLocaleDateString('ru-RU');
   };
 
-  // 🔥 ФУНКЦИЯ ДЛЯ ПРОВЕРКИ, ЯВЛЯЕТСЯ ЛИ ПОЛЬЗОВАТЕЛЬ СОЗДАТЕЛЕМ ПАРЫ
   const isCoupleCreator = () => {
     if (!profile?.partners) return false;
     const currentUser = profile.partners.find((partner: any) => partner.id === profile.user.id);

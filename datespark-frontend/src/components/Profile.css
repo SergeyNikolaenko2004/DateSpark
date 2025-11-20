@@ -1,85 +1,67 @@
-/* 🔥 ИЗМЕНИЛ .profile на .profile-page */
 .profile-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: 'Segoe UI', sans-serif;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+  padding: 20px;
 }
 
 .profile-header {
   text-align: center;
-  padding: 20px;
-  color: white;
+  margin-bottom: 30px;
 }
 
 .profile-header h1 {
+  color: white;
+  font-size: 2rem;
   margin: 0;
-  font-size: 2.2em;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  font-weight: 700;
 }
 
-/* 🔥 ДОБАВИЛ .profile-main */
 .profile-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 80px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .profile-content {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  width: 100%;
-  flex: 1;
-  box-sizing: border-box;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .profile-section {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 25px;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  width: 100%;
-  box-sizing: border-box;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-section:last-child {
+  border-bottom: none;
 }
 
 .profile-section h2 {
   color: #333;
   margin-bottom: 20px;
-  font-size: 1.4em;
-  font-weight: 600;
-  text-align: center;
+  font-size: 1.4rem;
 }
 
-/* 🔥 ОБНОВИЛ СТИЛИ ДЛЯ ИНФОРМАЦИИ О ПОЛЬЗОВАТЕЛЕ - ЦЕНТРИРОВАНИЕ */
 .user-info {
   display: flex;
   align-items: center;
   gap: 20px;
-  text-align: left; /* По умолчанию выравнивание слева */
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 2rem;
   color: white;
-  flex-shrink: 0; /* 🔥 Предотвращает сжатие аватара */
+  font-weight: bold;
 }
 
 .avatar img {
@@ -88,317 +70,414 @@
   object-fit: cover;
 }
 
-.avatar-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-weight: bold;
-  font-size: 1.5em;
-}
-
-.user-details {
-  flex: 1;
-}
-
-/* 🔥 ОБНОВИЛ СТИЛИ ДЛЯ ИМЕНИ С НОВОЙ ИКОНКОЙ */
 .user-details h3 {
-  margin: 0 0 8px 0;
+  margin: 0 0 5px 0;
   color: #333;
-  font-size: 1.3em;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: rgba(102, 126, 234, 0.05);
-  border: 1px solid transparent;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
 
 .user-details h3:hover {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
-  border-color: rgba(102, 126, 234, 0.2);
-  transform: translateY(-1px);
-}
-
-/* 🔥 НОВАЯ ИКОНКА РЕДАКТИРОВАНИЯ */
-.edit-icon {
-  font-size: 0.9em;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.user-details h3:hover .edit-icon {
-  opacity: 1;
+  background-color: #f5f5f5;
 }
 
 .user-details p {
   margin: 0 0 5px 0;
   color: #666;
-  font-size: 0.95em;
 }
 
 .user-details small {
-  color: #888;
-  font-size: 0.85em;
+  color: #999;
+  font-size: 0.9rem;
 }
 
 .edit-name {
   display: flex;
   gap: 10px;
   align-items: center;
-  width: 100%;
+  margin-bottom: 10px;
 }
 
 .edit-name input {
-  flex: 1;
   padding: 8px 12px;
-  border: 2px solid #e8e8e8;
-  border-radius: 10px;
-  font-size: 1em;
-  transition: border-color 0.3s ease;
-}
-
-.edit-name input:focus {
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 1rem;
   outline: none;
-  border-color: #667eea;
+  flex: 1;
 }
 
 .edit-name button {
-  background: #667eea;
-  color: white;
-  border: none;
   padding: 8px 12px;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  font-weight: bold;
+  transition: all 0.2s;
 }
 
-.edit-name button:hover {
-  background: #764ba2;
+.edit-name button:first-of-type {
+  background: #4CAF50;
+  color: white;
 }
 
-/* Остальные стили остаются без изменений */
-.couple-info h3 {
+.edit-name button:first-of-type:hover {
+  background: #45a049;
+}
+
+.edit-name button:last-of-type {
+  background: #f44336;
+  color: white;
+}
+
+.edit-name button:last-of-type:hover {
+  background: #da190b;
+}
+
+.couple-info {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.couple-header {
+  margin-bottom: 20px;
+}
+
+.couple-header h3 {
+  margin: 0 0 15px 0;
   color: #333;
+  font-size: 1.5rem;
+}
+
+.couple-header h3.editable {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  display: inline-block;
+}
+
+.couple-header h3.editable:hover {
+  background-color: #e9ecef;
+}
+
+.edit-icon {
+  font-size: 0.9rem;
+  margin-left: 5px;
+  color: #667eea;
+}
+
+.edit-couple-name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
   margin-bottom: 15px;
-  text-align: center;
-  font-size: 1.3em;
+}
+
+.edit-couple-name input {
+  padding: 8px 12px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  flex: 1;
+  max-width: 300px;
+}
+
+.edit-couple-name button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.edit-couple-name button:first-of-type {
+  background: #4CAF50;
+  color: white;
+}
+
+.edit-couple-name button:first-of-type:hover {
+  background: #45a049;
+}
+
+.edit-couple-name button:last-of-type {
+  background: #f44336;
+  color: white;
+}
+
+.edit-couple-name button:last-of-type:hover {
+  background: #da190b;
 }
 
 .join-code {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 12px 15px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  justify-content: center;
+  background: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
 .join-code strong {
   color: #333;
-  font-weight: 600;
 }
 
 .code {
-  background: white;
-  padding: 6px 12px;
-  border-radius: 8px;
   font-family: monospace;
   font-weight: bold;
   color: #667eea;
-  border: 2px solid #e8e8e8;
+  font-size: 1.1rem;
 }
 
 .copy-btn {
   background: none;
   border: none;
-  font-size: 1.2em;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  font-size: 1.2rem;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
 .copy-btn:hover {
-  transform: scale(1.1);
+  background-color: #f5f5f5;
 }
 
 .partners h4 {
+  margin: 0 0 15px 0;
   color: #333;
-  margin-bottom: 15px;
-  text-align: center;
 }
 
 .partner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.partner:last-child {
-  border-bottom: none;
+  gap: 15px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #e9ecef;
 }
 
 .partner-name {
-  font-weight: 600;
+  font-weight: bold;
   color: #333;
+  flex: 1;
 }
 
 .partner-role {
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 0.8em;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
 .partner-role.creator {
-  background: rgba(255, 193, 7, 0.2);
-  color: #ff9800;
+  background: #fff3cd;
+  color: #856404;
 }
 
 .partner-role.member {
-  background: rgba(102, 126, 234, 0.2);
-  color: #667eea;
+  background: #d1ecf1;
+  color: #0c5460;
 }
 
 .partner-joined {
-  color: #888;
-  font-size: 0.8em;
+  color: #999;
+  font-size: 0.9rem;
 }
 
-/* Стили для отсутствия пары */
 .no-couple {
   text-align: center;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #dee2e6;
 }
 
 .no-couple p {
+  margin: 0 0 20px 0;
   color: #666;
+  font-size: 1.1rem;
+}
+
+.create-couple-form {
   margin-bottom: 20px;
 }
 
-.create-couple-btn, .join-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.create-couple-form input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  outline: none;
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.create-couple-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border: none;
-  padding: 15px 25px;
-  border-radius: 25px;
-  font-size: 1em;
-  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 10px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s;
   width: 100%;
   max-width: 300px;
 }
 
-.create-couple-btn:hover, .join-btn:hover {
+.create-couple-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.create-couple-btn.default {
+  background: linear-gradient(135deg, #6c757d, #495057);
+}
+
+.create-couple-btn.default:hover {
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
 }
 
 .join-section {
-  margin-top: 25px;
+  margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #dee2e6;
 }
 
 .join-section p {
+  margin: 0 0 15px 0;
   color: #666;
-  margin-bottom: 15px;
 }
 
 .join-form {
   display: flex;
   gap: 10px;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .join-form input {
-  padding: 12px 15px;
-  border: 2px solid #e8e8e8;
-  border-radius: 12px;
-  font-size: 1em;
+  padding: 10px;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-transform: uppercase;
   text-align: center;
-  letter-spacing: 2px;
-  font-weight: bold;
-  transition: border-color 0.3s ease;
-  width: 100%;
-  max-width: 200px;
-}
-
-.join-form input:focus {
   outline: none;
-  border-color: #667eea;
+  width: 120px;
 }
 
 .join-form button {
   padding: 10px 20px;
   border: none;
-  border-radius: 12px;
-  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  font-weight: bold;
+  transition: all 0.2s;
 }
 
 .join-form button:first-of-type {
-  background: #667eea;
+  background: #28a745;
   color: white;
 }
 
 .join-form button:first-of-type:hover {
-  background: #764ba2;
+  background: #218838;
 }
 
 .join-form button:last-of-type {
-  background: #f8f9fa;
-  color: #666;
+  background: #6c757d;
+  color: white;
 }
 
 .join-form button:last-of-type:hover {
-  background: #e9ecef;
+  background: #5a6268;
 }
 
-/* Стили для действий */
+.join-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.join-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
 .profile-actions {
   text-align: center;
   margin-top: 30px;
 }
 
 .logout-btn {
-  background: rgba(255, 107, 107, 0.9);
+  background: #dc3545;
   color: white;
   border: none;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1em;
-  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s;
 }
 
 .logout-btn:hover {
-  background: rgba(255, 82, 82, 0.9);
+  background: #c82333;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
 }
 
-/* Состояния загрузки и ошибок */
 .loading, .error {
   text-align: center;
-  padding: 50px 20px;
+  padding: 50px;
   color: white;
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 
 .error button {
@@ -406,165 +485,41 @@
   color: #667eea;
   border: none;
   padding: 10px 20px;
-  border-radius: 20px;
-  margin-top: 15px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
+  margin-top: 15px;
+  font-weight: bold;
 }
 
-/* 🔥 ОБНОВЛЕННАЯ АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
-@media (max-width: 480px) {
+.error button:hover {
+  background: #f8f9fa;
+}
+
+@media (max-width: 768px) {
   .profile-page {
-    padding: 0;
-    padding-bottom: 70px;
+    padding: 10px;
   }
   
   .profile-content {
-    padding: 15px;
-    padding-bottom: 70px;
-  }
-  
-  .profile-header h1 {
-    font-size: 1.8em;
-  }
-  
-  .profile-section {
     padding: 20px;
   }
-
-  /* Стили для редактирования названия пары */
-  .edit-couple-name {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-  }
-
-  .edit-couple-name input {
-    padding: 10px 15px;
-    border: 2px solid #e8e8e8;
-    border-radius: 12px;
-    font-size: 1.1em;
-    text-align: center;
-    transition: border-color 0.3s ease;
-    min-width: 200px;
-  }
-
-  .edit-couple-name input:focus {
-    outline: none;
-    border-color: #667eea;
-  }
-
-  .edit-couple-name button {
-    background: #667eea;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .edit-couple-name button:hover {
-    background: #764ba2;
-  }
-
-  /* Стиль для редактируемого названия пары */
-  .couple-info h3.editable {
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 10px 15px;
-    border-radius: 12px;
-    background: rgba(102, 126, 234, 0.05);
-    border: 1px solid transparent;
-  }
-
-  .couple-info h3.editable:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: rgba(102, 126, 234, 0.2);
-    transform: translateY(-1px);
-  }
-
-  /* Стили для формы создания пары */
-  .create-couple-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    margin: 20px 0;
-  }
-
-  .create-couple-form input {
-    padding: 12px 15px;
-    border: 2px solid #e8e8e8;
-    border-radius: 12px;
-    font-size: 1em;
-    text-align: center;
-    transition: border-color 0.3s ease;
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .create-couple-form input:focus {
-    outline: none;
-    border-color: #667eea;
-  }
-
-  .form-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .create-couple-btn.default {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  }
-
-  .cancel-btn {
-    background: #6c757d;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .cancel-btn:hover {
-    background: #5a6268;
-    transform: translateY(-1px);
-  }
-
   
-  /* 🔥 ЦЕНТРИРОВАНИЕ НА МОБИЛЬНЫХ */
   .user-info {
     flex-direction: column;
     text-align: center;
-    gap: 15px;
   }
   
-  .user-details h3 {
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .partner {
+  .edit-name, .edit-couple-name {
     flex-direction: column;
-    gap: 8px;
-    text-align: center;
+    align-items: stretch;
   }
   
   .join-form {
     flex-direction: column;
   }
-}
-
-@media (min-width: 768px) {
-  .profile-content {
-    padding: 40px 20px;
+  
+  .join-form input, .join-form button {
+    width: 100%;
+    max-width: 200px;
   }
 }
