@@ -21,14 +21,6 @@ const Profile: React.FC = () => {
   const loadProfile = async () => {
     try {
       const profileData = await api.getProfile();
-      console.log('📊 Full profile response:', profileData);
-      
-      if (profileData && profileData.success) {
-        console.log('👤 User data:', profileData.user);
-        console.log('💑 Couple data:', profileData.couple);
-        console.log('👥 Partners:', profileData.partners);
-      }
-      
       setProfile(profileData);
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -37,7 +29,6 @@ const Profile: React.FC = () => {
     }
   };
 
-  // 🔥 ОБНОВЛЕННАЯ ФУНКЦИЯ СОЗДАНИЯ ПАРЫ
   const handleCreateCouple = async (name?: string) => {
     try {
       const result = await api.createCouple(name);
@@ -50,12 +41,10 @@ const Profile: React.FC = () => {
         alert(result.message || 'Ошибка при создании пары');
       }
     } catch (error) {
-      console.error('Error creating couple:', error);
       alert('Ошибка при создании пары');
     }
   };
 
-  // 🔥 НОВАЯ ФУНКЦИЯ: Обновление названия пары
   const handleUpdateCoupleName = async () => {
     if (!coupleName.trim()) {
       alert('Введите название пары');
@@ -72,7 +61,6 @@ const Profile: React.FC = () => {
         alert(result.message || 'Ошибка при обновлении названия пары');
       }
     } catch (error) {
-      console.error('Error updating couple name:', error);
       alert('Ошибка при обновлении названия пары');
     }
   };
@@ -93,7 +81,6 @@ const Profile: React.FC = () => {
         alert(result.message || 'Ошибка при присоединении к паре');
       }
     } catch (error) {
-      console.error('Error joining couple:', error);
       alert('Ошибка при присоединении к паре');
     }
   };
@@ -113,7 +100,6 @@ const Profile: React.FC = () => {
         alert(result.message || 'Ошибка при обновлении имени');
       }
     } catch (error) {
-      console.error('Error updating name:', error);
       alert('Ошибка при обновлении имени');
     }
   };
@@ -155,12 +141,11 @@ const Profile: React.FC = () => {
   return (
     <div className="profile-page"> 
       <header className="profile-header">
-        <h1>👤 Профиль пары</h1>
+        <h1>👤 Профиль</h1>
       </header>
       
       <main className="profile-main"> 
         <div className="profile-content">
-          {/* Информация о пользователе */}
           <div className="profile-section">
             <h2>Ваш профиль</h2>
             <div className="user-info">
@@ -194,12 +179,10 @@ const Profile: React.FC = () => {
                   </h3>
                 )}
                 <p>{profile.user.email}</p>
-                <small>С {formatDate(profile.user.createdAt)}</small>
               </div>
             </div>
           </div>
 
-          {/* Информация о паре */}
           <div className="profile-section">
             <h2>Ваша пара</h2>
             {profile.couple ? (
@@ -238,7 +221,7 @@ const Profile: React.FC = () => {
                         alert('Код скопирован!');
                       }}
                     >
-                      📋
+                      📄
                     </button>
                   </div>
                 </div>
