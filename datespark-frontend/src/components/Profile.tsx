@@ -206,7 +206,7 @@ const Profile: React.FC = () => {
               <div className="couple-info">
                 <div className="couple-header">
                   {editingCoupleName ? (
-                    <div className="edit-name">
+                    <div className="edit-couple-name">
                       <input
                         type="text"
                         value={coupleName}
@@ -225,7 +225,7 @@ const Profile: React.FC = () => {
                       }
                     }} className={isCoupleCreator() ? 'editable' : ''}>
                       {profile.couple.name}
-                      {isCoupleCreator() && <span className="edit-icon"> ✎</span>}
+                      {isCoupleCreator() && <span> ✎</span>}
                     </h3>
                   )}
                   <div className="join-code">
