@@ -147,7 +147,6 @@ const Profile: React.FC = () => {
       <main className="profile-main"> 
         <div className="profile-content">
           <div className="profile-section">
-            <h2>Ваш профиль</h2>
             <div className="user-info">
               <div className="avatar">
                 {profile.user.avatar ? (
@@ -221,7 +220,7 @@ const Profile: React.FC = () => {
                         alert('Код скопирован!');
                       }}
                     >
-                      📄
+                      📋
                     </button>
                   </div>
                 </div>

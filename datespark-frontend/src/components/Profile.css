@@ -1,568 +1,253 @@
 /* Основной контейнер страницы */
 .profile-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  clip-path: ellipse(100% 60% at 50% 40%);
+  z-index: 0;
 }
 
 /* Заголовок страницы */
 .profile-header {
   text-align: center;
   margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
 }
 
 .profile-header h1 {
   color: white;
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-family: 'Playfair Display', serif;
 }
 
 /* Основной контент */
 .profile-main {
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .profile-content {
-  background: white;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
   padding: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 
+    0 20px 40px rgba(255, 107, 107, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Секции профиля */
-.profile-section {
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.profile-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.profile-section h2 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.4rem;
-}
-
-/* Информация о пользователе */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
+/* Аватар с сердечком */
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: white;
   font-weight: bold;
-  flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+  border: 3px solid white;
 }
 
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.user-details h3 {
-  margin: 0 0 5px 0;
-  color: #333;
-  cursor: pointer;
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-
-.user-details h3:hover {
-  background-color: #f5f5f5;
-}
-
-.user-details p {
-  margin: 0 0 5px 0;
-  color: #666;
-}
-
-.user-details small {
-  color: #999;
-  font-size: 0.9rem;
-}
-
-/* Форма редактирования имени */
-.edit-name {
+.avatar::after {
+  content: '💖';
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   display: flex;
-  gap: 10px;
   align-items: center;
-  margin-bottom: 10px;
-}
-
-.edit-name input {
-  padding: 8px 12px;
-  border: 2px solid #667eea;
-  border-radius: 8px;
+  justify-content: center;
   font-size: 1rem;
-  outline: none;
-  flex: 1;
-  min-width: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.edit-name button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.edit-name button:first-of-type {
-  background: #4CAF50;
-  color: white;
-}
-
-.edit-name button:first-of-type:hover {
-  background: #45a049;
-}
-
-.edit-name button:last-of-type {
-  background: #f44336;
-  color: white;
-}
-
-.edit-name button:last-of-type:hover {
-  background: #da190b;
-}
-
-/* Информация о паре */
+/* Карточка пары с эффектом влюбленности */
 .couple-info {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+  padding: 25px;
+  border-radius: 20px;
+  border: 2px solid #ffecec;
+  position: relative;
+  overflow: hidden;
 }
 
-.couple-header {
-  margin-bottom: 20px;
+.couple-info::before {
+  content: '💑';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  opacity: 0.1;
 }
 
-.couple-header h3 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.couple-header h3.editable {
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  display: inline-block;
-}
-
-.couple-header h3.editable:hover {
-  background-color: #e9ecef;
-}
-
-/* Форма редактирования названия пары */
-.edit-couple-name {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.edit-couple-name input {
-  padding: 8px 12px;
-  border: 2px solid #667eea;
-  border-radius: 8px;
-  font-size: 1rem;
-  outline: none;
-  flex: 1;
-  min-width: 0;
-}
-
-.edit-couple-name button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.edit-couple-name button:first-of-type {
-  background: #4CAF50;
-  color: white;
-}
-
-.edit-couple-name button:first-of-type:hover {
-  background: #45a049;
-}
-
-.edit-couple-name button:last-of-type {
-  background: #f44336;
-  color: white;
-}
-
-.edit-couple-name button:last-of-type:hover {
-  background: #da190b;
-}
-
-/* Код приглашения */
+/* Код приглашения в стиле любовного письма */
 .join-code {
   display: flex;
   align-items: center;
   gap: 10px;
   background: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px dashed #ff6b6b;
+  background: linear-gradient(135deg, #fff, #fff5f5);
+  position: relative;
 }
 
-.join-code strong {
-  color: #333;
-  white-space: nowrap;
-}
-
-.code {
-  font-family: monospace;
-  font-weight: bold;
-  color: #667eea;
-  font-size: 1.1rem;
-}
-
-.copy-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
+.join-code::before {
+  content: '💌';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
   padding: 5px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.copy-btn:hover {
-  background-color: #f5f5f5;
-}
-
-/* Участники пары */
-.partners h4 {
-  margin: 0 0 15px 0;
-  color: #333;
-}
-
+/* Партнеры с анимацией пульсации */
 .partner {
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 12px;
+  padding: 15px;
   background: white;
-  border-radius: 8px;
+  border-radius: 15px;
   margin-bottom: 10px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #ffecec;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.partner:last-child {
-  margin-bottom: 0;
+.partner:hover {
+  transform: translateX(5px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.1);
 }
 
-.partner-name {
+.partner::before {
+  content: '❤️';
+  position: absolute;
+  left: -10px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.partner:hover::before {
+  opacity: 1;
+  left: -5px;
+}
+
+/* Кнопки с анимацией сердца */
+.create-couple-btn, .join-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
   font-weight: bold;
-  color: #333;
-  flex: 1;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.partner-role {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  white-space: nowrap;
+.create-couple-btn::before, .join-btn::before {
+  content: '💕';
+  position: absolute;
+  right: 20px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
 }
 
-.partner-role.creator {
-  background: #fff3cd;
-  color: #856404;
+.create-couple-btn:hover::before, .join-btn:hover::before {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-.partner-role.member {
-  background: #d1ecf1;
-  color: #0c5460;
+.create-couple-btn:hover, .join-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
 }
 
-.partner-joined {
-  color: #999;
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-/* Состояние без пары */
+/* Форма без пары с анимацией */
 .no-couple {
   text-align: center;
-  padding: 30px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 2px dashed #dee2e6;
+  padding: 40px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f4 100%);
+  border-radius: 20px;
+  border: 2px dashed #ff6b6b;
+  position: relative;
+  animation: pulse 2s infinite;
 }
 
-.no-couple p {
-  margin: 0 0 20px 0;
-  color: #666;
-  font-size: 1.1rem;
+@keyframes pulse {
+  0% { border-color: #ff6b6b; }
+  50% { border-color: #ff8e8e; }
+  100% { border-color: #ff6b6b; }
 }
 
-/* Форма создания пары */
-.create-couple-form {
-  margin-bottom: 20px;
-}
-
-.create-couple-form input {
-  width: 100%;
-  max-width: 300px;
-  padding: 12px;
-  border: 2px solid #667eea;
-  border-radius: 8px;
-  font-size: 1rem;
+.no-couple::before {
+  content: '💑';
+  font-size: 3rem;
+  display: block;
   margin-bottom: 15px;
-  outline: none;
-  box-sizing: border-box;
+  animation: float 3s ease-in-out infinite;
 }
 
-.form-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
-.create-couple-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
+/* Редактируемые поля с анимацией */
+.user-details h3, .couple-header h3.editable {
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-.create-couple-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.user-details h3:hover, .couple-header h3.editable:hover {
+  color: #ff6b6b;
+  transform: scale(1.05);
 }
 
-.create-couple-btn.default {
-  background: linear-gradient(135deg, #6c757d, #495057);
+.user-details h3::after, .couple-header h3.editable::after {
+  content: '✨';
+  position: absolute;
+  right: -25px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.create-couple-btn.default:hover {
-  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
-}
-
-.cancel-btn {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
-}
-
-.cancel-btn:hover {
-  background: #5a6268;
-}
-
-/* Секция присоединения к паре */
-.join-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #dee2e6;
-}
-
-.join-section p {
-  margin: 0 0 15px 0;
-  color: #666;
-}
-
-.join-form {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.join-form input {
-  padding: 10px;
-  border: 2px solid #28a745;
-  border-radius: 8px;
-  font-size: 1rem;
-  text-transform: uppercase;
-  text-align: center;
-  outline: none;
-  width: 120px;
-  box-sizing: border-box;
-}
-
-.join-form button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-  box-sizing: border-box;
-}
-
-.join-form button:first-of-type {
-  background: #28a745;
-  color: white;
-}
-
-.join-form button:first-of-type:hover {
-  background: #218838;
-}
-
-.join-form button:last-of-type {
-  background: #6c757d;
-  color: white;
-}
-
-.join-form button:last-of-type:hover {
-  background: #5a6268;
-}
-
-.join-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.join-btn:hover {
-  background: #218838;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-}
-
-/* Действия профиля */
-.profile-actions {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.logout-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.logout-btn:hover {
-  background: #c82333;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-}
-
-/* Состояния загрузки и ошибки */
-.loading, .error {
-  text-align: center;
-  padding: 50px;
-  color: white;
-  font-size: 1.2rem;
-}
-
-.error button {
-  background: white;
-  color: #667eea;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 15px;
-  font-weight: bold;
-}
-
-.error button:hover {
-  background: #f8f9fa;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .profile-page {
-    padding: 10px;
-  }
-  
-  .profile-content {
-    padding: 20px;
-  }
-  
-  .user-info {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .edit-name, .edit-couple-name {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .edit-name input, .edit-couple-name input {
-    margin-bottom: 10px;
-  }
-  
-  .join-form {
-    flex-direction: column;
-  }
-  
-  .join-form input, .join-form button {
-    width: 100%;
-    max-width: 200px;
-  }
-  
-  .partner {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-  
-  .partner-name {
-    flex: none;
-  }
+.user-details h3:hover::after, .couple-header h3.editable:hover::after {
+  opacity: 1;
 }
