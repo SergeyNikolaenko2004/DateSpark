@@ -13,6 +13,7 @@ namespace DateSpark.API.Models
         public string JoinCode { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; }
 
         // Навигационные свойства
         public ICollection<UserCouple> UserCouples { get; set; } = new List<UserCouple>();

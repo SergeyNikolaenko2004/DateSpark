@@ -12,7 +12,8 @@ namespace DateSpark.API.Services
     {
         Task<AuthResponse> RegisterAsync(AuthRequest request);
         Task<AuthResponse> LoginAsync(AuthRequest request);
-        Task<AuthResponse> CreateCoupleAsync(int userId);
+        Task<AuthResponse> CreateCoupleAsync(int userId, string? coupleName = null);
+        Task<AuthResponse> UpdateCoupleAsync(int userId, string coupleName);
         Task<AuthResponse> JoinCoupleAsync(int userId, string joinCode);
     }
 
@@ -145,7 +146,6 @@ namespace DateSpark.API.Services
             };
         }
 
-        // 🔥 НОВЫЙ МЕТОД: Обновление названия пары
         public async Task<AuthResponse> UpdateCoupleAsync(int userId, string coupleName)
         {
             if (string.IsNullOrEmpty(coupleName) || coupleName.Length < 2)
