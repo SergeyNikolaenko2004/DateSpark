@@ -41,6 +41,14 @@ interface UpdateProfileRequest {
   avatar?: string;
 }
 
+interface CreateCoupleRequest {
+  coupleName?: string;
+}
+
+interface UpdateCoupleRequest {
+  coupleName: string;
+}
+
 export const api = {
   async getRandomIdea(filters?: IdeaFilters): Promise<Idea | null> {
     try {
@@ -156,15 +164,36 @@ export const api = {
     }
   },
 
-  async createCouple(): Promise<AuthResponse> {
+   async createCouple(coupleName?: string): Promise<AuthResponse> {
     try {
       const token = getToken();
+      const body = coupleName ? { coupleName } : {};
+      
       const response = await fetch(`${API_BASE}/auth/create-couple`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify(body)
+      });
+      return await response.json();
+    } catch (error) {
+      return { success: false, message: 'Network error' };
+    }
+  },
+
+  // 🔥 НОВЫЙ МЕТОД: Обновление названия пары
+  async updateCouple(coupleName: string): Promise<AuthResponse> {
+    try {
+      const token = getToken();
+      const response = await fetch(`${API_BASE}/auth/update-couple`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ coupleName })
       });
       return await response.json();
     } catch (error) {

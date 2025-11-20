@@ -431,6 +431,114 @@
   .profile-section {
     padding: 20px;
   }
+
+  /* Стили для редактирования названия пары */
+  .edit-couple-name {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .edit-couple-name input {
+    padding: 10px 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 1.1em;
+    text-align: center;
+    transition: border-color 0.3s ease;
+    min-width: 200px;
+  }
+
+  .edit-couple-name input:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+
+  .edit-couple-name button {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .edit-couple-name button:hover {
+    background: #764ba2;
+  }
+
+  /* Стиль для редактируемого названия пары */
+  .couple-info h3.editable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 12px;
+    background: rgba(102, 126, 234, 0.05);
+    border: 1px solid transparent;
+  }
+
+  .couple-info h3.editable:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.2);
+    transform: translateY(-1px);
+  }
+
+  /* Стили для формы создания пары */
+  .create-couple-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin: 20px 0;
+  }
+
+  .create-couple-form input {
+    padding: 12px 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 1em;
+    text-align: center;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .create-couple-form input:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .create-couple-btn.default {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  }
+
+  .cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .cancel-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+  }
+
   
   /* 🔥 ЦЕНТРИРОВАНИЕ НА МОБИЛЬНЫХ */
   .user-info {

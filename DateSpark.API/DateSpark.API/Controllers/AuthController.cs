@@ -41,7 +41,7 @@ namespace DateSpark.API.Controllers
 
         [HttpPost("create-couple")]
         [Authorize] 
-        public async Task<ActionResult<AuthResponse>> CreateCouple()
+        public async Task<ActionResult<AuthResponse>> CreateCouple([FromBody] CreateCoupleRequest? request = null)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
@@ -49,7 +49,28 @@ namespace DateSpark.API.Controllers
                 return Unauthorized(new AuthResponse { Success = false, Message = "User not authenticated" });
             }
 
-            var result = await _authService.CreateCoupleAsync(userId);
+            // 🔥 ПЕРЕДАЕМ НАЗВАНИЕ ПАРЫ ЕСЛИ УКАЗАНО
+            var coupleName = request?.CoupleName;
+            var result = await _authService.CreateCoupleAsync(userId, coupleName);
+            
+            if (!result.Success)
+                return BadRequest(result);
+                
+            return Ok(result);
+        }
+
+        // 🔥 НОВЫЙ ЭНДПОИНТ: Обновление названия пары
+        [HttpPut("update-couple")]
+        [Authorize]
+        public async Task<ActionResult<AuthResponse>> UpdateCouple([FromBody] UpdateCoupleRequest request)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized(new AuthResponse { Success = false, Message = "User not authenticated" });
+            }
+
+            var result = await _authService.UpdateCoupleAsync(userId, request.CoupleName);
             
             if (!result.Success)
                 return BadRequest(result);
@@ -79,5 +100,14 @@ namespace DateSpark.API.Controllers
     public class JoinCoupleRequest
     {
         public string JoinCode { get; set; } = string.Empty;
+    }
+    public class CreateCoupleRequest
+    {
+        public string? CoupleName { get; set; }
+    }
+
+    public class UpdateCoupleRequest
+    {
+        public string CoupleName { get; set; } = string.Empty;
     }
 }

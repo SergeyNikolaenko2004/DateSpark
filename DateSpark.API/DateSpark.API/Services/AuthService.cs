@@ -27,78 +27,78 @@ namespace DateSpark.API.Services
             _configuration = configuration;
         }
 
-    public async Task<AuthResponse> RegisterAsync(AuthRequest request)
-    {
-        // Проверяем существует ли пользователь
-        if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+        public async Task<AuthResponse> RegisterAsync(AuthRequest request)
         {
-            return new AuthResponse { Success = false, Message = "Пользователь с таким email уже существует" };
-        }
+            // Проверяем существует ли пользователь
+            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+            {
+                return new AuthResponse { Success = false, Message = "Пользователь с таким email уже существует" };
+            }
 
-        // Создаем пользователя
-        var user = new User
-        {
-            Email = request.Email,
-            Name = request.Name,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
+            // Создаем пользователя
+            var user = new User
+            {
+                Email = request.Email,
+                Name = request.Name,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
-        // Генерируем токен
-        var token = GenerateJwtToken(user);
+            // Генерируем токен
+            var token = GenerateJwtToken(user);
 
-        return new AuthResponse
-        {
-            Success = true,
-            Message = "Регистрация успешна",
-            Token = token,
-            User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name }
-        };
-    }
-
-    public async Task<AuthResponse> LoginAsync(AuthRequest request)
-    {
-        var user = await _context.Users
-            .Include(u => u.UserCouples)
-            .ThenInclude(uc => uc.Couple)
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
-
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-        {
-            return new AuthResponse { Success = false, Message = "Неверный email или пароль" };
-        }
-
-        // Получаем пару пользователя (может быть null)
-        var userCouple = user.UserCouples.FirstOrDefault();
-        CoupleDto? coupleDto = null;
-
-        if (userCouple?.Couple != null)
-        {
-            coupleDto = new CoupleDto 
-            { 
-                Id = userCouple.Couple.Id, 
-                Name = userCouple.Couple.Name, 
-                JoinCode = userCouple.Couple.JoinCode 
+            return new AuthResponse
+            {
+                Success = true,
+                Message = "Регистрация успешна",
+                Token = token,
+                User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name }
             };
         }
 
-        var token = GenerateJwtToken(user);
-
-        return new AuthResponse
+        public async Task<AuthResponse> LoginAsync(AuthRequest request)
         {
-            Success = true,
-            Message = "Вход выполнен успешно",
-            Token = token,
-            User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
-            Couple = coupleDto 
-        };
-    }
+            var user = await _context.Users
+                .Include(u => u.UserCouples)
+                .ThenInclude(uc => uc.Couple)
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
 
-        public async Task<AuthResponse> CreateCoupleAsync(int userId)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            {
+                return new AuthResponse { Success = false, Message = "Неверный email или пароль" };
+            }
+
+            // Получаем пару пользователя (может быть null)
+            var userCouple = user.UserCouples.FirstOrDefault();
+            CoupleDto? coupleDto = null;
+
+            if (userCouple?.Couple != null)
+            {
+                coupleDto = new CoupleDto 
+                { 
+                    Id = userCouple.Couple.Id, 
+                    Name = userCouple.Couple.Name, 
+                    JoinCode = userCouple.Couple.JoinCode 
+                };
+            }
+
+            var token = GenerateJwtToken(user);
+
+            return new AuthResponse
+            {
+                Success = true,
+                Message = "Вход выполнен успешно",
+                Token = token,
+                User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
+                Couple = coupleDto 
+            };
+        }
+
+        public async Task<AuthResponse> CreateCoupleAsync(int userId, string? coupleName = null)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -106,9 +106,19 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Пользователь не найден" };
             }
 
+            // 🔥 ПРОВЕРЯЕМ НЕ СОСТОИТ ЛИ УЖЕ В ПАРЕ
+            var existingCouple = await _context.UserCouples
+                .FirstOrDefaultAsync(uc => uc.UserId == userId);
+            
+            if (existingCouple != null)
+            {
+                return new AuthResponse { Success = false, Message = "Вы уже состоите в паре" };
+            }
+
+            // 🔥 СОЗДАЕМ ПАРУ С ВЫБРАННЫМ ИМЕНЕМ ИЛИ ПО УМОЛЧАНИЮ
             var couple = new Couple
             {
-                Name = $"{user.Name}'s Couple",
+                Name = !string.IsNullOrEmpty(coupleName) ? coupleName.Trim() : $"{user.Name}'s Couple",
                 JoinCode = GenerateJoinCode(),
                 CreatedAt = DateTime.UtcNow
             };
@@ -132,6 +142,44 @@ namespace DateSpark.API.Services
                 Success = true,
                 Message = "Пара создана успешно",
                 Couple = new CoupleDto { Id = couple.Id, Name = couple.Name, JoinCode = couple.JoinCode }
+            };
+        }
+
+        // 🔥 НОВЫЙ МЕТОД: Обновление названия пары
+        public async Task<AuthResponse> UpdateCoupleAsync(int userId, string coupleName)
+        {
+            if (string.IsNullOrEmpty(coupleName) || coupleName.Length < 2)
+            {
+                return new AuthResponse { Success = false, Message = "Название пары должно содержать минимум 2 символа" };
+            }
+
+            // Находим пару пользователя
+            var userCouple = await _context.UserCouples
+                .Include(uc => uc.Couple)
+                .FirstOrDefaultAsync(uc => uc.UserId == userId);
+
+            if (userCouple == null || userCouple.Couple == null)
+            {
+                return new AuthResponse { Success = false, Message = "Вы не состоите в паре" };
+            }
+
+            // Проверяем, что пользователь является создателем пары
+            if (userCouple.Role != "creator")
+            {
+                return new AuthResponse { Success = false, Message = "Только создатель пары может изменять её название" };
+            }
+
+            // Обновляем название пары
+            userCouple.Couple.Name = coupleName.Trim();
+            userCouple.Couple.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return new AuthResponse
+            {
+                Success = true,
+                Message = "Название пары обновлено",
+                Couple = new CoupleDto { Id = userCouple.Couple.Id, Name = userCouple.Couple.Name, JoinCode = userCouple.Couple.JoinCode }
             };
         }
 

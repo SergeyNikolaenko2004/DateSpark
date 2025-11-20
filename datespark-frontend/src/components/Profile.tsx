@@ -1,4 +1,3 @@
-// Profile.tsx
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import './Profile.css';
@@ -10,6 +9,10 @@ const Profile: React.FC = () => {
   const [joinCode, setJoinCode] = useState('');
   const [editingName, setEditingName] = useState(false);
   const [userName, setUserName] = useState('');
+  const [editingCoupleName, setEditingCoupleName] = useState(false);
+  const [coupleName, setCoupleName] = useState('');
+  const [showCreateCoupleForm, setShowCreateCoupleForm] = useState(false);
+  const [newCoupleName, setNewCoupleName] = useState('');
 
   useEffect(() => {
     loadProfile();
@@ -34,17 +37,43 @@ const Profile: React.FC = () => {
     }
   };
 
-  const handleCreateCouple = async () => {
+  // 🔥 ОБНОВЛЕННАЯ ФУНКЦИЯ СОЗДАНИЯ ПАРЫ
+  const handleCreateCouple = async (name?: string) => {
     try {
-      const result = await api.createCouple();
+      const result = await api.createCouple(name);
       if (result.success) {
+        setShowCreateCoupleForm(false);
+        setNewCoupleName('');
         await loadProfile();
+        alert('Пара создана успешно!');
       } else {
         alert(result.message || 'Ошибка при создании пары');
       }
     } catch (error) {
       console.error('Error creating couple:', error);
       alert('Ошибка при создании пары');
+    }
+  };
+
+  // 🔥 НОВАЯ ФУНКЦИЯ: Обновление названия пары
+  const handleUpdateCoupleName = async () => {
+    if (!coupleName.trim()) {
+      alert('Введите название пары');
+      return;
+    }
+    
+    try {
+      const result = await api.updateCouple(coupleName);
+      if (result.success) {
+        setEditingCoupleName(false);
+        await loadProfile();
+        alert('Название пары обновлено!');
+      } else {
+        alert(result.message || 'Ошибка при обновлении названия пары');
+      }
+    } catch (error) {
+      console.error('Error updating couple name:', error);
+      alert('Ошибка при обновлении названия пары');
     }
   };
 
@@ -98,6 +127,13 @@ const Profile: React.FC = () => {
     return new Date(dateString).toLocaleDateString('ru-RU');
   };
 
+  // 🔥 ФУНКЦИЯ ДЛЯ ПРОВЕРКИ, ЯВЛЯЕТСЯ ЛИ ПОЛЬЗОВАТЕЛЬ СОЗДАТЕЛЕМ ПАРЫ
+  const isCoupleCreator = () => {
+    if (!profile?.partners) return false;
+    const currentUser = profile.partners.find((partner: any) => partner.id === profile.user.id);
+    return currentUser?.role === 'creator';
+  };
+
   if (loading) {
     return (
       <div className="profile-page">
@@ -125,6 +161,7 @@ const Profile: React.FC = () => {
       
       <main className="profile-main"> 
         <div className="profile-content">
+          {/* Информация о пользователе */}
           <div className="profile-section">
             <h2>Ваш профиль</h2>
             <div className="user-info">
@@ -169,7 +206,29 @@ const Profile: React.FC = () => {
             {profile.couple ? (
               <div className="couple-info">
                 <div className="couple-header">
-                  <h3>{profile.couple.name}</h3>
+                  {editingCoupleName ? (
+                    <div className="edit-couple-name">
+                      <input
+                        type="text"
+                        value={coupleName}
+                        onChange={(e) => setCoupleName(e.target.value)}
+                        placeholder="Введите название пары"
+                        maxLength={30}
+                      />
+                      <button onClick={handleUpdateCoupleName}>✓</button>
+                      <button onClick={() => setEditingCoupleName(false)}>✕</button>
+                    </div>
+                  ) : (
+                    <h3 onClick={() => {
+                      if (isCoupleCreator()) {
+                        setCoupleName(profile.couple.name);
+                        setEditingCoupleName(true);
+                      }
+                    }} className={isCoupleCreator() ? 'editable' : ''}>
+                      {profile.couple.name}
+                      {isCoupleCreator() && <span className="edit-icon"> ✎</span>}
+                    </h3>
+                  )}
                   <div className="join-code">
                     <strong>Код приглашения:</strong>
                     <span className="code">{profile.couple.joinCode}</span>
@@ -203,9 +262,46 @@ const Profile: React.FC = () => {
             ) : (
               <div className="no-couple">
                 <p>Вы еще не создали пару</p>
-                <button onClick={handleCreateCouple} className="create-couple-btn">
-                  Создать пару
-                </button>
+                
+                {/* 🔥 ФОРМА СОЗДАНИЯ ПАРЫ С ВЫБОРОМ ИМЕНИ */}
+                {showCreateCoupleForm ? (
+                  <div className="create-couple-form">
+                    <input
+                      type="text"
+                      value={newCoupleName}
+                      onChange={(e) => setNewCoupleName(e.target.value)}
+                      placeholder="Введите название пары (необязательно)"
+                      maxLength={30}
+                    />
+                    <div className="form-buttons">
+                      <button 
+                        onClick={() => handleCreateCouple(newCoupleName)} 
+                        className="create-couple-btn"
+                      >
+                        Создать пару
+                      </button>
+                      <button 
+                        onClick={() => handleCreateCouple()} 
+                        className="create-couple-btn default"
+                      >
+                        Создать со стандартным названием
+                      </button>
+                      <button 
+                        onClick={() => setShowCreateCoupleForm(false)} 
+                        className="cancel-btn"
+                      >
+                        Отмена
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button 
+                    onClick={() => setShowCreateCoupleForm(true)} 
+                    className="create-couple-btn"
+                  >
+                    Создать пару
+                  </button>
+                )}
                 
                 <div className="join-section">
                   <p>Или присоединитесь к существующей паре:</p>
