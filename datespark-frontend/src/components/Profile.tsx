@@ -206,7 +206,7 @@ const Profile: React.FC = () => {
               <div className="couple-info">
                 <div className="couple-header">
                   {editingCoupleName ? (
-                    <div className="edit-couple-name">
+                    <div className="edit-name">
                       <input
                         type="text"
                         value={coupleName}
@@ -262,7 +262,6 @@ const Profile: React.FC = () => {
               <div className="no-couple">
                 <p>Вы еще не создали пару</p>
                 
-                {/* 🔥 ФОРМА СОЗДАНИЯ ПАРЫ С ВЫБОРОМ ИМЕНИ */}
                 {showCreateCoupleForm ? (
                   <div className="create-couple-form">
                     <input
