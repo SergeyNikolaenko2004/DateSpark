@@ -9,11 +9,11 @@
   transition: box-shadow 0.2s ease;
 }
 
-.ideas-card-header {
+.card-header {
   margin-bottom: 10px; /* 🔥 УМЕНЬШИЛИ отступ */
 }
 
-.ideas-card-title {
+.card-title {
   margin: 0;
   color: #333;
   font-size: 1.5em;
@@ -21,12 +21,12 @@
 }
 
 /* 🔥 НОВЫЙ КОНТЕЙНЕР ДЛЯ КАТЕГОРИИ */
-.ideas-card-category-wrapper {
+.card-category-wrapper {
   text-align: center;
   margin-bottom: 15px;
 }
 
-.ideas-card-category {
+.card-category {
   background: #ff6b6b;
   color: white;
   padding: 6px 16px; /* 🔥 УВЕЛИЧИЛИ отступы */
@@ -40,14 +40,14 @@
   text-overflow: ellipsis;
 }
 
-.ideas-card-description {
+.card-description {
   color: #666;
   line-height: 1.5;
   margin-bottom: 20px;
   text-align: center; /* 🔥 ДОБАВИЛИ выравнивание */
 }
 
-.ideas-card-details {
+.card-details {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -113,17 +113,17 @@
     margin: 0 10px;
   }
   
-  .ideas-card-title {
+  .card-title {
     font-size: 1.3em;
   }
   
-  .ideas-card-category {
+  .card-category {
     font-size: 0.8em;
     padding: 5px 12px;
     max-width: 70%; /* 🔥 ЕЩЕ УЖЕ на мобильных */
   }
   
-  .ideas-card-description {
+  .card-description {
     font-size: 0.9em;
   }
   
@@ -144,11 +144,11 @@
     padding: 12px;
   }
   
-  .ideas-card-title {
+  .card-title {
     font-size: 1.2em;
   }
   
-  .ideas-card-category {
+  .card-category {
     font-size: 0.75em;
     padding: 4px 10px;
   }

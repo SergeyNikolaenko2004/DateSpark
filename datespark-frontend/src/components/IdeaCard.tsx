@@ -30,19 +30,19 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
   const priceHint = getPriceHint(idea.priceCategory);
 
   return (
-    <div className="ideas-idea-card">
-      <div className="ideas-card-header">
-        <h2 className="ideas-card-title">{idea.title}</h2>
+    <div className="idea-card">
+      <div className="card-header">
+        <h2 className="card-title">{idea.title}</h2>
       </div>
       
-      <div className="ideas-card-category-wrapper">
-        <span className="ideas-card-category">{idea.category}</span>
+      <div className="card-category-wrapper">
+        <span className="card-category">{idea.category}</span>
       </div>
       
-      <div className="ideas-card-content">
-        <p className="ideas-card-description">{idea.description}</p>
+      <div className="card-content">
+        <p className="card-description">{idea.description}</p>
         
-        <div className="ideas-card-details">
+        <div className="card-details">
           <div className="detail-item">
             <span className="detail-label">📍</span>
             {idea.location}
@@ -65,7 +65,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
         </div>
       </div>
 
-      <div className="ideas-card-actions">
+      <div className="Ideas-card-actions">
         <button 
           className="btn-dislike"
           onClick={() => onSwipe('left')}
