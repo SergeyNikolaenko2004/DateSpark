@@ -13,8 +13,7 @@ namespace DateSpark.API.Data
     public DbSet<User> Users { get; set; }
     public DbSet<Couple> Couples { get; set; }
     public DbSet<UserCouple> UserCouples { get; set; }
-    
-    // 🔥 НОВОЕ: AdventureCards
+
     public DbSet<AdventureCard> AdventureCards { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
