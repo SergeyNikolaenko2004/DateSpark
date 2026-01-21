@@ -10,6 +10,8 @@ const AdventureBoard: React.FC = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
+  const [hasCouple, setHasCouple] = useState<boolean | null>(null);
+  const [profile, setProfile] = useState<any>(null);
 
   // Статусы для колонок
   const statuses = [
@@ -20,18 +22,41 @@ const AdventureBoard: React.FC = () => {
   ];
 
   useEffect(() => {
-    loadAdventures();
+    loadProfileAndAdventures();
   }, []);
 
-  const loadAdventures = async () => {
+  const loadProfileAndAdventures = async () => {
     try {
       setLoading(true);
-      const data = await api.getCoupleAdventures();
-      setAdventures(data);
+      
+      // Сначала загружаем профиль
+      const profileData = await api.getProfile();
+      setProfile(profileData);
+      
+      if (!profileData.couple) {
+        setHasCouple(false);
+        setAdventures([]);
+        setError('У вас нет пары для использования доски приключений');
+        return;
+      }
+      
+      setHasCouple(true);
+      
+      // Если есть пара - загружаем приключения
+      const adventuresData = await api.getCoupleAdventures();
+      setAdventures(adventuresData);
       setError(null);
     } catch (err: any) {
-      setError('Не удалось загрузить доску приключений');
-      console.error('Error loading adventures:', err);
+      console.error('Error loading data:', err);
+      
+      // Проверяем, если это ошибка "нет пары"
+      if (err.message && err.message.includes('400') || 
+          err.message && err.message.includes('не состоите в паре')) {
+        setHasCouple(false);
+        setError('У вас нет пары для использования доски приключений');
+      } else {
+        setError('Не удалось загрузить доску приключений');
+      }
     } finally {
       setLoading(false);
     }
@@ -48,7 +73,7 @@ const AdventureBoard: React.FC = () => {
       setNewTitle('');
       setNewDescription('');
       setShowAddForm(false);
-      await loadAdventures();
+      await loadProfileAndAdventures();
       alert('Приключение добавлено!');
     } catch (err: any) {
       alert('Ошибка при добавлении: ' + err.message);
@@ -58,7 +83,7 @@ const AdventureBoard: React.FC = () => {
   const handleUpdateStatus = async (adventureId: number, newStatus: AdventureStatus) => {
     try {
       await api.updateAdventureStatus(adventureId, newStatus);
-      await loadAdventures();
+      await loadProfileAndAdventures();
     } catch (err: any) {
       alert('Ошибка при обновлении статуса: ' + err.message);
     }
@@ -69,7 +94,7 @@ const AdventureBoard: React.FC = () => {
 
     try {
       await api.deleteAdventure(adventureId);
-      await loadAdventures();
+      await loadProfileAndAdventures();
     } catch (err: any) {
       alert('Ошибка при удалении: ' + err.message);
     }
@@ -112,22 +137,95 @@ const AdventureBoard: React.FC = () => {
     );
   }
 
-  if (error) {
+  // Показываем экран "нет пары"
+  if (hasCouple === false) {
+    return (
+      <div className="adventure-board-page">
+        <header className="adventure-header">
+          <h1>📋 Доска приключений</h1>
+          <p>Планируйте и отслеживайте ваши свидания вместе</p>
+        </header>
+        
+        <main className="adventure-main">
+          <div className="no-couple-message">
+            <div className="message-content">
+              <h3>😔 У вас еще нет пары</h3>
+              <p>Чтобы использовать доску приключений, нужно создать пару или присоединиться к существующей</p>
+              
+              <div className="couple-actions">
+                <button 
+                  className="create-couple-btn"
+                  onClick={() => window.location.href = '/profile'}
+                >
+                  📝 Перейти в профиль
+                </button>
+                
+                <p className="or-text">или</p>
+                
+                <div className="quick-actions">
+                  <button 
+                    className="quick-create-btn"
+                    onClick={async () => {
+                      try {
+                        await api.createCouple('Наша пара');
+                        alert('Пара создана! Теперь можно использовать доску приключений.');
+                        await loadProfileAndAdventures();
+                      } catch (err: any) {
+                        alert('Ошибка: ' + err.message);
+                      }
+                    }}
+                  >
+                    ✨ Быстро создать пару
+                  </button>
+                  
+                  <button 
+                    className="join-couple-btn"
+                    onClick={() => {
+                      const joinCode = prompt('Введите код приглашения (6 символов):');
+                      if (joinCode && joinCode.trim()) {
+                        api.joinCouple(joinCode.trim())
+                          .then(() => {
+                            alert('Вы присоединились к паре!');
+                            loadProfileAndAdventures();
+                          })
+                          .catch(err => alert('Ошибка: ' + err.message));
+                      }
+                    }}
+                  >
+                    👥 Присоединиться по коду
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Показываем ошибку если есть
+  if (error && hasCouple === true) {
     return (
       <div className="adventure-board-page">
         <div className="error">
           <p>{error}</p>
-          <button onClick={loadAdventures}>Повторить</button>
+          <button onClick={loadProfileAndAdventures}>Повторить</button>
         </div>
       </div>
     );
   }
 
+  // Рендерим доску приключений
   return (
     <div className="adventure-board-page">
       <header className="adventure-header">
         <h1>📋 Доска приключений</h1>
         <p>Планируйте и отслеживайте ваши свидания вместе</p>
+        {profile?.couple && (
+          <div className="couple-info-banner">
+            Пара: <strong>{profile.couple.name}</strong> | Код: <code>{profile.couple.joinCode}</code>
+          </div>
+        )}
       </header>
       
       <main className="adventure-main">
@@ -181,7 +279,7 @@ const AdventureBoard: React.FC = () => {
                   <div key={adventure.id} className="adventure-card">
                     <div className="card-header">
                       <h4>{adventure.title}</h4>
-                      {adventure.createdByUserName && (
+                      {adventure.createdByUserName && adventure.createdByUserName !== profile?.user?.name && (
                         <span className="creator-badge">
                           от {adventure.createdByUserName}
                         </span>
