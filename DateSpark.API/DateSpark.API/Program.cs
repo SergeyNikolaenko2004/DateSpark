@@ -153,17 +153,6 @@ using (var scope = app.Services.CreateScope())
                     Duration = "Вечер", 
                     Weather = "Любая",
                     IsActive = true
-                },
-                new Idea { 
-                    Title = "Пикник в парке", 
-                    Description = "Устроить пикник с пледом и вкусной едой", 
-                    Category = "Активное", 
-                    PriceCategory = PriceCategory.Low,
-                    Location = "Природа", 
-                    Mood = "Расслабленное", 
-                    Duration = "Короткое", 
-                    Weather = "Только ясно",
-                    IsActive = true
                 }
             };
 

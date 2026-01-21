@@ -95,7 +95,7 @@ namespace DateSpark.API.Services
             return ideas[random.Next(ideas.Count)];
         }
 
-        // 🔥УПРОЩАЕМ ГОЛОСОВАНИЕ - РАБОТАЕМ С POЛЯМИ В IDEAS
+        // УПРОЩАЕМ ГОЛОСОВАНИЕ - РАБОТАЕМ С POЛЯМИ В IDEAS
         public async Task<bool> VoteForIdeaAsync(int ideaId, bool isLike)
         {
             try
