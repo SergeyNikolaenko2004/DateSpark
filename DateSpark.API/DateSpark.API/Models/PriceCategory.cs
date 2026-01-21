@@ -6,7 +6,7 @@ namespace DateSpark.API.Models
         Medium = 2,  // $$ - средняя цена  
         High = 3     // $$$ - дорого
     }
-    
+
     public static class PriceCategoryExtensions
     {
         public static string ToSymbol(this PriceCategory category)
@@ -19,7 +19,7 @@ namespace DateSpark.API.Models
                 _ => "$$"
             };
         }
-        
+
         public static string ToDisplayName(this PriceCategory category)
         {
             return category switch
@@ -30,7 +30,7 @@ namespace DateSpark.API.Models
                 _ => "Средняя цена"
             };
         }
-        
+
         public static PriceCategory FromSymbol(string symbol)
         {
             return symbol switch

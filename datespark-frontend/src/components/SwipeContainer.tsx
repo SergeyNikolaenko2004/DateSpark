@@ -8,7 +8,7 @@ const FILTER_OPTIONS = {
   categories: ['Романтическое', 'Активное', 'Творческое', 'Приключение', 'Релакс', 'Еда', 'Культура'],
   locations: ['Дома', 'На улице', 'В городе', 'Природа'],
   moods: ['Романтичное', 'Веселое', 'Расслабленное', 'Приключенческое', 'Уютное', 'Экзотическое'],
-  weather: ['Любая', 'Солнечно', 'Снег','Тепло'],
+  weather: ['Любая', 'Солнечно', 'Снег', 'Тепло'],
   priceCategories: [
     { value: 1, label: '$' },
     { value: 2, label: '$$' },
@@ -23,7 +23,7 @@ const SwipeContainer: React.FC = () => {
   const [isSwiping, setIsSwiping] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState<IdeaFilters>({});
-  
+
   const cardRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
   const currentX = useRef(0);
@@ -43,13 +43,13 @@ const SwipeContainer: React.FC = () => {
 
   const handleFilterChange = (filterType: keyof IdeaFilters, value: any) => {
     const newFilters = { ...activeFilters };
-    
+
     if (value === '' || value === null) {
       delete newFilters[filterType];
     } else {
       newFilters[filterType] = value;
     }
-    
+
     setActiveFilters(newFilters);
     fetchRandomIdea(newFilters);
   };
@@ -59,31 +59,31 @@ const SwipeContainer: React.FC = () => {
     fetchRandomIdea({});
   };
 
-const handleSwipe = async (direction: 'left' | 'right') => {
-  if (!currentIdea) return;
+  const handleSwipe = async (direction: 'left' | 'right') => {
+    if (!currentIdea) return;
 
-  setSwipeDirection(direction);
-  
-  setTimeout(async () => {
-    const voteSuccess = await api.voteForIdea({
-      ideaId: currentIdea.id,
-      isLike: direction === 'right'
-    });
+    setSwipeDirection(direction);
 
-    if (direction === 'right' && voteSuccess) {
-      try {
-        const canAdd = await api.canCreateFromIdea(currentIdea.id);
-        if (canAdd) {
-          await api.createAdventureFromIdea(currentIdea.id);
-        } else {
+    setTimeout(async () => {
+      const voteSuccess = await api.voteForIdea({
+        ideaId: currentIdea.id,
+        isLike: direction === 'right'
+      });
+
+      if (direction === 'right' && voteSuccess) {
+        try {
+          const canAdd = await api.canCreateFromIdea(currentIdea.id);
+          if (canAdd) {
+            await api.createAdventureFromIdea(currentIdea.id);
+          } else {
+          }
+        } catch (err: any) {
         }
-      } catch (err: any) {
       }
-    }
 
-    fetchRandomIdea(activeFilters);
-  }, 300); 
-};
+      fetchRandomIdea(activeFilters);
+    }, 300);
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsSwiping(true);
@@ -166,18 +166,18 @@ const handleSwipe = async (direction: 'left' | 'right') => {
   return (
     <div className="swipe-container">
       <div className="filters-header">
-        <button 
+        <button
           className={`filters-toggle ${showFilters ? 'active' : ''}`}
           onClick={() => setShowFilters(!showFilters)}
         >
-          Фильтры 
+          Фильтры
           {Object.keys(activeFilters).length > 0 && (
             <span className="active-filters-count">
               {Object.keys(activeFilters).length}
             </span>
           )}
         </button>
-        
+
         {Object.keys(activeFilters).length > 0 && (
           <button className="reset-filters-btn" onClick={handleResetFilters}>
             ❌ Сбросить
@@ -189,7 +189,7 @@ const handleSwipe = async (direction: 'left' | 'right') => {
         <div className="filters-panel">
           <div className="filter-group">
             <label>Категория</label>
-            <select 
+            <select
               value={activeFilters.category || ''}
               onChange={(e) => handleFilterChange('category', e.target.value)}
             >
@@ -203,7 +203,7 @@ const handleSwipe = async (direction: 'left' | 'right') => {
           {/* Фильтр по локации */}
           <div className="filter-group">
             <label>Локация</label>
-            <select 
+            <select
               value={activeFilters.location || ''}
               onChange={(e) => handleFilterChange('location', e.target.value)}
             >
@@ -217,7 +217,7 @@ const handleSwipe = async (direction: 'left' | 'right') => {
           {/* Фильтр по настроению */}
           <div className="filter-group">
             <label>Настроение</label>
-            <select 
+            <select
               value={activeFilters.mood || ''}
               onChange={(e) => handleFilterChange('mood', e.target.value)}
             >
@@ -231,7 +231,7 @@ const handleSwipe = async (direction: 'left' | 'right') => {
           {/* Фильтр по погоде */}
           <div className="filter-group">
             <label>Погода</label>
-            <select 
+            <select
               value={activeFilters.weather || ''}
               onChange={(e) => handleFilterChange('weather', e.target.value)}
             >
@@ -245,7 +245,7 @@ const handleSwipe = async (direction: 'left' | 'right') => {
           {/* Фильтр по бюджету */}
           <div className="filter-group">
             <label>Бюджет</label>
-            <select 
+            <select
               value={activeFilters.priceCategory || ''}
               onChange={(e) => handleFilterChange('priceCategory', e.target.value ? parseInt(e.target.value) : null)}
             >
@@ -259,7 +259,7 @@ const handleSwipe = async (direction: 'left' | 'right') => {
       )}
 
       {/* Карточка идеи */}
-      <div 
+      <div
         ref={cardRef}
         className={`idea-card-wrapper ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}
         onTouchStart={handleTouchStart}

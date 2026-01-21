@@ -10,7 +10,7 @@ namespace DateSpark.API.Data
         {
             // Для миграций используем PostgreSQL connection string
             var connectionString = "Host=localhost;Port=5432;Database=datespark_migrations;Username=postgres;Password=postgres;";
-            
+
             // Если есть переменная окружения DATABASE_URL - используем её
             var envConnectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
             if (!string.IsNullOrEmpty(envConnectionString))

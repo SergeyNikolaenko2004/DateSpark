@@ -1,5 +1,5 @@
 import React from 'react';
-import SwipeContainer from '../components/SwipeContainer'; 
+import SwipeContainer from '../components/SwipeContainer';
 import './SparkPage.css';
 
 const SparkPage: React.FC = () => {
@@ -9,7 +9,7 @@ const SparkPage: React.FC = () => {
         <h1>DateSpark</h1>
         <p>Найдите идеальное свидание!</p>
       </header>
-      
+
       <main className="spark-main">
         <SwipeContainer />
       </main>

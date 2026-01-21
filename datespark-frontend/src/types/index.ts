@@ -3,7 +3,7 @@ export interface Idea {
   title: string;
   description: string;
   category: string;
-  priceCategory: number; 
+  priceCategory: number;
   location: string;
   mood: string;
   duration: string;
@@ -20,7 +20,7 @@ export interface IdeaFilters {
   mood?: string;
   duration?: string;
   weather?: string;
-  priceCategory?: number; 
+  priceCategory?: number;
   onlyActive?: boolean;
 }
 
@@ -56,44 +56,44 @@ export interface CoupleDto {
 }
 
 export enum AdventureStatus {
-    Liked = 0,      // 💡
-    Planned = 1,    // 📅
-    InProgress = 2, // 🚀
-    Completed = 3   // ✅
+  Liked = 0,      // 💡
+  Planned = 1,    // 📅
+  InProgress = 2, // 🚀
+  Completed = 3   // ✅
 }
 
 export interface AdventureCard {
-    id: number;
-    ideaId?: number;
-    coupleId: number;
-    createdByUserId: number;
-    createdByUserName: string;
-    title: string;
-    description: string;
-    status: AdventureStatus;
-    statusSymbol: string;
-    plannedDate?: string;
-    completedDate?: string;
-    notes: string;
-    photoUrl: string;
-    createdAt: string;
-    updatedAt: string;
+  id: number;
+  ideaId?: number;
+  coupleId: number;
+  createdByUserId: number;
+  createdByUserName: string;
+  title: string;
+  description: string;
+  status: AdventureStatus;
+  statusSymbol: string;
+  plannedDate?: string;
+  completedDate?: string;
+  notes: string;
+  photoUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // DTO для создания
 export interface CreateAdventureFromIdeaRequest {
-    ideaId: number;
+  ideaId: number;
 }
 
 export interface CreateAdventureManualRequest {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }
 
 export interface UpdateAdventureStatusRequest {
-    status: AdventureStatus;
+  status: AdventureStatus;
 }
 
 export interface UpdateAdventureDateRequest {
-    plannedDate?: string;
+  plannedDate?: string;
 }

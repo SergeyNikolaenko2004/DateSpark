@@ -21,10 +21,10 @@ namespace DateSpark.API.Controllers
         public async Task<ActionResult<AuthResponse>> Register([FromBody] AuthRequest request)
         {
             var result = await _authService.RegisterAsync(request);
-            
+
             if (!result.Success)
                 return BadRequest(result);
-                
+
             return Ok(result);
         }
 
@@ -32,15 +32,15 @@ namespace DateSpark.API.Controllers
         public async Task<ActionResult<AuthResponse>> Login([FromBody] AuthRequest request)
         {
             var result = await _authService.LoginAsync(request);
-            
+
             if (!result.Success)
                 return Unauthorized(result);
-                
+
             return Ok(result);
         }
 
         [HttpPost("create-couple")]
-        [Authorize] 
+        [Authorize]
         public async Task<ActionResult<AuthResponse>> CreateCouple([FromBody] CreateCoupleRequest? request = null)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -51,10 +51,10 @@ namespace DateSpark.API.Controllers
 
             var coupleName = request?.CoupleName;
             var result = await _authService.CreateCoupleAsync(userId, coupleName);
-            
+
             if (!result.Success)
                 return BadRequest(result);
-                
+
             return Ok(result);
         }
 
@@ -69,15 +69,15 @@ namespace DateSpark.API.Controllers
             }
 
             var result = await _authService.UpdateCoupleAsync(userId, request.CoupleName);
-            
+
             if (!result.Success)
                 return BadRequest(result);
-                
+
             return Ok(result);
         }
 
         [HttpPost("join-couple")]
-        [Authorize] 
+        [Authorize]
         public async Task<ActionResult<AuthResponse>> JoinCouple([FromBody] JoinCoupleRequest request)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -87,10 +87,10 @@ namespace DateSpark.API.Controllers
             }
 
             var result = await _authService.JoinCoupleAsync(userId, request.JoinCode);
-            
+
             if (!result.Success)
                 return BadRequest(result);
-                
+
             return Ok(result);
         }
     }

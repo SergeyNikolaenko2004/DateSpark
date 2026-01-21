@@ -30,9 +30,9 @@ namespace DateSpark.API.Controllers
                 {
                     return Unauthorized(new { Success = false, Message = "User not authenticated" });
                 }
-                
+
                 Console.WriteLine($"🔍 Getting profile for user ID: {userId}");
-                
+
                 var user = await _context.Users
                     .Include(u => u.UserCouples)
                     .ThenInclude(uc => uc.Couple)
@@ -48,7 +48,7 @@ namespace DateSpark.API.Controllers
                 Console.WriteLine($"🔍 UserCouples count: {user.UserCouples.Count}");
 
                 var userCouple = user.UserCouples.FirstOrDefault();
-                
+
                 if (userCouple == null)
                 {
                     Console.WriteLine("❌ No UserCouple found for this user");
@@ -57,7 +57,7 @@ namespace DateSpark.API.Controllers
                 {
                     Console.WriteLine($"🔍 UserCouple found - CoupleId: {userCouple.CoupleId}");
                     Console.WriteLine($"🔍 Couple navigation property: {userCouple.Couple != null}");
-                    
+
                     if (userCouple.Couple == null)
                     {
                         Console.WriteLine("❌ Couple navigation property is NULL - possible FK issue");
@@ -70,7 +70,7 @@ namespace DateSpark.API.Controllers
                 if (userCouple?.Couple != null)
                 {
                     Console.WriteLine($"🔍 Couple found: {userCouple.Couple.Name} (ID: {userCouple.Couple.Id})");
-                    
+
                     coupleInfo = new CoupleInfo
                     {
                         Id = userCouple.Couple.Id,
@@ -100,10 +100,10 @@ namespace DateSpark.API.Controllers
                 return Ok(new ProfileResponse
                 {
                     Success = true,
-                    User = new UserInfo 
-                    { 
-                        Id = user.Id, 
-                        Email = user.Email, 
+                    User = new UserInfo
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
                         Name = user.Name,
                         Avatar = user.Avatar,
                         CreatedAt = user.CreatedAt
@@ -132,7 +132,7 @@ namespace DateSpark.API.Controllers
                 {
                     return Unauthorized(new AuthResponse { Success = false, Message = "User not authenticated" });
                 }
-                
+
                 var user = await _context.Users.FindAsync(userId);
                 if (user == null)
                 {
@@ -152,9 +152,9 @@ namespace DateSpark.API.Controllers
                 user.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
 
-                return Ok(new AuthResponse 
-                { 
-                    Success = true, 
+                return Ok(new AuthResponse
+                {
+                    Success = true,
                     Message = "Профиль обновлен",
                     User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name, Avatar = user.Avatar }
                 });

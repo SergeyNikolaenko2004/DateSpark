@@ -34,14 +34,14 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
       <div className="card-header">
         <h2 className="card-title">{idea.title}</h2>
       </div>
-      
+
       <div className="card-category-wrapper">
         <span className="card-category">{idea.category}</span>
       </div>
-      
+
       <div className="card-content">
         <p className="card-description">{idea.description}</p>
-        
+
         <div className="card-details">
           <div className="detail-item">
             <span className="detail-label">📍</span>
@@ -66,13 +66,13 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
       </div>
 
       <div className="Ideas-card-actions">
-        <button 
+        <button
           className="btn-dislike"
           onClick={() => onSwipe('left')}
         >
           ❌
         </button>
-        <button 
+        <button
           className="btn-like"
           onClick={() => onSwipe('right')}
         >

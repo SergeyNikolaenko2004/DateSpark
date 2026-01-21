@@ -53,7 +53,7 @@ export const api = {
   async getRandomIdea(filters?: IdeaFilters): Promise<Idea | null> {
     try {
       const params = new URLSearchParams();
-      
+
       if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
           if (value !== undefined && value !== null && value !== '') {
@@ -61,19 +61,19 @@ export const api = {
           }
         });
       }
-      
+
       const queryString = params.toString();
       const url = `${API_BASE}/spark/random${queryString ? `?${queryString}` : ''}`;
-      
+
       console.log('Fetching idea from:', url);
-      
+
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         if (response.status === 404) return null;
         throw new Error('Failed to fetch idea');
       }
-      
+
       return await response.json();
     } catch (error) {
       console.error('API Error:', error);
@@ -84,7 +84,7 @@ export const api = {
   async voteForIdea(vote: IdeaVote): Promise<boolean> {
     try {
       const token = getToken();
-      
+
       console.log('=== VOTE DEBUG ===');
       console.log('Token exists:', !!token);
       console.log('Vote data:', { ideaId: vote.ideaId, isLike: vote.isLike });
@@ -105,7 +105,7 @@ export const api = {
           isLike: vote.isLike
         }),
       });
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Vote failed:', {
@@ -115,7 +115,7 @@ export const api = {
         });
         return false;
       }
-      
+
       console.log('Vote successful!');
       return true;
     } catch (error) {
@@ -132,12 +132,12 @@ export const api = {
         body: JSON.stringify(userData),
       });
       const result = await response.json();
-      
+
       if (result.success && result.token) {
         localStorage.setItem('authToken', result.token);
         console.log('Token saved:', result.token.substring(0, 20) + '...');
       }
-      
+
       return result;
     } catch (error) {
       return { success: false, message: 'Network error' };
@@ -147,28 +147,28 @@ export const api = {
   async login(userData: AuthRequest): Promise<AuthResponse> {
     try {
       const response = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST', 
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
       const result = await response.json();
-      
+
       if (result.success && result.token) {
         localStorage.setItem('authToken', result.token);
         console.log('Token saved:', result.token.substring(0, 20) + '...');
       }
-      
+
       return result;
     } catch (error) {
       return { success: false, message: 'Network error' };
     }
   },
 
-   async createCouple(coupleName?: string): Promise<AuthResponse> {
+  async createCouple(coupleName?: string): Promise<AuthResponse> {
     try {
       const token = getToken();
       const body = coupleName ? { coupleName } : {};
-      
+
       const response = await fetch(`${API_BASE}/auth/create-couple`, {
         method: 'POST',
         headers: {
@@ -220,7 +220,7 @@ export const api = {
   async getProfile(): Promise<ProfileResponse> {
     try {
       const token = getToken();
-      
+
       if (!token) {
         localStorage.removeItem('authToken');
         window.location.href = '/';
@@ -232,13 +232,13 @@ export const api = {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.status === 401) {
         localStorage.removeItem('authToken');
         window.location.href = '/';
         throw new Error('Session expired');
       }
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch profile: ${response.status}`);
       }
@@ -288,7 +288,7 @@ export const api = {
   },
 
   // ===================== 🔥 ADVENTURE API METHODS =====================
-  
+
   // Получить все карточки пары
   async getCoupleAdventures(): Promise<AdventureCard[]> {
     try {
@@ -321,7 +321,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Получить карточки по статусу
   async getAdventuresByStatus(status: AdventureStatus): Promise<AdventureCard[]> {
     try {
@@ -354,7 +354,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Создать из идеи
   async createAdventureFromIdea(ideaId: number): Promise<AdventureCard> {
     try {
@@ -391,7 +391,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Создать вручную
   async createAdventureManual(title: string, description: string): Promise<AdventureCard> {
     try {
@@ -428,7 +428,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Обновить статус
   async updateAdventureStatus(adventureId: number, status: AdventureStatus): Promise<AdventureCard> {
     try {
@@ -465,7 +465,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Обновить дату
   async updateAdventureDate(adventureId: number, plannedDate?: string): Promise<AdventureCard> {
     try {
@@ -502,7 +502,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Обновить заметки
   async updateAdventureNotes(adventureId: number, notes: string): Promise<AdventureCard> {
     try {
@@ -539,7 +539,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Завершить приключение
   async completeAdventure(adventureId: number, photoUrl: string, notes: string): Promise<AdventureCard> {
     try {
@@ -576,7 +576,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Удалить карточку
   async deleteAdventure(adventureId: number): Promise<boolean> {
     try {
@@ -612,7 +612,7 @@ export const api = {
       throw error;
     }
   },
-  
+
   // Проверить, можно ли создать из идеи
   async canCreateFromIdea(ideaId: number): Promise<boolean> {
     try {

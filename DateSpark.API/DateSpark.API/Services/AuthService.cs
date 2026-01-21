@@ -79,11 +79,11 @@ namespace DateSpark.API.Services
 
             if (userCouple?.Couple != null)
             {
-                coupleDto = new CoupleDto 
-                { 
-                    Id = userCouple.Couple.Id, 
-                    Name = userCouple.Couple.Name, 
-                    JoinCode = userCouple.Couple.JoinCode 
+                coupleDto = new CoupleDto
+                {
+                    Id = userCouple.Couple.Id,
+                    Name = userCouple.Couple.Name,
+                    JoinCode = userCouple.Couple.JoinCode
                 };
             }
 
@@ -95,7 +95,7 @@ namespace DateSpark.API.Services
                 Message = "Вход выполнен успешно",
                 Token = token,
                 User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name },
-                Couple = coupleDto 
+                Couple = coupleDto
             };
         }
 
@@ -110,7 +110,7 @@ namespace DateSpark.API.Services
             // 🔥 ПРОВЕРЯЕМ НЕ СОСТОИТ ЛИ УЖЕ В ПАРЕ
             var existingCouple = await _context.UserCouples
                 .FirstOrDefaultAsync(uc => uc.UserId == userId);
-            
+
             if (existingCouple != null)
             {
                 return new AuthResponse { Success = false, Message = "Вы уже состоите в паре" };
@@ -224,7 +224,7 @@ namespace DateSpark.API.Services
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration["Jwt:Key"] ?? "your-super-secret-key-at-least-32-chars-long!"));
-            
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]

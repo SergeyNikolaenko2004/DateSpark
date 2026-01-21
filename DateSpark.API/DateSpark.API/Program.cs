@@ -59,22 +59,22 @@ else
             var uriString = connectionString.Replace("postgresql://", "");
             var atIndex = uriString.IndexOf('@');
             var colonIndex = uriString.IndexOf(':');
-            
+
             if (atIndex > 0 && colonIndex > 0)
             {
                 var userInfo = uriString.Substring(0, atIndex);
                 var hostAndDb = uriString.Substring(atIndex + 1);
-                
+
                 var userParts = userInfo.Split(':');
                 var username = userParts[0];
                 var password = userParts[1];
-                
+
                 var hostParts = hostAndDb.Split('/');
                 var hostWithPort = hostParts[0];
                 var database = hostParts[1];
-                
+
                 var host = hostWithPort.Split(':')[0];
-                
+
                 connectionString = $"Host={host};" +
                     $"Port=5432;" +
                     $"Database={database};" +
@@ -126,7 +126,7 @@ app.UseCors("AllowFrontend");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    
+
     if (dbContext.Database.IsRelational())
     {
         try
@@ -134,23 +134,23 @@ using (var scope = app.Services.CreateScope())
             Console.WriteLine("Applying database migrations...");
             dbContext.Database.Migrate();
             Console.WriteLine("Database migrations applied successfully!");
-            
+
             // ДОБАВЛЯЕМ ТЕСТОВЫЕ ДАННЫЕ ТОЛЬКО ЕСЛИ БАЗА ПУСТАЯ
             if (!dbContext.Ideas.Any())
             {
                 Console.WriteLine("Adding test data to empty database...");
-                
-            // В методе seed данных замени:
-            var testIdeas = new List<Idea>
+
+                // В методе seed данных замени:
+                var testIdeas = new List<Idea>
             {
-                new Idea { 
-                    Title = "Романтический ужин при свечах", 
-                    Description = "Приготовить ужин вместе при свечах с любимой музыкой", 
-                    Category = "Романтическое", 
-                    PriceCategory = PriceCategory.Medium, 
-                    Location = "Дома", 
-                    Mood = "Романтическое", 
-                    Duration = "Вечер", 
+                new Idea {
+                    Title = "Романтический ужин при свечах",
+                    Description = "Приготовить ужин вместе при свечах с любимой музыкой",
+                    Category = "Романтическое",
+                    PriceCategory = PriceCategory.Medium,
+                    Location = "Дома",
+                    Mood = "Романтическое",
+                    Duration = "Вечер",
                     Weather = "Любая",
                     IsActive = true
                 }
@@ -165,7 +165,7 @@ using (var scope = app.Services.CreateScope())
                 var ideaCount = dbContext.Ideas.Count();
                 Console.WriteLine($"Database already contains {ideaCount} ideas - skipping seed data");
             }
-            
+
             // Проверяем подключение
             var canConnect = dbContext.Database.CanConnect();
             Console.WriteLine($"Database connection: {canConnect}");

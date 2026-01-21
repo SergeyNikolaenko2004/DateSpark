@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
       alert('Введите название пары');
       return;
     }
-    
+
     try {
       const result = await api.updateCouple(coupleName);
       if (result.success) {
@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
       alert('Введите код приглашения');
       return;
     }
-    
+
     try {
       const result = await api.joinCouple(joinCode);
       if (result.success) {
@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
       alert('Введите имя');
       return;
     }
-    
+
     try {
       const result = await api.updateProfile({ name: userName });
       if (result.success) {
@@ -139,12 +139,12 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="profile-page"> 
+    <div className="profile-page">
       <header className="profile-header">
         <h1>Профиль</h1>
       </header>
-      
-      <main className="profile-main"> 
+
+      <main className="profile-main">
         <div className="profile-content">
           <div className="profile-section">
             <div className="user-info">
@@ -213,7 +213,7 @@ const Profile: React.FC = () => {
                   <div className="join-code">
                     <strong>Код приглашения:</strong>
                     <span className="code">{profile.couple.joinCode}</span>
-                    <button 
+                    <button
                       className="copy-btn"
                       onClick={() => {
                         navigator.clipboard.writeText(profile.couple.joinCode);
@@ -224,7 +224,7 @@ const Profile: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="partners">
                   <h4>Участники:</h4>
                   {profile.partners.map((partner: any) => (
@@ -240,7 +240,7 @@ const Profile: React.FC = () => {
             ) : (
               <div className="no-couple">
                 <p>Вы еще не создали пару</p>
-                
+
                 {showCreateCoupleForm ? (
                   <div className="create-couple-form">
                     <input
@@ -251,20 +251,20 @@ const Profile: React.FC = () => {
                       maxLength={30}
                     />
                     <div className="form-buttons">
-                      <button 
-                        onClick={() => handleCreateCouple(newCoupleName)} 
+                      <button
+                        onClick={() => handleCreateCouple(newCoupleName)}
                         className="create-couple-btn"
                       >
                         Создать пару
                       </button>
-                      <button 
-                        onClick={() => handleCreateCouple()} 
+                      <button
+                        onClick={() => handleCreateCouple()}
                         className="create-couple-btn default"
                       >
                         Создать со стандартным названием
                       </button>
-                      <button 
-                        onClick={() => setShowCreateCoupleForm(false)} 
+                      <button
+                        onClick={() => setShowCreateCoupleForm(false)}
                         className="cancel-btn"
                       >
                         Отмена
@@ -272,14 +272,14 @@ const Profile: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <button 
-                    onClick={() => setShowCreateCoupleForm(true)} 
+                  <button
+                    onClick={() => setShowCreateCoupleForm(true)}
                     className="create-couple-btn"
                   >
                     Создать пару
                   </button>
                 )}
-                
+
                 <div className="join-section">
                   <p>Или присоединитесь к существующей паре:</p>
                   {showJoinForm ? (

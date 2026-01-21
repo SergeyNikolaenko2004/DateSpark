@@ -5,39 +5,39 @@ namespace DateSpark.API.Models
     {
         public int IdeaId { get; set; }
     }
-    
+
     // 🔥 DTO для ручного создания карточки
     public class CreateAdventureManualRequest
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
-    
+
     // 🔥 DTO для обновления статуса
     public class UpdateAdventureStatusRequest
     {
         public AdventureStatus Status { get; set; }
     }
-    
+
     // 🔥 DTO для обновления даты
     public class UpdateAdventureDateRequest
     {
         public DateTime? PlannedDate { get; set; }
     }
-    
+
     // 🔥 DTO для обновления заметок
     public class UpdateAdventureNotesRequest
     {
         public string Notes { get; set; } = string.Empty;
     }
-    
+
     // 🔥 DTO для завершения приключения
     public class CompleteAdventureRequest
     {
         public string PhotoUrl { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
     }
-    
+
     // 🔥 DTO для ответа (клиенту)
     public class AdventureResponse
     {

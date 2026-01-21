@@ -25,7 +25,8 @@ body {
 }
 
 .app-content {
-  padding-bottom: 70px; /* Отступ для нижней навигации */
+  padding-bottom: 70px;
+  /* Отступ для нижней навигации */
   min-height: calc(100vh - 70px);
 }
 
@@ -67,11 +68,11 @@ body {
     padding-bottom: 60px;
     min-height: calc(100vh - 60px);
   }
-  
+
   .adventure-board {
     padding: 15px;
   }
-  
+
   .profile {
     padding: 15px;
   }
@@ -82,8 +83,9 @@ body {
     padding-bottom: 55px;
     min-height: calc(100vh - 55px);
   }
-  
-  .adventure-board, .profile {
+
+  .adventure-board,
+  .profile {
     padding: 10px;
   }
 }

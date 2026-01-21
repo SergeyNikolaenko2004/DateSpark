@@ -35,15 +35,15 @@ namespace DateSpark.API.Controllers
                 // Извлекаем userId из JWT токена для логов (но не используем в логике)
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 var userId = userIdClaim?.Value ?? "unknown";
-                
+
                 Console.WriteLine($"✅ VOTE: User {userId}, Idea {voteRequest.IdeaId}, Like {voteRequest.IsLike}");
 
                 // 🔥 ПРОСТО ВЫЗЫВАЕМ ОБНОВЛЕНИЕ СЧЕТЧИКОВ - UserId не нужен
                 var result = await _ideaService.VoteForIdeaAsync(voteRequest.IdeaId, voteRequest.IsLike);
-                
-                if (!result) 
+
+                if (!result)
                     return BadRequest(new { message = "Failed to record vote" });
-                
+
                 return Ok(new { message = "Vote recorded successfully" });
             }
             catch (Exception ex)

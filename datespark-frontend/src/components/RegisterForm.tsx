@@ -20,7 +20,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
     setError('');
 
     const result = await api.register({ name, email, password });
-    
+
     if (result.success) {
       localStorage.setItem('authToken', result.token!);
       window.location.reload();
@@ -66,8 +66,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             />
           </div>
           {error && <div className="form-error">{error}</div>}
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="register-button"
             disabled={loading}
           >

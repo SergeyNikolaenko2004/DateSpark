@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SparkPage from './pages/SparkPage';
-import { LoginForm } from './components/LoginForm'; 
-import { RegisterForm } from './components/RegisterForm'; 
-import AdventureBoard from './components/AdventureBoard'; 
-import Profile from './components/Profile'; 
-import BottomNavigation from './components/BottomNavigation'; 
+import { LoginForm } from './components/LoginForm';
+import { RegisterForm } from './components/RegisterForm';
+import AdventureBoard from './components/AdventureBoard';
+import Profile from './components/Profile';
+import BottomNavigation from './components/BottomNavigation';
 import './App.css';
 
 function App() {

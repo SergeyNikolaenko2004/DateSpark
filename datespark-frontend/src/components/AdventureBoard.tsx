@@ -28,30 +28,30 @@ const AdventureBoard: React.FC = () => {
   const loadProfileAndAdventures = async () => {
     try {
       setLoading(true);
-      
+
       // Сначала загружаем профиль
       const profileData = await api.getProfile();
       setProfile(profileData);
-      
+
       if (!profileData.couple) {
         setHasCouple(false);
         setAdventures([]);
         setError('У вас нет пары для использования доски свиданий');
         return;
       }
-      
+
       setHasCouple(true);
-      
+
       // Если есть пара - загружаем приключения
       const adventuresData = await api.getCoupleAdventures();
       setAdventures(adventuresData);
       setError(null);
     } catch (err: any) {
       console.error('Error loading data:', err);
-      
+
       // Проверяем, если это ошибка "нет пары"
-      if (err.message && err.message.includes('400') || 
-          err.message && err.message.includes('не состоите в паре')) {
+      if (err.message && err.message.includes('400') ||
+        err.message && err.message.includes('не состоите в паре')) {
         setHasCouple(false);
         setError('У вас нет пары для использования доски свиданий');
       } else {
@@ -145,25 +145,25 @@ const AdventureBoard: React.FC = () => {
           <h1>Доска свиданий</h1>
           <p>Планируйте и отслеживайте ваши свидания вместе</p>
         </header>
-        
+
         <main className="adventure-main">
           <div className="no-couple-message">
             <div className="message-content">
               <h3>У вас еще нет пары</h3>
               <p>Чтобы использовать доску приключений, нужно создать пару или присоединиться к существующей</p>
-              
+
               <div className="couple-actions">
-                <button 
+                <button
                   className="create-couple-btn"
                   onClick={() => window.location.href = '/profile'}
                 >
                   Перейти в профиль
                 </button>
-                
+
                 <p className="or-text">или</p>
-                
+
                 <div className="quick-actions">
-                  <button 
+                  <button
                     className="quick-create-btn"
                     onClick={async () => {
                       try {
@@ -177,8 +177,8 @@ const AdventureBoard: React.FC = () => {
                   >
                     Быстро создать пару
                   </button>
-                  
-                  <button 
+
+                  <button
                     className="join-couple-btn"
                     onClick={() => {
                       const joinCode = prompt('Введите код приглашения (6 символов):');
@@ -227,10 +227,10 @@ const AdventureBoard: React.FC = () => {
           </div>
         )}
       </header>
-      
+
       <main className="adventure-main">
         <div className="board-actions">
-          <button 
+          <button
             className="add-adventure-btn"
             onClick={() => setShowAddForm(!showAddForm)}
           >
@@ -273,7 +273,7 @@ const AdventureBoard: React.FC = () => {
                   {getAdventuresByStatus(column.status).length}
                 </span>
               </div>
-              
+
               <div className="cards-container">
                 {getAdventuresByStatus(column.status).map((adventure) => (
                   <div key={adventure.id} className="adventure-card">
@@ -285,32 +285,32 @@ const AdventureBoard: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    
+
                     {adventure.description && (
                       <p className="card-description">{adventure.description}</p>
                     )}
-                    
+
                     {adventure.plannedDate && column.status !== AdventureStatus.Completed && (
                       <div className="card-date">
                         <span className="date-label">Запланировано:</span>
                         <span>{formatDate(adventure.plannedDate)}</span>
                       </div>
                     )}
-                    
+
                     {adventure.completedDate && column.status === AdventureStatus.Completed && (
                       <div className="card-date">
                         <span className="date-label">Выполнено:</span>
                         <span>{formatDate(adventure.completedDate)}</span>
                       </div>
                     )}
-                    
+
                     {adventure.notes && (
                       <div className="card-notes">
                         <span className="notes-label">Заметки:</span>
                         <p>{adventure.notes}</p>
                       </div>
                     )}
-                    
+
                     <div className="card-actions">
                       <button
                         onClick={() => handleUpdateStatus(adventure.id, getNextStatus(adventure.status))}
@@ -318,7 +318,7 @@ const AdventureBoard: React.FC = () => {
                       >
                         {getStatusButtonText(adventure.status)}
                       </button>
-                      
+
                       {adventure.status !== AdventureStatus.Completed && adventure.plannedDate && (
                         <button
                           onClick={() => handleUpdateStatus(adventure.id, AdventureStatus.InProgress)}
@@ -327,7 +327,7 @@ const AdventureBoard: React.FC = () => {
                           Начать сейчас
                         </button>
                       )}
-                      
+
                       <button
                         onClick={() => handleDelete(adventure.id)}
                         className="delete-btn"
@@ -335,7 +335,7 @@ const AdventureBoard: React.FC = () => {
                         Удалить
                       </button>
                     </div>
-                    
+
                     {adventure.ideaId && (
                       <div className="card-footer">
                         <span className="idea-source">Из лайкнутой идеи</span>
@@ -343,7 +343,7 @@ const AdventureBoard: React.FC = () => {
                     )}
                   </div>
                 ))}
-                
+
                 {getAdventuresByStatus(column.status).length === 0 && (
                   <div className="empty-column">
                     <p>Пока ничего нет</p>
