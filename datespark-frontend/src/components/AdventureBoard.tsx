@@ -12,6 +12,12 @@ const AdventureBoard: React.FC = () => {
   const [newDescription, setNewDescription] = useState('');
   const [hasCouple, setHasCouple] = useState<boolean | null>(null);
   const [profile, setProfile] = useState<any>(null);
+  const [collapsedColumns, setCollapsedColumns] = useState<Record<AdventureStatus, boolean>>({
+    [AdventureStatus.Liked]: false,
+    [AdventureStatus.Planned]: false,
+    [AdventureStatus.InProgress]: false,
+    [AdventureStatus.Completed]: false
+  });
 
   // Статусы для колонок
   const statuses = [
@@ -127,6 +133,14 @@ const AdventureBoard: React.FC = () => {
       case AdventureStatus.Completed: return 'Вернуть';
       default: return 'Далее';
     }
+  };
+
+  // Функция для переключения состояния колонки
+  const toggleColumn = (status: AdventureStatus) => {
+    setCollapsedColumns(prev => ({
+      ...prev,
+      [status]: !prev[status]
+    }));
   };
 
   if (loading) {
@@ -266,90 +280,103 @@ const AdventureBoard: React.FC = () => {
 
         <div className="kanban-board">
           {statuses.map((column) => (
-            <div key={column.status} className="kanban-column">
+            <div key={column.status} className={`kanban-column ${collapsedColumns[column.status] ? 'collapsed' : 'expanded'}`}>
               <div className="column-header">
-                <h3>{column.title}</h3>
-                <span className="count-badge">
-                  {getAdventuresByStatus(column.status).length}
-                </span>
+                <button 
+                  className="column-toggle"
+                  onClick={() => toggleColumn(column.status)}
+                  aria-label={collapsedColumns[column.status] ? 'Развернуть колонку' : 'Свернуть колонку'}
+                >
+                  <h3>{column.title}</h3>
+                  <span className="toggle-icon">
+                    {collapsedColumns[column.status] ? '▶' : '▼'}
+                  </span>
+                </button>
+                <div className="column-header-right">
+                  <span className="count-badge">
+                    {getAdventuresByStatus(column.status).length}
+                  </span>
+                </div>
               </div>
 
-              <div className="cards-container">
-                {getAdventuresByStatus(column.status).map((adventure) => (
-                  <div key={adventure.id} className="adventure-card">
-                    <div className="card-header">
-                      <h4>{adventure.title}</h4>
-                      {adventure.createdByUserName && adventure.createdByUserName !== profile?.user?.name && (
-                        <span className="creator-badge">
-                          от {adventure.createdByUserName}
-                        </span>
+              {!collapsedColumns[column.status] && (
+                <div className="cards-container">
+                  {getAdventuresByStatus(column.status).map((adventure) => (
+                    <div key={adventure.id} className="adventure-card">
+                      <div className="card-header">
+                        <h4>{adventure.title}</h4>
+                        {adventure.createdByUserName && adventure.createdByUserName !== profile?.user?.name && (
+                          <span className="creator-badge">
+                            от {adventure.createdByUserName}
+                          </span>
+                        )}
+                      </div>
+
+                      {adventure.description && (
+                        <p className="card-description">{adventure.description}</p>
                       )}
-                    </div>
 
-                    {adventure.description && (
-                      <p className="card-description">{adventure.description}</p>
-                    )}
+                      {adventure.plannedDate && column.status !== AdventureStatus.Completed && (
+                        <div className="card-date">
+                          <span className="date-label">Запланировано:</span>
+                          <span>{formatDate(adventure.plannedDate)}</span>
+                        </div>
+                      )}
 
-                    {adventure.plannedDate && column.status !== AdventureStatus.Completed && (
-                      <div className="card-date">
-                        <span className="date-label">Запланировано:</span>
-                        <span>{formatDate(adventure.plannedDate)}</span>
-                      </div>
-                    )}
+                      {adventure.completedDate && column.status === AdventureStatus.Completed && (
+                        <div className="card-date">
+                          <span className="date-label">Выполнено:</span>
+                          <span>{formatDate(adventure.completedDate)}</span>
+                        </div>
+                      )}
 
-                    {adventure.completedDate && column.status === AdventureStatus.Completed && (
-                      <div className="card-date">
-                        <span className="date-label">Выполнено:</span>
-                        <span>{formatDate(adventure.completedDate)}</span>
-                      </div>
-                    )}
+                      {adventure.notes && (
+                        <div className="card-notes">
+                          <span className="notes-label">Заметки:</span>
+                          <p>{adventure.notes}</p>
+                        </div>
+                      )}
 
-                    {adventure.notes && (
-                      <div className="card-notes">
-                        <span className="notes-label">Заметки:</span>
-                        <p>{adventure.notes}</p>
-                      </div>
-                    )}
-
-                    <div className="card-actions">
-                      <button
-                        onClick={() => handleUpdateStatus(adventure.id, getNextStatus(adventure.status))}
-                        className="status-btn"
-                      >
-                        {getStatusButtonText(adventure.status)}
-                      </button>
-
-                      {adventure.status !== AdventureStatus.Completed && adventure.plannedDate && (
+                      <div className="card-actions">
                         <button
-                          onClick={() => handleUpdateStatus(adventure.id, AdventureStatus.InProgress)}
-                          className="progress-btn"
+                          onClick={() => handleUpdateStatus(adventure.id, getNextStatus(adventure.status))}
+                          className="status-btn"
                         >
-                          Начать сейчас
+                          {getStatusButtonText(adventure.status)}
                         </button>
-                      )}
 
-                      <button
-                        onClick={() => handleDelete(adventure.id)}
-                        className="delete-btn"
-                      >
-                        Удалить
-                      </button>
-                    </div>
+                        {adventure.status !== AdventureStatus.Completed && adventure.plannedDate && (
+                          <button
+                            onClick={() => handleUpdateStatus(adventure.id, AdventureStatus.InProgress)}
+                            className="progress-btn"
+                          >
+                            Начать сейчас
+                          </button>
+                        )}
 
-                    {adventure.ideaId && (
-                      <div className="card-footer">
-                        <span className="idea-source">Из лайкнутой идеи</span>
+                        <button
+                          onClick={() => handleDelete(adventure.id)}
+                          className="delete-btn"
+                        >
+                          Удалить
+                        </button>
                       </div>
-                    )}
-                  </div>
-                ))}
 
-                {getAdventuresByStatus(column.status).length === 0 && (
-                  <div className="empty-column">
-                    <p>Пока ничего нет</p>
-                  </div>
-                )}
-              </div>
+                      {adventure.ideaId && (
+                        <div className="card-footer">
+                          <span className="idea-source">Из лайкнутой идеи</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {getAdventuresByStatus(column.status).length === 0 && (
+                    <div className="empty-column">
+                      <p>Пока ничего нет</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
