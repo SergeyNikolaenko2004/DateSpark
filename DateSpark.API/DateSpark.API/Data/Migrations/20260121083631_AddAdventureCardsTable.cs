@@ -12,18 +12,6 @@ namespace DateSpark.API.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserCouples_Users_UserId1",
-                table: "UserCouples");
-
-            migrationBuilder.DropIndex(
-                name: "IX_UserCouples_UserId1",
-                table: "UserCouples");
-
-            migrationBuilder.DropColumn(
-                name: "UserId1",
-                table: "UserCouples");
-
             migrationBuilder.CreateTable(
                 name: "AdventureCards",
                 columns: table => new

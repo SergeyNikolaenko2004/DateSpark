@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DateSpark.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+252f9d42e671b56adc1b501a735b60d152a3f638")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d1c2c751b8c6075a89e1416fdfc3fe0aff038017")]
 [assembly: System.Reflection.AssemblyProductAttribute("DateSpark.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DateSpark.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
