@@ -65,7 +65,7 @@ const AdventureBoard: React.FC = () => {
   };
 
   const handleDelete = async (adventureId: number) => {
-    if (!confirm('Удалить это приключение?')) return;
+    if (!window.confirm('Удалить это приключение?')) return;
 
     try {
       await api.deleteAdventure(adventureId);
