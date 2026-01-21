@@ -15,10 +15,10 @@ const AdventureBoard: React.FC = () => {
 
   // Статусы для колонок
   const statuses = [
-    { status: AdventureStatus.Liked, title: '💡 Лайкнутые', symbol: '💡' },
-    { status: AdventureStatus.Planned, title: '📅 Запланированные', symbol: '📅' },
-    { status: AdventureStatus.InProgress, title: '🚀 В процессе', symbol: '🚀' },
-    { status: AdventureStatus.Completed, title: '✅ Выполненные', symbol: '✅' }
+    { status: AdventureStatus.Liked, title: 'Лайкнутые', symbol: '💡' },
+    { status: AdventureStatus.Planned, title: 'Запланированные', symbol: '📅' },
+    { status: AdventureStatus.InProgress, title: 'В процессе', symbol: '🚀' },
+    { status: AdventureStatus.Completed, title: 'Выполненные', symbol: '✅' }
   ];
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const AdventureBoard: React.FC = () => {
       if (!profileData.couple) {
         setHasCouple(false);
         setAdventures([]);
-        setError('У вас нет пары для использования доски приключений');
+        setError('У вас нет пары для использования доски свиданий');
         return;
       }
       
@@ -53,9 +53,9 @@ const AdventureBoard: React.FC = () => {
       if (err.message && err.message.includes('400') || 
           err.message && err.message.includes('не состоите в паре')) {
         setHasCouple(false);
-        setError('У вас нет пары для использования доски приключений');
+        setError('У вас нет пары для использования доски свиданий');
       } else {
-        setError('Не удалось загрузить доску приключений');
+        setError('Не удалось загрузить доску свиданий');
       }
     } finally {
       setLoading(false);
@@ -121,10 +121,10 @@ const AdventureBoard: React.FC = () => {
 
   const getStatusButtonText = (currentStatus: AdventureStatus): string => {
     switch (currentStatus) {
-      case AdventureStatus.Liked: return '📅 Запланировать';
-      case AdventureStatus.Planned: return '🚀 Начать';
-      case AdventureStatus.InProgress: return '✅ Завершить';
-      case AdventureStatus.Completed: return '💡 Вернуть';
+      case AdventureStatus.Liked: return 'Запланировать';
+      case AdventureStatus.Planned: return 'Начать';
+      case AdventureStatus.InProgress: return 'Завершить';
+      case AdventureStatus.Completed: return 'Вернуть';
       default: return 'Далее';
     }
   };
@@ -132,7 +132,7 @@ const AdventureBoard: React.FC = () => {
   if (loading) {
     return (
       <div className="adventure-board-page">
-        <div className="loading">Загрузка доски приключений...</div>
+        <div className="loading">Загрузка доски свиданий...</div>
       </div>
     );
   }
@@ -142,14 +142,14 @@ const AdventureBoard: React.FC = () => {
     return (
       <div className="adventure-board-page">
         <header className="adventure-header">
-          <h1>📋 Доска приключений</h1>
+          <h1>Доска свиданий</h1>
           <p>Планируйте и отслеживайте ваши свидания вместе</p>
         </header>
         
         <main className="adventure-main">
           <div className="no-couple-message">
             <div className="message-content">
-              <h3>😔 У вас еще нет пары</h3>
+              <h3>У вас еще нет пары</h3>
               <p>Чтобы использовать доску приключений, нужно создать пару или присоединиться к существующей</p>
               
               <div className="couple-actions">
@@ -157,7 +157,7 @@ const AdventureBoard: React.FC = () => {
                   className="create-couple-btn"
                   onClick={() => window.location.href = '/profile'}
                 >
-                  📝 Перейти в профиль
+                  Перейти в профиль
                 </button>
                 
                 <p className="or-text">или</p>
@@ -168,14 +168,14 @@ const AdventureBoard: React.FC = () => {
                     onClick={async () => {
                       try {
                         await api.createCouple('Наша пара');
-                        alert('Пара создана! Теперь можно использовать доску приключений.');
+                        alert('Пара создана! Теперь можно использовать доску свиданий.');
                         await loadProfileAndAdventures();
                       } catch (err: any) {
                         alert('Ошибка: ' + err.message);
                       }
                     }}
                   >
-                    ✨ Быстро создать пару
+                    Быстро создать пару
                   </button>
                   
                   <button 
@@ -219,7 +219,7 @@ const AdventureBoard: React.FC = () => {
   return (
     <div className="adventure-board-page">
       <header className="adventure-header">
-        <h1>📋 Доска приключений</h1>
+        <h1>Доска свиданий</h1>
         <p>Планируйте и отслеживайте ваши свидания вместе</p>
         {profile?.couple && (
           <div className="couple-info-banner">
@@ -234,7 +234,7 @@ const AdventureBoard: React.FC = () => {
             className="add-adventure-btn"
             onClick={() => setShowAddForm(!showAddForm)}
           >
-            {showAddForm ? '✕ Отмена' : '✎ Добавить приключение'}
+            {showAddForm ? '✕ Отмена' : '✎ Добавить свидание'}
           </button>
         </div>
 
@@ -244,7 +244,7 @@ const AdventureBoard: React.FC = () => {
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Название приключения*"
+              placeholder="Название свидания*"
               maxLength={100}
             />
             <textarea
@@ -292,21 +292,21 @@ const AdventureBoard: React.FC = () => {
                     
                     {adventure.plannedDate && column.status !== AdventureStatus.Completed && (
                       <div className="card-date">
-                        <span className="date-label">📅 Запланировано:</span>
+                        <span className="date-label">Запланировано:</span>
                         <span>{formatDate(adventure.plannedDate)}</span>
                       </div>
                     )}
                     
                     {adventure.completedDate && column.status === AdventureStatus.Completed && (
                       <div className="card-date">
-                        <span className="date-label">✅ Выполнено:</span>
+                        <span className="date-label">Выполнено:</span>
                         <span>{formatDate(adventure.completedDate)}</span>
                       </div>
                     )}
                     
                     {adventure.notes && (
                       <div className="card-notes">
-                        <span className="notes-label">💬 Заметки:</span>
+                        <span className="notes-label">Заметки:</span>
                         <p>{adventure.notes}</p>
                       </div>
                     )}
@@ -324,7 +324,7 @@ const AdventureBoard: React.FC = () => {
                           onClick={() => handleUpdateStatus(adventure.id, AdventureStatus.InProgress)}
                           className="progress-btn"
                         >
-                          🚀 Начать сейчас
+                          Начать сейчас
                         </button>
                       )}
                       
@@ -332,7 +332,7 @@ const AdventureBoard: React.FC = () => {
                         onClick={() => handleDelete(adventure.id)}
                         className="delete-btn"
                       >
-                        ✕ Удалить
+                        Удалить
                       </button>
                     </div>
                     
