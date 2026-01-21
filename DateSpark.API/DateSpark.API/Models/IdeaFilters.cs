@@ -6,7 +6,7 @@ namespace DateSpark.API.Models
         public string? Location { get; set; }
         public string? Mood { get; set; }
         public string? Duration { get; set; }
-        public string? Weather { get; set; }
+        public string? Weather { get; set; }  
         public PriceCategory? PriceCategory { get; set; } 
         public bool OnlyActive { get; set; } = true;
     }
