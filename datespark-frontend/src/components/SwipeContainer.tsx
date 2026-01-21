@@ -65,31 +65,24 @@ const handleSwipe = async (direction: 'left' | 'right') => {
   setSwipeDirection(direction);
   
   setTimeout(async () => {
-    // 1. Сначала голосуем
     const voteSuccess = await api.voteForIdea({
       ideaId: currentIdea.id,
       isLike: direction === 'right'
     });
 
-    // 2. АВТОМАТИЧЕСКОЕ ДОБАВЛЕНИЕ В ДОСКУ ПРИ ЛАЙКЕ
     if (direction === 'right' && voteSuccess) {
       try {
-        // Проверяем, можно ли добавить (не дублировать)
         const canAdd = await api.canCreateFromIdea(currentIdea.id);
         if (canAdd) {
           await api.createAdventureFromIdea(currentIdea.id);
-          console.log('✅ Идея "' + currentIdea.title + '" добавлена в доску!');
         } else {
-          console.log('ℹ️ Идея уже была добавлена ранее');
         }
       } catch (err: any) {
-        console.log('⚠️ Не удалось добавить в доску:', err.message);
       }
     }
 
-    // 3. Загружаем следующую идею
     fetchRandomIdea(activeFilters);
-  }, 300); // Анимация свайпа
+  }, 300); 
 };
 
   const handleTouchStart = (e: React.TouchEvent) => {
