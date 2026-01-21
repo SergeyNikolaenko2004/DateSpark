@@ -16,5 +16,7 @@ namespace DateSpark.API.Models
 
         // Навигационные свойства
         public ICollection<UserCouple> UserCouples { get; set; } = new List<UserCouple>();
+
+        public ICollection<AdventureCard> AdventureCards { get; set; } = new List<AdventureCard>();
     }
 }
