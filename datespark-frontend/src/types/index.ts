@@ -54,3 +54,46 @@ export interface CoupleDto {
   name: string;
   joinCode: string;
 }
+
+export enum AdventureStatus {
+    Liked = 0,      // 💡
+    Planned = 1,    // 📅
+    InProgress = 2, // 🚀
+    Completed = 3   // ✅
+}
+
+export interface AdventureCard {
+    id: number;
+    ideaId?: number;
+    coupleId: number;
+    createdByUserId: number;
+    createdByUserName: string;
+    title: string;
+    description: string;
+    status: AdventureStatus;
+    statusSymbol: string;
+    plannedDate?: string;
+    completedDate?: string;
+    notes: string;
+    photoUrl: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// DTO для создания
+export interface CreateAdventureFromIdeaRequest {
+    ideaId: number;
+}
+
+export interface CreateAdventureManualRequest {
+    title: string;
+    description: string;
+}
+
+export interface UpdateAdventureStatusRequest {
+    status: AdventureStatus;
+}
+
+export interface UpdateAdventureDateRequest {
+    plannedDate?: string;
+}

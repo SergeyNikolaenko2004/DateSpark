@@ -1,4 +1,4 @@
-import { Idea, IdeaVote, IdeaFilters, AuthRequest, AuthResponse } from '../types';
+import { Idea, IdeaVote, IdeaFilters, AuthRequest, AuthResponse, AdventureCard, AdventureStatus, CreateAdventureFromIdeaRequest, CreateAdventureManualRequest, UpdateAdventureStatusRequest, UpdateAdventureDateRequest } from '../types';
 
 const API_BASE = 'https://datespark-api.onrender.com/api';
 
@@ -284,6 +284,366 @@ export const api = {
       return profile.success && profile.user.id > 0;
     } catch (error) {
       return false;
+    }
+  },
+
+  // ===================== 🔥 ADVENTURE API METHODS =====================
+  
+  // Получить все карточки пары
+  async getCoupleAdventures(): Promise<AdventureCard[]> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/couple`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch adventures: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error fetching adventures:', error);
+      throw error;
+    }
+  },
+  
+  // Получить карточки по статусу
+  async getAdventuresByStatus(status: AdventureStatus): Promise<AdventureCard[]> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/couple/status/${status}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch adventures: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error fetching adventures by status:', error);
+      throw error;
+    }
+  },
+  
+  // Создать из идеи
+  async createAdventureFromIdea(ideaId: number): Promise<AdventureCard> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/from-idea`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ ideaId })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to create adventure: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error creating adventure from idea:', error);
+      throw error;
+    }
+  },
+  
+  // Создать вручную
+  async createAdventureManual(title: string, description: string): Promise<AdventureCard> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/manual`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to create adventure: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error creating manual adventure:', error);
+      throw error;
+    }
+  },
+  
+  // Обновить статус
+  async updateAdventureStatus(adventureId: number, status: AdventureStatus): Promise<AdventureCard> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/${adventureId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update status: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error updating adventure status:', error);
+      throw error;
+    }
+  },
+  
+  // Обновить дату
+  async updateAdventureDate(adventureId: number, plannedDate?: string): Promise<AdventureCard> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/${adventureId}/date`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ plannedDate })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update date: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error updating adventure date:', error);
+      throw error;
+    }
+  },
+  
+  // Обновить заметки
+  async updateAdventureNotes(adventureId: number, notes: string): Promise<AdventureCard> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/${adventureId}/notes`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ notes })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update notes: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error updating adventure notes:', error);
+      throw error;
+    }
+  },
+  
+  // Завершить приключение
+  async completeAdventure(adventureId: number, photoUrl: string, notes: string): Promise<AdventureCard> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/${adventureId}/complete`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ photoUrl, notes })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to complete adventure: ${errorText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API Error completing adventure:', error);
+      throw error;
+    }
+  },
+  
+  // Удалить карточку
+  async deleteAdventure(adventureId: number): Promise<boolean> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/${adventureId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to delete adventure: ${errorText}`);
+      }
+
+      const result = await response.json();
+      return result.success === true;
+    } catch (error) {
+      console.error('API Error deleting adventure:', error);
+      throw error;
+    }
+  },
+  
+  // Проверить, можно ли создать из идеи
+  async canCreateFromIdea(ideaId: number): Promise<boolean> {
+    try {
+      const token = getToken();
+      if (!token) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
+      }
+
+      const response = await fetch(`${API_BASE}/adventures/can-create/${ideaId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to check if can create: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.canCreate === true;
+    } catch (error) {
+      console.error('API Error checking if can create:', error);
+      throw error;
     }
   }
 };
