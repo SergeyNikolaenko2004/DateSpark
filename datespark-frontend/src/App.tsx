@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'; // 🔥 Изменили здесь
 import SparkPage from './pages/SparkPage';
 import { LoginForm } from './components/LoginForm';
 import { RegisterForm } from './components/RegisterForm';
@@ -21,7 +21,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router> {/* Теперь это HashRouter */}
       <div className="app">
         <main className="app-content">
           <Routes>
