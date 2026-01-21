@@ -2,7 +2,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', sans-serif;
-  /* 🔥 УБИРАЕМ padding-bottom - теперь есть отступ в App.css */
+  /* 🔥 Важно: padding-bottom УЖЕ задан в .app-content */
 }
 
 .spark-header {

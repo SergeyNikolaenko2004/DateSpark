@@ -1,7 +1,4 @@
-.App {
-  text-align: center;
-}
-
+/* 📦 RESET & BASE STYLES */
 * {
   box-sizing: border-box;
 }
@@ -15,9 +12,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f5f5f5;
+  color: #333;
 }
 
-/* 🔥 СТИЛИ ДЛЯ ОСНОВНОГО ПРИЛОЖЕНИЯ С НАВИГАЦИЕЙ */
+/* 🏠 APP LAYOUT */
 .app {
   min-height: 100vh;
   background: #f5f5f5;
@@ -26,17 +24,86 @@ body {
 
 .app-content {
   padding-bottom: 70px;
-  /* Отступ для нижней навигации */
   min-height: calc(100vh - 70px);
 }
 
-/* 🔥 СТИЛИ ДЛЯ СТРАНИЦЫ SPARK (ГЛАВНАЯ) */
-.spark-page {
-  padding: 0;
-  max-width: 100%;
+/* 🔐 AUTH FORMS (КОГДА НЕТ ТОКЕНА) */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
 }
 
-/* 🔥 СТИЛИ ДЛЯ ADVENTURE BOARD */
+.auth-form {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-form h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #333;
+  text-align: center;
+  font-size: 1.8em;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 14px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+  background-color: #3a7bc8;
+}
+
+.auth-form .switch-text {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
+
+.auth-form .switch-link {
+  color: #4a90e2;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.auth-form .switch-link:hover {
+  text-decoration: underline;
+}
+
+/* 🗺️ ADVENTURE BOARD */
 .adventure-board {
   padding: 20px;
   max-width: 1200px;
@@ -49,7 +116,7 @@ body {
   font-size: 1.8em;
 }
 
-/* 🔥 СТИЛИ ДЛЯ ПРОФИЛЯ */
+/* 👤 PROFILE */
 .profile {
   padding: 20px;
   max-width: 500px;
@@ -62,11 +129,16 @@ body {
   font-size: 1.8em;
 }
 
-/* 🔥 АДАПТИВНОСТЬ */
+/* 📱 RESPONSIVE */
 @media (max-width: 768px) {
   .app-content {
     padding-bottom: 60px;
     min-height: calc(100vh - 60px);
+  }
+
+  .auth-form {
+    padding: 25px;
+    margin: 15px;
   }
 
   .adventure-board {
@@ -82,6 +154,14 @@ body {
   .app-content {
     padding-bottom: 55px;
     min-height: calc(100vh - 55px);
+  }
+
+  .auth-form {
+    padding: 20px;
+  }
+
+  .auth-form h2 {
+    font-size: 1.5em;
   }
 
   .adventure-board,
