@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   min-height: 400px;
+  position: relative; /* 🔥 Добавили для абсолютного позиционирования кнопок */
 }
 
 .card-header {
@@ -85,14 +86,17 @@
   text-align: center;
 }
 
-/* КНОПКИ ДЕЙСТВИЙ */
+/* 🔥 ИЗМЕНЕНИЕ: КНОПКИ ТЕПЕРЬ СЛЕВА И СПРАВА НА КАРТОЧКЕ */
 .idea-card-actions {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
-  gap: 30px;
-  margin-top: auto;
+  padding: 0 20px;
+  z-index: 10;
 }
 
 .btn-dislike,
@@ -104,7 +108,6 @@
   font-size: 1.5em;
   cursor: pointer;
   transition: all 0.3s ease;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,11 +117,13 @@
 .btn-dislike {
   background: #ffeaea;
   color: #ff6b6b;
+  margin-left: -10px; /* 🔥 Немного выходит за левый край */
 }
 
 .btn-like {
   background: #eaffea;
   color: #27ae60;
+  margin-right: -10px; /* 🔥 Немного выходит за правый край */
 }
 
 .btn-dislike:hover {
@@ -133,6 +138,36 @@
   color: white;
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+}
+
+/* 🔥 ДОБАВИМ: индикаторы свайпа */
+.idea-card::before,
+.idea-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2em;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 5;
+}
+
+.idea-card::before {
+  content: '❌';
+  left: 10px;
+  color: #ff6b6b;
+}
+
+.idea-card::after {
+  content: '❤️';
+  right: 10px;
+  color: #27ae60;
+}
+
+.idea-card:hover::before,
+.idea-card:hover::after {
+  opacity: 0.3;
 }
 
 /* ЦЕНА */
@@ -184,8 +219,8 @@
   }
 
   .idea-card-actions {
-    gap: 20px;
-    padding: 0;
+    padding: 0 15px;
+    bottom: 15px;
   }
 
   .btn-dislike,
@@ -193,6 +228,14 @@
     width: 55px;
     height: 55px;
     font-size: 1.3em;
+  }
+  
+  .btn-dislike {
+    margin-left: -8px;
+  }
+  
+  .btn-like {
+    margin-right: -8px;
   }
 }
 
@@ -217,6 +260,10 @@
     width: 50px;
     height: 50px;
     font-size: 1.2em;
+  }
+  
+  .idea-card-actions {
+    padding: 0 10px;
   }
 }
 
