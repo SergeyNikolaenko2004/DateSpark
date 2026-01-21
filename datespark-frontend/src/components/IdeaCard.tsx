@@ -65,7 +65,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea, onSwipe }) => {
         </div>
       </div>
 
-      <div className="Ideas-card-actions">
+      <div className="idea-card-actions">
         <button
           className="btn-dislike"
           onClick={() => onSwipe('left')}

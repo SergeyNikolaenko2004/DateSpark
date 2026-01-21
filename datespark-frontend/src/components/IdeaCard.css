@@ -7,11 +7,13 @@
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
   transition: box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
 }
 
 .card-header {
   margin-bottom: 10px;
-  /* 🔥 УМЕНЬШИЛИ отступ */
 }
 
 .card-title {
@@ -19,30 +21,33 @@
   color: #333;
   font-size: 1.5em;
   text-align: center;
-  /* 🔥 ДОБАВИЛИ выравнивание по центру */
 }
 
-/* 🔥 НОВЫЙ КОНТЕЙНЕР ДЛЯ КАТЕГОРИИ */
+/* НОВЫЙ КОНТЕЙНЕР ДЛЯ КАТЕГОРИИ */
 .card-category-wrapper {
   text-align: center;
   margin-bottom: 15px;
 }
 
 .card-category {
-  background: #ff6b6b;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 6px 16px;
-  /* 🔥 УВЕЛИЧИЛИ отступы */
   border-radius: 20px;
-  /* 🔥 УВЕЛИЧИЛИ скругление */
   font-size: 0.9em;
   font-weight: 500;
   display: inline-block;
   max-width: 80%;
-  /* 🔥 ОГРАНИЧИЛИ ширину */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-description {
@@ -50,28 +55,44 @@
   line-height: 1.5;
   margin-bottom: 20px;
   text-align: center;
-  /* 🔥 ДОБАВИЛИ выравнивание */
+  flex: 1;
 }
 
 .card-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #444;
+  font-size: 0.95em;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
 }
 
 .detail-label {
   font-size: 1.2em;
   min-width: 30px;
-  /* 🔥 ФИКСИРОВАННАЯ ширина для выравнивания */
+  text-align: center;
 }
 
-.ideas-card-actions {
+/* КНОПКИ ДЕЙСТВИЙ */
+.idea-card-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  gap: 20px;
+  padding: 0 10px;
+  gap: 30px;
+  margin-top: auto;
 }
 
 .btn-dislike,
@@ -82,27 +103,43 @@
   height: 60px;
   font-size: 1.5em;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-dislike {
   background: #ffeaea;
+  color: #ff6b6b;
 }
 
 .btn-like {
   background: #eaffea;
+  color: #27ae60;
 }
 
-.btn-dislike:hover,
+.btn-dislike:hover {
+  background: #ff6b6b;
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+}
+
 .btn-like:hover {
-  transform: scale(1.1);
+  background: #27ae60;
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
 }
 
+/* ЦЕНА */
 .price-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
 }
 
 .price-category {
@@ -116,13 +153,15 @@
   color: #666;
   margin-left: 4px;
   font-weight: normal;
+  font-style: italic;
 }
 
-/* 🔥 АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
+/* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
 @media (max-width: 480px) {
   .idea-card {
     padding: 15px;
     margin: 0 10px;
+    min-height: 350px;
   }
 
   .card-title {
@@ -133,7 +172,6 @@
     font-size: 0.8em;
     padding: 5px 12px;
     max-width: 70%;
-    /* 🔥 ЕЩЕ УЖЕ на мобильных */
   }
 
   .card-description {
@@ -142,20 +180,27 @@
 
   .detail-item {
     font-size: 0.9em;
+    gap: 8px;
+  }
+
+  .idea-card-actions {
+    gap: 20px;
+    padding: 0;
   }
 
   .btn-dislike,
   .btn-like {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     font-size: 1.3em;
   }
 }
 
-/* 🔥 ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ */
+/* ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ */
 @media (max-width: 360px) {
   .idea-card {
     padding: 12px;
+    min-height: 320px;
   }
 
   .card-title {
@@ -166,4 +211,16 @@
     font-size: 0.75em;
     padding: 4px 10px;
   }
+
+  .btn-dislike,
+  .btn-like {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2em;
+  }
+}
+
+/* АНИМАЦИЯ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ */
+.idea-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }

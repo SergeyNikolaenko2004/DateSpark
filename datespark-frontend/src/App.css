@@ -103,33 +103,7 @@ body {
   text-decoration: underline;
 }
 
-/* 🗺️ ADVENTURE BOARD */
-.adventure-board {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.adventure-board h1 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.8em;
-}
-
-/* 👤 PROFILE */
-.profile {
-  padding: 20px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.profile h1 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.8em;
-}
-
-/* 📱 RESPONSIVE */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .app-content {
     padding-bottom: 60px;
@@ -139,14 +113,6 @@ body {
   .auth-form {
     padding: 25px;
     margin: 15px;
-  }
-
-  .adventure-board {
-    padding: 15px;
-  }
-
-  .profile {
-    padding: 15px;
   }
 }
 
@@ -164,8 +130,4 @@ body {
     font-size: 1.5em;
   }
 
-  .adventure-board,
-  .profile {
-    padding: 10px;
-  }
 }

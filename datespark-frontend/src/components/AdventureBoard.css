@@ -1,10 +1,14 @@
+
+/* ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ */
 .adventure-board-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', sans-serif;
   padding: 20px;
+  padding-bottom: 90px; 
 }
 
+/* ЗАГОЛОВОК СТРАНИЦЫ */
 .adventure-header {
   text-align: center;
   padding: 20px;
@@ -15,7 +19,7 @@
 .adventure-header h1 {
   margin: 0;
   font-size: 2.2em;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .adventure-header p {
@@ -24,12 +28,7 @@
   font-size: 1em;
 }
 
-.adventure-main {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Баннер с информацией о паре */
+/* БАННЕР С ИНФОРМАЦИЕЙ О ПАРЕ */
 .couple-info-banner {
   background: rgba(255, 255, 255, 0.2);
   padding: 8px 15px;
@@ -47,13 +46,19 @@
   font-family: monospace;
 }
 
-/* Сообщение "нет пары" */
+/* ОСНОВНОЕ СОДЕРЖИМОЕ */
+.adventure-main {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* СООБЩЕНИЕ "НЕТ ПАРЫ" */
 .no-couple-message {
   background: white;
   border-radius: 15px;
   padding: 40px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   margin-top: 30px;
   max-width: 600px;
   margin-left: auto;
@@ -137,7 +142,7 @@
   transform: translateY(-2px);
 }
 
-/* Кнопка добавления */
+/* КНОПКА ДОБАВЛЕНИЯ ПРИКЛЮЧЕНИЯ */
 .board-actions {
   text-align: center;
   margin-bottom: 20px;
@@ -160,13 +165,13 @@
   box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
 }
 
-/* Форма добавления */
+/* ФОРМА ДОБАВЛЕНИЯ */
 .add-adventure-form {
   background: white;
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 30px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
 .add-adventure-form input,
@@ -214,7 +219,7 @@
   flex: 1;
 }
 
-/* Канбан-доска */
+/* КАНБАН-ДОСКА */
 .kanban-board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -226,7 +231,7 @@
   background: rgba(255, 255, 255, 0.9);
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   min-height: 400px;
 }
 
@@ -254,7 +259,7 @@
   font-weight: bold;
 }
 
-/* Карточки */
+/* КОНТЕЙНЕР ДЛЯ КАРТОЧЕК */
 .cards-container {
   display: flex;
   flex-direction: column;
@@ -262,18 +267,19 @@
   min-height: 300px;
 }
 
+/* КАРТОЧКА ПРИКЛЮЧЕНИЯ */
 .adventure-card {
   background: white;
   border-radius: 10px;
   padding: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   border-left: 4px solid #667eea;
   transition: transform 0.2s;
 }
 
 .adventure-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
@@ -319,6 +325,7 @@
   margin-right: 5px;
 }
 
+/* ДЕЙСТВИЯ НА КАРТОЧКЕ */
 .card-actions {
   display: flex;
   flex-direction: column;
@@ -388,7 +395,7 @@
   font-style: italic;
 }
 
-/* Состояния загрузки и ошибки */
+/* СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ */
 .loading, .error {
   text-align: center;
   padding: 50px;
@@ -411,7 +418,7 @@
   background: #f8f9fa;
 }
 
-/* Адаптивность */
+/* АДАПТИВНОСТЬ */
 @media (max-width: 1200px) {
   .kanban-board {
     grid-template-columns: repeat(2, 1fr);
@@ -421,6 +428,7 @@
 @media (max-width: 768px) {
   .adventure-board-page {
     padding: 10px;
+    padding-bottom: 80px; 
   }
   
   .adventure-header {
@@ -446,5 +454,30 @@
   
   .form-buttons {
     flex-direction: column;
+  }
+  
+  .no-couple-message {
+    padding: 25px 15px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adventure-board-page {
+    padding-bottom: 70px;
+  }
+  
+  .adventure-header h1 {
+    font-size: 1.6em;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
+  
+  .status-btn,
+  .progress-btn,
+  .delete-btn {
+    width: 100%;
   }
 }
