@@ -90,7 +90,7 @@ export const api = {
       console.log('Vote data:', { ideaId: vote.ideaId, isLike: vote.isLike });
 
       if (!token) {
-        console.error('❌ No token found for voting!');
+        console.error('No token found for voting!');
         return false;
       }
 
@@ -108,7 +108,7 @@ export const api = {
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ Vote failed:', {
+        console.error('Vote failed:', {
           status: response.status,
           statusText: response.statusText,
           error: errorText
@@ -116,10 +116,10 @@ export const api = {
         return false;
       }
       
-      console.log('✅ Vote successful!');
+      console.log('Vote successful!');
       return true;
     } catch (error) {
-      console.error('❌ API Error:', error);
+      console.error('API Error:', error);
       return false;
     }
   },
@@ -183,7 +183,6 @@ export const api = {
     }
   },
 
-  // 🔥 НОВЫЙ МЕТОД: Обновление названия пары
   async updateCouple(coupleName: string): Promise<AuthResponse> {
     try {
       const token = getToken();
@@ -221,11 +220,11 @@ export const api = {
   async getProfile(): Promise<ProfileResponse> {
     try {
       const token = getToken();
-      console.log('🔐 Token for profile:', token); // ← Покажет весь токен
-      console.log('🔐 Token exists:', !!token);
       
       if (!token) {
-        throw new Error('No authentication token - user not logged in');
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('No authentication token');
       }
 
       const response = await fetch(`${API_BASE}/profile`, {
@@ -233,24 +232,20 @@ export const api = {
           'Authorization': `Bearer ${token}`
         }
       });
-
-      console.log('📡 Profile response status:', response.status);
+      
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+        throw new Error('Session expired');
+      }
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Profile request failed:', {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorText
-        });
         throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
-      const profileData = await response.json();
-      console.log('✅ Profile data received:', profileData);
-      return profileData;
+      return await response.json();
     } catch (error) {
-      console.error('❌ API Error fetching profile:', error);
+      console.error('API Error fetching profile:', error);
       throw error;
     }
   },

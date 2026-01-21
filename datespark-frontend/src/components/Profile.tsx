@@ -247,7 +247,7 @@ const Profile: React.FC = () => {
                       type="text"
                       value={newCoupleName}
                       onChange={(e) => setNewCoupleName(e.target.value)}
-                      placeholder="Введите название пары (необязательно)"
+                      placeholder="Введите название пары "
                       maxLength={30}
                     />
                     <div className="form-buttons">

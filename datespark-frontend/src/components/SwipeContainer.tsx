@@ -74,7 +74,6 @@ const SwipeContainer: React.FC = () => {
     }, 300);
   };
 
-  // Обработчики свайпов (остаются без изменений)
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsSwiping(true);
     startX.current = e.touches[0].clientX;
@@ -144,8 +143,8 @@ const SwipeContainer: React.FC = () => {
   if (!currentIdea) {
     return (
       <div className="no-ideas">
-        <h2>Идеи закончились! 🎉</h2>
-        <p>Попробуйте изменить фильтры или добавить новые идеи</p>
+        <h2>Идеи закончились!</h2>
+        <p>Попробуйте изменить фильтры </p>
         <button className="reset-filters-btn" onClick={handleResetFilters}>
           Сбросить фильтры
         </button>

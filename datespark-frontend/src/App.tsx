@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SparkPage from './pages/SparkPage';
-import { LoginForm } from './components/LoginForm'; // ✅ named export
-import { RegisterForm } from './components/RegisterForm'; // ✅ named export
-import AdventureBoard from './components/AdventureBoard'; // ✅ default export
-import Profile from './components/Profile'; // ✅ default export
-import BottomNavigation from './components/BottomNavigation'; // ✅ default export
+import { LoginForm } from './components/LoginForm'; 
+import { RegisterForm } from './components/RegisterForm'; 
+import AdventureBoard from './components/AdventureBoard'; 
+import Profile from './components/Profile'; 
+import BottomNavigation from './components/BottomNavigation'; 
 import './App.css';
 
 function App() {

@@ -37,7 +37,7 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 if (builder.Environment.IsDevelopment() && string.IsNullOrEmpty(connectionString))
 {
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine("🛠️ Using Development connection string for migrations");
+    Console.WriteLine("Using Development connection string for migrations");
 }
 
 if (string.IsNullOrEmpty(connectionString))
@@ -45,7 +45,7 @@ if (string.IsNullOrEmpty(connectionString))
     // Fallback для случаев когда нет подключения
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseInMemoryDatabase("DateSparkDB"));
-    Console.WriteLine("🔄 Using InMemory database (fallback)");
+    Console.WriteLine("Using InMemory database (fallback)");
 }
 else
 {
@@ -86,11 +86,11 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"❌ Error parsing DATABASE_URL: {ex.Message}");
-            Console.WriteLine($"🔍 Original string: {connectionString}");
+            Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
+            Console.WriteLine($"Original string: {connectionString}");
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase("DateSparkDB"));
-            Console.WriteLine("🔄 Fallback to InMemory database");
+            Console.WriteLine("Fallback to InMemory database");
         }
     }
 
@@ -119,8 +119,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+app.UseCors("AllowFrontend");
 
-// 🔥 АВТО-МИГРАЦИЯ И SEED ДАННЫЕ ТОЛЬКО ДЛЯ POSTGRESQL
+// АВТО-МИГРАЦИЯ И SEED ДАННЫЕ ТОЛЬКО ДЛЯ POSTGRESQL
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -129,14 +130,14 @@ using (var scope = app.Services.CreateScope())
     {
         try
         {
-            Console.WriteLine("🚀 Applying database migrations...");
+            Console.WriteLine("Applying database migrations...");
             dbContext.Database.Migrate();
-            Console.WriteLine("✅ Database migrations applied successfully!");
+            Console.WriteLine("Database migrations applied successfully!");
             
-            // 🔥 ДОБАВЛЯЕМ ТЕСТОВЫЕ ДАННЫЕ ТОЛЬКО ЕСЛИ БАЗА ПУСТАЯ
+            // ДОБАВЛЯЕМ ТЕСТОВЫЕ ДАННЫЕ ТОЛЬКО ЕСЛИ БАЗА ПУСТАЯ
             if (!dbContext.Ideas.Any())
             {
-                Console.WriteLine("🌱 Adding test data to empty database...");
+                Console.WriteLine("Adding test data to empty database...");
                 
             // В методе seed данных замени:
             var testIdeas = new List<Idea>
@@ -167,34 +168,33 @@ using (var scope = app.Services.CreateScope())
 
                 dbContext.Ideas.AddRange(testIdeas);
                 dbContext.SaveChanges();
-                Console.WriteLine($"✅ Added {testIdeas.Count} test ideas to database");
+                Console.WriteLine($"Added {testIdeas.Count} test ideas to database");
             }
             else
             {
                 var ideaCount = dbContext.Ideas.Count();
-                Console.WriteLine($"📊 Database already contains {ideaCount} ideas - skipping seed data");
+                Console.WriteLine($"Database already contains {ideaCount} ideas - skipping seed data");
             }
             
             // Проверяем подключение
             var canConnect = dbContext.Database.CanConnect();
-            Console.WriteLine($"📊 Database connection: {canConnect}");
+            Console.WriteLine($"Database connection: {canConnect}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"❌ Migration failed: {ex.Message}");
-            Console.WriteLine($"🔍 Full error: {ex}");
+            Console.WriteLine($"Migration failed: {ex.Message}");
+            Console.WriteLine($"Full error: {ex}");
         }
     }
     else
     {
-        Console.WriteLine("🔄 InMemory database - skipping migrations and seed data");
+        Console.WriteLine("InMemory database - skipping migrations and seed data");
     }
 }
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
-app.UseCors("AllowFrontend");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
