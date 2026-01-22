@@ -19,7 +19,6 @@ const AdventureBoard: React.FC = () => {
     [AdventureStatus.Completed]: false
   });
 
-  // Статусы для колонок
   const statuses = [
     { status: AdventureStatus.Liked, title: 'Лайкнутые', symbol: '💡' },
     { status: AdventureStatus.Planned, title: 'Запланированные', symbol: '📅' },
@@ -34,8 +33,6 @@ const AdventureBoard: React.FC = () => {
   const loadProfileAndAdventures = async () => {
     try {
       setLoading(true);
-
-      // Сначала загружаем профиль
       const profileData = await api.getProfile();
       setProfile(profileData);
 
@@ -47,22 +44,12 @@ const AdventureBoard: React.FC = () => {
       }
 
       setHasCouple(true);
-
-      // Если есть пара - загружаем приключения
       const adventuresData = await api.getCoupleAdventures();
       setAdventures(adventuresData);
       setError(null);
-    } catch (err: any) {
-      console.error('Error loading data:', err);
-
-      // Проверяем, если это ошибка "нет пары"
-      if (err.message && err.message.includes('400') ||
-        err.message && err.message.includes('не состоите в паре')) {
-        setHasCouple(false);
-        setError('У вас нет пары для использования доски свиданий');
-      } else {
-        setError('Не удалось загрузить доску свиданий');
-      }
+    } catch {
+      setHasCouple(false);
+      setError('Не удалось загрузить доску свиданий');
     } finally {
       setLoading(false);
     }
@@ -81,8 +68,8 @@ const AdventureBoard: React.FC = () => {
       setShowAddForm(false);
       await loadProfileAndAdventures();
       alert('Приключение добавлено!');
-    } catch (err: any) {
-      alert('Ошибка при добавлении: ' + err.message);
+    } catch {
+      alert('Ошибка при добавлении приключения');
     }
   };
 
@@ -90,8 +77,8 @@ const AdventureBoard: React.FC = () => {
     try {
       await api.updateAdventureStatus(adventureId, newStatus);
       await loadProfileAndAdventures();
-    } catch (err: any) {
-      alert('Ошибка при обновлении статуса: ' + err.message);
+    } catch {
+      alert('Ошибка при обновлении статуса');
     }
   };
 
@@ -101,8 +88,8 @@ const AdventureBoard: React.FC = () => {
     try {
       await api.deleteAdventure(adventureId);
       await loadProfileAndAdventures();
-    } catch (err: any) {
-      alert('Ошибка при удалении: ' + err.message);
+    } catch {
+      alert('Ошибка при удалении');
     }
   };
 
@@ -135,7 +122,6 @@ const AdventureBoard: React.FC = () => {
     }
   };
 
-  // Функция для переключения состояния колонки
   const toggleColumn = (status: AdventureStatus) => {
     setCollapsedColumns(prev => ({
       ...prev,
@@ -151,7 +137,6 @@ const AdventureBoard: React.FC = () => {
     );
   }
 
-  // Показываем экран "нет пары"
   if (hasCouple === false) {
     return (
       <div className="adventure-board-page">
@@ -184,8 +169,8 @@ const AdventureBoard: React.FC = () => {
                         await api.createCouple('Наша пара');
                         alert('Пара создана! Теперь можно использовать доску свиданий.');
                         await loadProfileAndAdventures();
-                      } catch (err: any) {
-                        alert('Ошибка: ' + err.message);
+                      } catch {
+                        alert('Ошибка при создании пары');
                       }
                     }}
                   >
@@ -202,7 +187,7 @@ const AdventureBoard: React.FC = () => {
                             alert('Вы присоединились к паре!');
                             loadProfileAndAdventures();
                           })
-                          .catch(err => alert('Ошибка: ' + err.message));
+                          .catch(() => alert('Ошибка при присоединении'));
                       }
                     }}
                   >
@@ -217,7 +202,6 @@ const AdventureBoard: React.FC = () => {
     );
   }
 
-  // Показываем ошибку если есть
   if (error && hasCouple === true) {
     return (
       <div className="adventure-board-page">
@@ -229,7 +213,6 @@ const AdventureBoard: React.FC = () => {
     );
   }
 
-  // Рендерим доску приключений
   return (
     <div className="adventure-board-page">
       <header className="adventure-header">
