@@ -22,8 +22,8 @@ const Profile: React.FC = () => {
     try {
       const profileData = await api.getProfile();
       setProfile(profileData);
-    } catch (error) {
-      console.error('Error loading profile:', error);
+    } catch {
+      // Ошибка обрабатывается в UI
     } finally {
       setLoading(false);
     }
@@ -37,10 +37,8 @@ const Profile: React.FC = () => {
         setNewCoupleName('');
         await loadProfile();
         alert('Пара создана успешно!');
-      } else {
-        alert(result.message || 'Ошибка при создании пары');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при создании пары');
     }
   };
@@ -57,10 +55,8 @@ const Profile: React.FC = () => {
         setEditingCoupleName(false);
         await loadProfile();
         alert('Название пары обновлено!');
-      } else {
-        alert(result.message || 'Ошибка при обновлении названия пары');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при обновлении названия пары');
     }
   };
@@ -77,10 +73,8 @@ const Profile: React.FC = () => {
         setShowJoinForm(false);
         setJoinCode('');
         await loadProfile();
-      } else {
-        alert(result.message || 'Ошибка при присоединении к паре');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при присоединении к паре');
     }
   };
@@ -96,10 +90,8 @@ const Profile: React.FC = () => {
       if (result.success) {
         setEditingName(false);
         await loadProfile();
-      } else {
-        alert(result.message || 'Ошибка при обновлении имени');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при обновлении имени');
     }
   };
@@ -127,7 +119,7 @@ const Profile: React.FC = () => {
     );
   }
 
-  if (!profile || !profile.success) {
+  if (!profile) {
     return (
       <div className="profile-page">
         <div className="error">
@@ -247,7 +239,7 @@ const Profile: React.FC = () => {
                       type="text"
                       value={newCoupleName}
                       onChange={(e) => setNewCoupleName(e.target.value)}
-                      placeholder="Введите название пары "
+                      placeholder="Введите название пары"
                       maxLength={30}
                     />
                     <div className="form-buttons">
