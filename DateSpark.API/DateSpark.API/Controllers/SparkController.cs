@@ -27,18 +27,11 @@ namespace DateSpark.API.Controllers
         }
 
         [HttpPost("vote")]
-        [Authorize] // 🔥 АУТЕНТИФИКАЦИЯ ВСЕ ЕЩЕ НУЖНА ДЛЯ ТРЕКИНГА
+        [Authorize]
         public async Task<ActionResult> VoteForIdea([FromBody] VoteRequest voteRequest)
         {
             try
             {
-                // Извлекаем userId из JWT токена для логов (но не используем в логике)
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = userIdClaim?.Value ?? "unknown";
-
-                Console.WriteLine($"✅ VOTE: User {userId}, Idea {voteRequest.IdeaId}, Like {voteRequest.IsLike}");
-
-                // 🔥 ПРОСТО ВЫЗЫВАЕМ ОБНОВЛЕНИЕ СЧЕТЧИКОВ - UserId не нужен
                 var result = await _ideaService.VoteForIdeaAsync(voteRequest.IdeaId, voteRequest.IsLike);
 
                 if (!result)
@@ -46,9 +39,8 @@ namespace DateSpark.API.Controllers
 
                 return Ok(new { message = "Vote recorded successfully" });
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"❌ Exception in Vote: {ex.Message}");
                 return StatusCode(500, new { message = "Internal server error" });
             }
         }

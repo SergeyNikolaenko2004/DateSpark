@@ -8,10 +8,8 @@ namespace DateSpark.API.Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            // Для миграций используем PostgreSQL connection string
             var connectionString = "Host=localhost;Port=5432;Database=datespark_migrations;Username=postgres;Password=postgres;";
 
-            // Если есть переменная окружения DATABASE_URL - используем её
             var envConnectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
             if (!string.IsNullOrEmpty(envConnectionString))
             {
@@ -27,9 +25,9 @@ namespace DateSpark.API.Data
                         $"Password={userInfo[1]};" +
                         "SSL Mode=Require;Trust Server Certificate=true";
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
+                    // В релизной версии не логируем ошибки парсинга
                 }
             }
 

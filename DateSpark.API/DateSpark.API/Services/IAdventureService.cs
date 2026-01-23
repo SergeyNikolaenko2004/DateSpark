@@ -31,7 +31,7 @@ namespace DateSpark.API.Services
         // Удалить карточку
         Task<bool> DeleteAdventureAsync(int adventureId, int userId);
 
-        // Проверить, можно ли создать из идеи (чтобы не дублировать)
+        // Проверить, можно ли создать из идеи 
         Task<bool> CanCreateFromIdeaAsync(int ideaId, int coupleId);
     }
 }

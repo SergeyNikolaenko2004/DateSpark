@@ -24,14 +24,11 @@ namespace DateSpark.API.Controllers
         {
             try
             {
-                // ИСПРАВЛЕНО: Проверка на null
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
                 {
                     return Unauthorized(new { Success = false, Message = "User not authenticated" });
                 }
-
-                Console.WriteLine($"🔍 Getting profile for user ID: {userId}");
 
                 var user = await _context.Users
                     .Include(u => u.UserCouples)
@@ -40,37 +37,16 @@ namespace DateSpark.API.Controllers
 
                 if (user == null)
                 {
-                    Console.WriteLine("❌ User not found");
                     return NotFound(new { Success = false, Message = "Пользователь не найден" });
-                }
-
-                Console.WriteLine($"🔍 User found: {user.Name}");
-                Console.WriteLine($"🔍 UserCouples count: {user.UserCouples.Count}");
-
-                var userCouple = user.UserCouples.FirstOrDefault();
-
-                if (userCouple == null)
-                {
-                    Console.WriteLine("❌ No UserCouple found for this user");
-                }
-                else
-                {
-                    Console.WriteLine($"🔍 UserCouple found - CoupleId: {userCouple.CoupleId}");
-                    Console.WriteLine($"🔍 Couple navigation property: {userCouple.Couple != null}");
-
-                    if (userCouple.Couple == null)
-                    {
-                        Console.WriteLine("❌ Couple navigation property is NULL - possible FK issue");
-                    }
                 }
 
                 CoupleInfo? coupleInfo = null;
                 List<PartnerInfo> partners = new List<PartnerInfo>();
 
+                var userCouple = user.UserCouples.FirstOrDefault();
+
                 if (userCouple?.Couple != null)
                 {
-                    Console.WriteLine($"🔍 Couple found: {userCouple.Couple.Name} (ID: {userCouple.Couple.Id})");
-
                     coupleInfo = new CoupleInfo
                     {
                         Id = userCouple.Couple.Id,
@@ -79,13 +55,10 @@ namespace DateSpark.API.Controllers
                         CreatedAt = userCouple.Couple.CreatedAt
                     };
 
-                    // Получаем всех участников пары
                     var allPartners = await _context.UserCouples
                         .Where(uc => uc.CoupleId == userCouple.CoupleId)
                         .Include(uc => uc.User)
                         .ToListAsync();
-
-                    Console.WriteLine($"🔍 Partners count: {allPartners.Count}");
 
                     partners = allPartners.Select(uc => new PartnerInfo
                     {
@@ -112,11 +85,8 @@ namespace DateSpark.API.Controllers
                     Partners = partners
                 });
             }
-            catch (Exception ex)
+            catch
             {
-                // ИСПРАВЛЕНО: Используем переменную ex
-                Console.WriteLine($"❌ Error in GetProfile: {ex.Message}");
-                Console.WriteLine($"🔍 Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { Success = false, Message = "Ошибка при получении профиля" });
             }
         }
@@ -126,7 +96,6 @@ namespace DateSpark.API.Controllers
         {
             try
             {
-                // ИСПРАВЛЕНО: Проверка на null
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
                 {
@@ -159,10 +128,8 @@ namespace DateSpark.API.Controllers
                     User = new UserDto { Id = user.Id, Email = user.Email, Name = user.Name, Avatar = user.Avatar }
                 });
             }
-            catch (Exception ex)
+            catch
             {
-                // ИСПРАВЛЕНО: Используем переменную ex
-                Console.WriteLine($"❌ Error updating profile: {ex.Message}");
                 return StatusCode(500, new AuthResponse { Success = false, Message = "Ошибка при обновлении профиля" });
             }
         }

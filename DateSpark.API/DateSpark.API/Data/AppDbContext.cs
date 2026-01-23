@@ -35,7 +35,6 @@ namespace DateSpark.API.Data
                 .HasIndex(c => c.JoinCode)
                 .IsUnique();
 
-            // 🔥 ИСПРАВЛЕННАЯ СВЯЗЬ User-UserCouple
             modelBuilder.Entity<UserCouple>()
                 .HasKey(uc => uc.Id);
 
@@ -56,7 +55,6 @@ namespace DateSpark.API.Data
                 .HasIndex(uc => new { uc.UserId, uc.CoupleId })
                 .IsUnique();
 
-            // 🔥 НОВАЯ КОНФИГУРАЦИЯ: AdventureCard
             modelBuilder.Entity<AdventureCard>(entity =>
             {
                 entity.HasKey(e => e.Id);

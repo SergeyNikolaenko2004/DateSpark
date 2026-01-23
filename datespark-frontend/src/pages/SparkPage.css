@@ -10,13 +10,11 @@
   padding: 20px;
   color: white;
   padding-top: 10px;
-  /* 🔥 Уменьшил отступ сверху */
 }
 
 .spark-header h1 {
   margin: 0;
   font-size: 2.2em;
-  /* 🔥 Немного уменьшил размер */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -24,28 +22,23 @@
   margin: 10px 0 0 0;
   opacity: 0.9;
   font-size: 1em;
-  /* 🔥 Немного уменьшил размер */
 }
 
 .spark-main {
   padding: 0;
-  /* 🔥 Убрал отступы - SwipeContainer сам управляет отступами */
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* 🔥 УБИРАЕМ СТАРЫЙ ФУТЕР */
 .spark-footer {
   display: none;
 }
 
 .swipe-hint {
   display: none;
-  /* 🔥 Скрываем подсказки свайпов */
 }
 
-/* Адаптивность */
 @media (max-width: 480px) {
   .spark-header {
     padding: 15px;
@@ -54,7 +47,6 @@
 
   .spark-header h1 {
     font-size: 1.8em;
-    /* 🔥 Еще меньше на мобильных */
   }
 
   .spark-header p {

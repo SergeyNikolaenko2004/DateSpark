@@ -22,7 +22,6 @@ namespace DateSpark.API.Services
         {
             var query = _context.Ideas.AsQueryable();
 
-            // КАТЕГОРИЯ: поддерживает несколько через запятую
             if (!string.IsNullOrEmpty(filters.Category))
             {
                 var categories = filters.Category.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -32,7 +31,6 @@ namespace DateSpark.API.Services
                 }
             }
 
-            // ЛОКАЦИЯ
             if (!string.IsNullOrEmpty(filters.Location))
             {
                 var locations = filters.Location.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -42,7 +40,6 @@ namespace DateSpark.API.Services
                 }
             }
 
-            // НАСТРОЕНИЕ
             if (!string.IsNullOrEmpty(filters.Mood))
             {
                 var moods = filters.Mood.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -52,10 +49,8 @@ namespace DateSpark.API.Services
                 }
             }
 
-            // ПОГОДА - теперь поддерживает "Солнечно,Снег"
             if (!string.IsNullOrEmpty(filters.Weather))
             {
-                // Если "Любая" - не фильтруем
                 if (filters.Weather != "Любая")
                 {
                     var weatherOptions = filters.Weather
@@ -95,42 +90,25 @@ namespace DateSpark.API.Services
             return ideas[random.Next(ideas.Count)];
         }
 
-        // УПРОЩАЕМ ГОЛОСОВАНИЕ - РАБОТАЕМ С POЛЯМИ В IDEAS
         public async Task<bool> VoteForIdeaAsync(int ideaId, bool isLike)
         {
-            try
+            var idea = await _context.Ideas.FindAsync(ideaId);
+            if (idea == null)
             {
-                Console.WriteLine($"=== SIMPLE VOTE === Idea: {ideaId}, Like: {isLike}");
-
-                // Находим идею
-                var idea = await _context.Ideas.FindAsync(ideaId);
-                if (idea == null)
-                {
-                    Console.WriteLine($"❌ Idea {ideaId} not found");
-                    return false;
-                }
-
-                // ПРОСТО ОБНОВЛЯЕМ СЧЕТЧИКИ В ТАБЛИЦЕ IDEAS
-                if (isLike)
-                {
-                    idea.Likes++;
-                    Console.WriteLine($"✅ Incremented likes for idea {ideaId}: {idea.Likes}");
-                }
-                else
-                {
-                    idea.Dislikes++;
-                    Console.WriteLine($"✅ Incremented dislikes for idea {ideaId}: {idea.Dislikes}");
-                }
-
-                await _context.SaveChangesAsync();
-                Console.WriteLine("✅ Vote saved successfully!");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Error saving vote: {ex.Message}");
                 return false;
             }
+
+            if (isLike)
+            {
+                idea.Likes++;
+            }
+            else
+            {
+                idea.Dislikes++;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

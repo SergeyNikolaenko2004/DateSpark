@@ -30,13 +30,11 @@ namespace DateSpark.API.Services
 
         public async Task<AuthResponse> RegisterAsync(AuthRequest request)
         {
-            // Проверяем существует ли пользователь
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
             {
                 return new AuthResponse { Success = false, Message = "Пользователь с таким email уже существует" };
             }
 
-            // Создаем пользователя
             var user = new User
             {
                 Email = request.Email,
@@ -49,7 +47,6 @@ namespace DateSpark.API.Services
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Генерируем токен
             var token = GenerateJwtToken(user);
 
             return new AuthResponse
@@ -73,7 +70,6 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Неверный email или пароль" };
             }
 
-            // Получаем пару пользователя (может быть null)
             var userCouple = user.UserCouples.FirstOrDefault();
             CoupleDto? coupleDto = null;
 
@@ -107,7 +103,6 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Пользователь не найден" };
             }
 
-            // 🔥 ПРОВЕРЯЕМ НЕ СОСТОИТ ЛИ УЖЕ В ПАРЕ
             var existingCouple = await _context.UserCouples
                 .FirstOrDefaultAsync(uc => uc.UserId == userId);
 
@@ -116,7 +111,6 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Вы уже состоите в паре" };
             }
 
-            // 🔥 СОЗДАЕМ ПАРУ С ВЫБРАННЫМ ИМЕНЕМ ИЛИ ПО УМОЛЧАНИЮ
             var couple = new Couple
             {
                 Name = !string.IsNullOrEmpty(coupleName) ? coupleName.Trim() : $"{user.Name}'s Couple",
@@ -153,7 +147,6 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Название пары должно содержать минимум 2 символа" };
             }
 
-            // Находим пару пользователя
             var userCouple = await _context.UserCouples
                 .Include(uc => uc.Couple)
                 .FirstOrDefaultAsync(uc => uc.UserId == userId);
@@ -163,15 +156,12 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Вы не состоите в паре" };
             }
 
-            // Проверяем, что пользователь является создателем пары
             if (userCouple.Role != "creator")
             {
                 return new AuthResponse { Success = false, Message = "Только создатель пары может изменять её название" };
             }
 
-            // Обновляем название пары
             userCouple.Couple.Name = coupleName.Trim();
-
             await _context.SaveChangesAsync();
 
             return new AuthResponse
@@ -192,7 +182,6 @@ namespace DateSpark.API.Services
                 return new AuthResponse { Success = false, Message = "Неверный код приглашения" };
             }
 
-            // Проверяем не состоит ли пользователь уже в паре
             var existingUserCouple = await _context.UserCouples
                 .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CoupleId == couple.Id);
 

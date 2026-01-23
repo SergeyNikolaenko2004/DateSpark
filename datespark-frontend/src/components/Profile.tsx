@@ -23,7 +23,6 @@ const Profile: React.FC = () => {
       const profileData = await api.getProfile();
       setProfile(profileData);
     } catch {
-      // Ошибка обрабатывается в UI
     } finally {
       setLoading(false);
     }

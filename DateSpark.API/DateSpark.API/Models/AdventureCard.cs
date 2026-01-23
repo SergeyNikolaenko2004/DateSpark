@@ -6,10 +6,10 @@ namespace DateSpark.API.Models
     // Статусы карточки в канбане
     public enum AdventureStatus
     {
-        Liked,      // Лайкнуто (показано в Spark)
-        Planned,    // Запланировано (выбрали дату)
-        InProgress, // В процессе (сегодня делаем)
-        Completed   // Выполнено (ура!)
+        Liked,      // Лайкнуто
+        Planned,    // Запланировано 
+        InProgress, // В процессе
+        Completed   // Выполнено 
     }
 
     public class AdventureCard
@@ -39,7 +39,7 @@ namespace DateSpark.API.Models
         [Required]
         public AdventureStatus Status { get; set; } = AdventureStatus.Liked;
 
-        // Когда планируем сделать (для статуса Planned/InProgress)
+        // Когда планируем сделать 
         public DateTime? PlannedDate { get; set; }
 
         // Когда сделали (для статуса Completed)
@@ -57,7 +57,6 @@ namespace DateSpark.API.Models
         // Когда последний раз обновляли
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        // Навигационные свойства (для Entity Framework)
         [JsonIgnore]
         public Idea? Idea { get; set; }
 
@@ -67,7 +66,6 @@ namespace DateSpark.API.Models
         [JsonIgnore]
         public User? CreatedByUser { get; set; }
 
-        // 💡 Удобное свойство для фронтенда - символ статуса
         public string StatusSymbol => Status switch
         {
             AdventureStatus.Liked => "💡",

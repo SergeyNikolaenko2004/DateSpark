@@ -1,11 +1,9 @@
-/* Profile.css - стили ТОЛЬКО для страницы профиля */
-
-/* 🏠 ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ */
+/* ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ */
 .profile-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
-  padding-bottom: 90px; /* 🔥 Отступ для навигации */
+  padding-bottom: 90px; 
 }
 
 /* ЗАГОЛОВОК СТРАНИЦЫ */
@@ -556,7 +554,6 @@
   transform: translateY(-1px);
 }
 
-/* 📱 АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .profile-page {
     padding: 10px;

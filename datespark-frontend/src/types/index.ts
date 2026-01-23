@@ -80,7 +80,6 @@ export interface AdventureCard {
   updatedAt: string;
 }
 
-// DTO для создания
 export interface CreateAdventureFromIdeaRequest {
   ideaId: number;
 }

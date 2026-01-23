@@ -1,7 +1,6 @@
 using DateSpark.API.Data;
 using Microsoft.EntityFrameworkCore;
 using DateSpark.API.Services;
-using DateSpark.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -13,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IIdeaGeneratorService, IdeaGeneratorService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAdventureService, AdventureService>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -28,34 +28,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes("your-super-secret-key-at-least-32-chars-long!"))
         };
     });
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// 🔥 УЛУЧШЕННАЯ КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ ДЛЯ SUPABASE
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-// Для миграций используем appsettings.Development.json
 if (builder.Environment.IsDevelopment() && string.IsNullOrEmpty(connectionString))
 {
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine("Using Development connection string for migrations");
 }
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    // Fallback для случаев когда нет подключения
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseInMemoryDatabase("DateSparkDB"));
-    Console.WriteLine("Using InMemory database (fallback)");
 }
 else
 {
-    // 🔥 ИСПРАВЛЕННЫЙ ПАРСИНГ ДЛЯ SUPABASE
     if (connectionString.Contains("postgresql://"))
     {
         try
         {
-            // Убираем "postgresql://" и парсим вручную для совместимости
             var uriString = connectionString.Replace("postgresql://", "");
             var atIndex = uriString.IndexOf('@');
             var colonIndex = uriString.IndexOf(':');
@@ -81,26 +75,19 @@ else
                     $"Username={username};" +
                     $"Password={password};" +
                     "SSL Mode=Require;Trust Server Certificate=true";
-
-                Console.WriteLine($"✅ Using PostgreSQL on Supabase: {host}");
             }
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
-            Console.WriteLine($"Original string: {connectionString}");
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase("DateSparkDB"));
-            Console.WriteLine("Fallback to InMemory database");
         }
     }
 
-    // Используем PostgreSQL
     if (!connectionString.Contains("InMemory"))
     {
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString));
-        Console.WriteLine("🗄️ Using PostgreSQL database");
     }
 }
 
@@ -122,7 +109,6 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 app.UseCors("AllowFrontend");
 
-// АВТО-МИГРАЦИЯ И SEED ДАННЫЕ ТОЛЬКО ДЛЯ POSTGRESQL
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -131,54 +117,11 @@ using (var scope = app.Services.CreateScope())
     {
         try
         {
-            Console.WriteLine("Applying database migrations...");
             dbContext.Database.Migrate();
-            Console.WriteLine("Database migrations applied successfully!");
-
-            // ДОБАВЛЯЕМ ТЕСТОВЫЕ ДАННЫЕ ТОЛЬКО ЕСЛИ БАЗА ПУСТАЯ
-            if (!dbContext.Ideas.Any())
-            {
-                Console.WriteLine("Adding test data to empty database...");
-
-                // В методе seed данных замени:
-                var testIdeas = new List<Idea>
-            {
-                new Idea {
-                    Title = "Романтический ужин при свечах",
-                    Description = "Приготовить ужин вместе при свечах с любимой музыкой",
-                    Category = "Романтическое",
-                    PriceCategory = PriceCategory.Medium,
-                    Location = "Дома",
-                    Mood = "Романтическое",
-                    Duration = "Вечер",
-                    Weather = "Любая",
-                    IsActive = true
-                }
-            };
-
-                dbContext.Ideas.AddRange(testIdeas);
-                dbContext.SaveChanges();
-                Console.WriteLine($"Added {testIdeas.Count} test ideas to database");
-            }
-            else
-            {
-                var ideaCount = dbContext.Ideas.Count();
-                Console.WriteLine($"Database already contains {ideaCount} ideas - skipping seed data");
-            }
-
-            // Проверяем подключение
-            var canConnect = dbContext.Database.CanConnect();
-            Console.WriteLine($"Database connection: {canConnect}");
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Migration failed: {ex.Message}");
-            Console.WriteLine($"Full error: {ex}");
         }
-    }
-    else
-    {
-        Console.WriteLine("InMemory database - skipping migrations and seed data");
     }
 }
 
